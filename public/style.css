@@ -1,0 +1,31 @@
+@font-face {
+	font-family: font_1; /* Имя шрифта */
+    src: url('fonts/Proxima Nova.ttf'); /* Путь к файлу со шрифтом */
+}
+
+html {
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	font-family: Proxima Nova;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	webkit-touch-callout: none; /* iOS Safari */
+  	-webkit-user-select: none;   /* Chrome/Safari/Opera */
+  	-khtml-user-select: none;    /* Konqueror */
+  	-moz-user-select: none;      /* Firefox */
+  	-ms-user-select: none;       /* Internet Explorer/Edge */
+  	user-select: none;           /* Non-prefixed version, currently */
+	zoom:  100%;
+}
+
+/* Remove outline on the forms and links */
+:active, :hover, :focus {
+    outline: 0;
+    outline-offset: 0;
+}
