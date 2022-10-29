@@ -10,6 +10,6 @@
   },
   "scripts": {
     "build": "npm install",
-    "start" : "node server
+    "start" : "node server"
   }
 }
