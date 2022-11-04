@@ -15,6 +15,7 @@ var tech_core = {
     "ysdk_player": 1,
     "local_storage_ready": false,
     "cloud_storage_ready": false,
+    "my_server_ready": false,
     "init_sdk": function() {
         YaGames
             .init({
@@ -576,6 +577,30 @@ var tech_core = {
             }
         }
     },
+    "say_hello_to_server": function() {
+        var xhr = new XMLHttpRequest();
+        
+        var report = {
+            "time": Date.now(),
+        }
+
+        xhr.open('POST', SERVER_URL + 'hello', true)
+        xhr.setRequestHeader("Access-Control-Allow-Origin", "*")
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Accept", "application/json");
+        
+        // 3. Отсылаем запрос
+        xhr.send(JSON.stringify(report));
+        xhr.onload = function() {
+            if (xhr.status == 200) { 
+                var user = JSON.parse(xhr.responseText)
+                console.log(user.msg);
+                tech_core.my_server_ready = true;
+            } else {
+                console.log("Server response: ", xhr.statusText);
+            }
+        }
+    },
     "send_data_to_server": function() {
         var xhr = new XMLHttpRequest();
         
@@ -585,7 +610,11 @@ var tech_core = {
     
         // 2. Конфигурируем его: POST-запрос на URL http://127.17.0.1:8080/function/histogram/
         //xhr.open('POST', 'https://ingenium-alchemy.herokuapp.com/report', true);
-        xhr.open('POST', 'http://localhost:3000/report', true);
+        //xhr.open('POST', 'http://localhost:3000/report', true);
+        //xhr.open('POST', 'https://alchemy-quest.onrender.com/report', true)
+
+        xhr.open('POST', SERVER_URL + 'report', true)
+
         //xhr.setRequestHeader("Access-Control-Allow-Origin", "https://evil-eagle-97.loca.lt")
         xhr.setRequestHeader("Access-Control-Allow-Origin", "*")
 
@@ -602,7 +631,7 @@ var tech_core = {
         xhr.onload = function() {
             if (xhr.status == 200) { 
                 var user = JSON.parse(xhr.responseText)
-                console.log(user.name);
+                console.log(user.name)
             } else {
                 console.log("Server response: ", xhr.statusText);
             }
@@ -624,6 +653,14 @@ var graph_core = {
     "open_game_viewport": function() {
         //$('#game_viewport').css('display', 'block')
         $('#game_viewport').fadeIn(ANIMATION*1000)
+    },
+    "html_blocks": {
+        
+    },
+    "open_options": function () {
+        console.log(1);
+        $('#game_options').css('display', 'block')
+        $('#game_viewport').css('display', 'none')
     }
 }
 

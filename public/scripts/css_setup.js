@@ -1,4 +1,3 @@
-
 graph_core.winW = $(window).width();
 graph_core.winH = $(window).height();
 
@@ -178,6 +177,256 @@ var setup_main_menu_block = function(winW, winH, profile) {
     }   
 }
 
+
+var add_block = function(id, x_ratio, y_ratio) {
+    $('#game_viewport').append(`<div id="`+id+`" ></div>`)
+}
+
+
+// собственно здесь всё будет создаваться :)
+set_size(".big_block", graph_core.winW, graph_core.winH);
+
+graph_core.html_blocks["game_viewport"] = new my_html_block("game_viewport", document.getElementById('game_viewport'), {}, true);
+
+graph_core.html_blocks["game_viewport"].add_block('top_block', {
+    "ratio_x": 1,
+    "ratio_y": 0.1,
+    "ratio": 2,
+    "color": 'rgba(0,0,0,0)',
+    "pos_x": 0.5,
+    "pos_y": 0.02
+})
+
+for (var i=0; i < 4; i++) {
+    graph_core.html_blocks["game_viewport"].children['top_block'].add_block('status_block_'+(i+1), {
+        "ratio_x": 1,
+        "ratio_y": 1,
+        "is_prop": true,
+        "ratio": 0.9,
+        "color": '#414bb2',
+        "pos_x": 1*((i)/4+0.125) 
+    })
+}
+
+graph_core.html_blocks["game_viewport"].add_block('card_block', {
+    "ratio_x": 380/480,
+    "ratio_y": 500/800,
+    "ratio": 764/962,
+    "is_prop": true,
+    "background": "url('./images/base.png')",
+    "color": '#e683f6',
+    "pos_x": 0.5,
+    "pos_y": 0.35
+})
+
+graph_core.html_blocks["game_viewport"].children['card_block'].add_block('card_title', {
+    "ratio_x": 320/440,
+    "ratio_y": 50/580,
+    "is_prop": true,
+    "ratio": 554/85,
+    "background": "url('./images/title.png')",
+    "color": '#f4b9ff',
+    "pos_y": 0.15,
+    "pos_x": 0.5,
+    "text": "Лунный торговец",
+    "text_color": "#e8cd66",
+    "1_line_text": false,
+    "text_padding_w": 0.8,
+    "text_padding_h": 1,
+    "text_align": "center"
+})
+
+graph_core.html_blocks["game_viewport"].children['card_block'].add_block('card_img', {
+    "ratio_x": 355/440,
+    "ratio_y": 255/580,
+    "is_prop": true,
+    "ratio": 355/255,
+    "color": '#f4b9ff',
+    "pos_y": 0.45,
+    "pos_x": 0.5
+})
+
+graph_core.html_blocks["game_viewport"].children['card_block'].add_block('card_description', {
+    "ratio_x": 320/380,
+    "ratio_y": 100/512,
+    "is_prop": true,
+    "ratio": 320/100,
+    "pos_y": 0.92,
+    "pos_x": 0.5,
+    "text": "Мне не нравится, что в нашем городе так много сплетников.",
+    "text_color": "#e8cd66"
+})
+
+graph_core.html_blocks["game_viewport"].add_block('ans_block_1', {
+    "ratio_x": 230/535,
+    "ratio_y": 50/890,
+    "ratio": 394/86,
+    "is_prop": true,
+    "background": "url('./images/button_long.png')",
+    "color": '#f48aff',
+    "pos_y_mode": "attach_top",
+    "pos_y_attach_id": "card_block",
+    "pos_x_mode": "attach_left_left",
+    "pos_x_attach_id": "card_block",
+    "margin_x": -0.1,
+    "margin_y": 0.45,
+    "pos_x": 0.1,
+    "pos_y": 0.78,
+    "text": "Мне тоже",
+    "text_color": "#e8cd66",
+    "text_padding_w": 0.8,
+    "text_padding_h": 0.7,
+    "text_align": "center"
+})
+
+graph_core.html_blocks["game_viewport"].add_block('ans_block_2', {
+    "ratio_x": 230/535,
+    "ratio_y": 50/890,
+    "ratio": 394/86,
+    "is_prop": true,
+    "background": "url('./images/button_long.png')",
+    "pos_y_mode": "attach_top",
+    "pos_y_attach_id": "card_block",
+    "pos_x_mode": "attach_right",
+    "pos_x_attach_id": "card_block",
+    "margin_x": 0.1,
+    "margin_y": 0.45,
+    "pos_x": 0.9,
+    "pos_y": 0.78,
+    "text": "Прости, но я не знаю что со мной",
+    "text_color": "#e8cd66",
+    "text_padding_w": 0.75,
+    "text_padding_h": 0.8,
+    "text_align": "center"
+})
+
+
+
+graph_core.html_blocks["game_viewport"].add_block('options_block', {
+    "ratio_x": 110/535,
+    "ratio_y": 210/890,
+    "ratio": 206/370,
+    "color": '#f48aff',
+    "background": "url('./images/clock.png')",
+    "is_prop": true,
+    "pos_x": 0,
+    "pos_y": 1
+})
+
+graph_core.html_blocks["game_viewport"].children['options_block'].add_block('options_btn', {
+    "ratio_x": 0.5,
+    "ratio_y": 0.2,
+    "ratio": 1/1,
+    "color": '#f48aff',
+    "background": "url('./images/settings.png')",
+    "is_prop": true,
+    "pos_x": 0.2,
+    "pos_y": 0.9,
+    "onclick": "graph_core.open_options();"
+})
+
+graph_core.html_blocks["game_viewport"].add_block('lm_block', {
+    "ratio_x": 110/535,
+    "ratio_y": 210/890,
+    "ratio": 206/370,
+    "color": '#f48aff',
+    "background": "url('./images/clock_right.png')",
+    "is_prop": true,
+    "pos_x": 1,
+    "pos_y": 1
+})
+
+graph_core.html_blocks["game_viewport"].children['lm_block'].add_block('lm_btn', {
+    "ratio_x": 0.6,
+    "ratio_y": 0.3,
+    "ratio": 1/1,
+    "color": '#f48aff',
+    "background": "url('./images/coin.png')",
+    "is_prop": true,
+    "pos_x": 0.9,
+    "pos_y": 0.97,
+
+})
+
+graph_core.html_blocks["game_viewport"].add_block('date_block', {
+    "ratio_x": 220/535,
+    "ratio_y": 60/890,
+    "ratio": 376/100,
+    "color": '#f48aff',
+    "is_prop": true,
+    "pos_x": 0.5,
+    "background": "url('./images/time.png')",
+    /*
+    "pos_y_mode": "attach_bottom",
+    "pos_y_attach_id": "options_block",
+    */
+    "pos_y": 0.99,
+    "text": "34 ц.у.",
+    "text_align": "center",
+    "text_color": "#e8cd66",
+    "text_padding_w": 0.75,
+    "text_padding_h": 0.6,
+
+})
+
+
+
+////////////////////////////////////////////////
+///// РАЗДЕЛ НАСТРОЕК //////
+////////////////////////////////////////////////
+
+graph_core.html_blocks["game_options"] = new my_html_block("game_options", document.getElementById('game_options'), {}, true);
+
+graph_core.html_blocks["game_options"].add_block('title_block', {
+    "ratio_x": 200/520,
+    "ratio_y": 60/880,
+    "ratio": 150/45,
+    "pos_x": 0.05,
+    "is_prop": true,
+    /*
+    "pos_x_mode": "attach_left_left",
+    "pos_x_attach_id": "game_options",
+    "marin_x": 0,
+    */
+    "pos_y": 0.01,
+    "text": "Настройки",
+    "text_color": "#e8cd66",
+    "text_align": "center"
+
+})
+
+
+graph_core.html_blocks["game_options"].add_block('card_block', {
+    "ratio_x": 435/520,
+    "ratio_y": 735/880,
+    "ratio": 435/735,
+    "color": "red",
+    "is_prop": true,
+    "pos_x": 0.5,
+    "pos_y": 0.45,
+})
+
+
+
+/*
+graph_core.html_blocks["game_viewport"].add_block('test', {
+    "ratio_x": 0.8,
+    "ratio_y": 0.5,
+    "color": 'orange',
+    "pos_mode": "center",
+    "pos_x"
+})
+
+
+graph_core.html_blocks["game_viewport"].children["test"].add_block('test2', {
+    "ratio_x": 1,
+    "ratio_y": 0.5,
+    "color": 'rgba(0,0,0,0.3)',
+    "pos_mode": "center"
+})
+*/
+
+
 var setup_game_viewport = function(winW, winH, profile) {
    
 
@@ -201,8 +450,6 @@ var setup_game_viewport = function(winW, winH, profile) {
             return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
         }
     };
-
-
     
 }
 
@@ -252,6 +499,7 @@ var resize_screen = function() {
 
     // горизонтальный
     if (ratio >= 0.95) {
+
         setup_game_viewport(winW, winH, 1)
     // вертикальный
     } else if (ratio <= 0.6) {
@@ -261,23 +509,25 @@ var resize_screen = function() {
         setup_game_viewport(winW, winH, 3)
     }
 
+    graph_core.html_blocks["game_viewport"].recalculate();
+    graph_core.html_blocks["game_options"].recalculate();
 
-    console.log('resized in '+(performance.now() - s_time).toFixed(2) + 'ms')
+    //console.log('resized in '+(performance.now() - s_time).toFixed(2) + 'ms')
 
 }
 
 graph_core.resize_screen = resize_screen
 
 window.addEventListener('resize', function() {
-    setTimeout(function() {
+    //setTimeout(function() {
         graph_core.resize_screen();
-    }, 20)
+    //}, 20)
     
 }, false);
 window.addEventListener('fullscreenchange', function() {
-    setTimeout(function() {
+    //setTimeout(function() {
         graph_core.resize_screen();
-    }, 20)
+    //}, 20)
 }, false)
 
 

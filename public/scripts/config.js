@@ -1,5 +1,11 @@
 // В этом разделе основные переменные
 const PLATFORM_TYPE = 'yandex'
+
+
+//const SERVER_URL = 'https://alchemy-quest.adaptable.app/';
+const SERVER_URL = 'https://alchemy-quest.onrender.com/'
+//const SERVER_URL = 'http://localhost:3000/'
+
 const build = 65;
 var SHOULD_LOAD_PROGRESS = false;
 var MAKE_SCREEN_ON_X = false;
