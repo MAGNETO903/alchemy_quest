@@ -1,8 +1,8 @@
 
-tech_core.say_hello_to_server();
+
 
 window.onload = function() {
-	
+	$('#game_preloader').fadeOut(1000)
 	try {
 		tech_core.init_sdk();
 	} catch (err) {
@@ -24,7 +24,6 @@ window.onload = function() {
 	console.log('сборка', build)
 
 	game_core.start_game();
-	$('#game_preloader').fadeOut(1000)
 }	
 
 

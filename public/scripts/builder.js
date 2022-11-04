@@ -1,6 +1,3 @@
-
-
-
 var add_script_to_head = function(script_src) {
        var script = document.createElement("script");
        script.src = script_src
@@ -20,8 +17,6 @@ var add_inner_script_to_head = function(script_inner) {
 }
 
 
-
-
 // Подключим нужные библиотеки
 if (PLATFORM_TYPE == 'yandex') {
        add_script_to_head('https://yandex.ru/games/sdk/v2')
@@ -39,8 +34,11 @@ if (PLATFORM_TYPE == 'yandex') {
        add_script_to_head('https://unpkg.com/@sberdevices/assistant-client@4.5.0/umd/assistant.min.js')
        add_script_to_head('https://cdn-app.sberdevices.ru/shared-static/0.0.0/js/@sberdevices/ad-sdk/ad-sdk.min.js')
        add_script_to_head('https://cdn-app.sberdevices.ru/shared-static/0.0.0/polyfills/cookie-ls-polyfill.min.js')
+
+       
 }
 
+              
 
 // Платформы GameMonetize и GameDistribution не требуют подключение (оно осуществляется во время инициализации)
 
