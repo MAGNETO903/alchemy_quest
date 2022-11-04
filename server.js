@@ -37,7 +37,7 @@ const client = new Client({
   ssl: { rejectUnauthorized: false }
 });
 
-client.connect();
+//client.connect();
 
 /*
 var command = `CREATE TABLE system_logs (
