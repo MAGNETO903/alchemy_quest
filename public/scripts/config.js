@@ -1,5 +1,11 @@
 // В этом разделе основные переменные
 const PLATFORM_TYPE = 'yandex'
+
+
+//const SERVER_URL = 'https://alchemy-quest.adaptable.app/';
+const SERVER_URL = 'https://alchemy-quest.onrender.com/'
+//const SERVER_URL = 'http://localhost:3000/'
+
 const build = 65;
 var SHOULD_LOAD_PROGRESS = false;
 var MAKE_SCREEN_ON_X = false;
@@ -107,7 +113,247 @@ var text = {
 		"ru": "Алхимический квест",
 		"en": "Alchemy quest"
 	},
-	
+	"game_options_title": {
+		"ru": "Настройки",
+		"en": "Options"
+	},
+	"game_options_back_btn": {
+		"ru": "Вернуться в игру",
+		"en": "Back to game"
+	}
 }
 
 
+// Некоторые карточки (сюжетные) удаляют определенный карточки из случайной колоды
+
+// операторы
+var operators = {
+	"taken_1": 0,
+	"taken_2": 0,
+	"taken_3": 0
+}
+
+// Список карточек
+var cards = {
+	"plot_1-1": {
+		"title": {
+			"ru": "Дратути!",
+			"en": "Hello there!"
+		},
+		"text": {
+			"ru": "Просто здравствуй! Просто как дела? Просто здравствуйте! Просто как дела?",
+			"en": "- Hello there! \n - General Kenobi..."
+		},
+		"img": "url('./images/1.jpg')",
+		
+		"answers": {
+			"1": {
+				"text": {
+					"ru": "Привет!",
+					"en": "Hi!"
+				},
+				"next": function(operators) {
+					// изменяем операторы
+					return "plot_1-2"
+				}
+			},
+			"2": {
+				"text": {
+					"ru": "Эээ...",
+					"en": "Umm..."
+				},
+				"next": function(operators) {
+					// изменяем операторы
+					return "plot_1-2"
+				}
+			}
+		}
+	},
+	"plot_1-2": {
+		"title": {
+			"ru": "Взять или не взять?",
+			"en": "Do or not to do?!"
+		},
+		"text": {
+			"ru": "Если ты хочешь это, то тебе придется взять этой силой",
+			"en": "If you want it, then you'll have to take it"
+		},
+		"img": "url('./images/2.jpg')",
+		"answers": {
+			"1": {
+				"text": {
+					"ru": "Взять!",
+					"en": "Do it!"
+				},
+				"next": function(operators) {
+					// изменяем операторы
+					operators.taken_1 = 1;
+					return "plot_1-3"
+				}
+			},
+			"2": {
+				"text": {
+					"ru": "Не брать",
+					"en": "dont"
+				},
+				"next": function(operators) {
+					// изменяем операторы
+					return "plot_1-3"
+				}
+			}
+		}
+	},
+	"plot_1-3": {
+		"title": {
+			"ru": "Взять или не взять 2?",
+			"en": "Do or not to do 2?!"
+		},
+		"text": {
+			"ru": "Если ты хочешь это, то тебе придется взять этой силой. Но ты и так уже это знаешь",
+			"en": "If you want it, then you'll have to take it"
+		},
+		"img": "url('./images/3.jpg')",
+		"answers": {
+			"1": {
+				"text": {
+					"ru": "Взять снова!",
+					"en": "Do it!"
+				},
+				"next": function(operators) {
+					// изменяем операторы
+					operators.taken_2 = 1;
+					return "plot_1-4"
+				}
+			},
+			"2": {
+				"text": {
+					"ru": "Не брать",
+					"en": "dont"
+				},
+				"next": function(operators) {
+					// изменяем операторы
+					return "plot_1-4"
+				}
+			}
+		}
+	},
+	"plot_1-4": {
+		"title": {
+			"ru": "Взять или не взять 3?",
+			"en": "Do or not to do 2?!"
+		},
+		"text": {
+			"ru": "В каком же ты отчаянии, если пришёл ко мне... Чего ради?!",
+			"en": "If you want it, then you'll have to take it"
+		},
+		"img": "url('./images/4.jpg')",
+		"answers": {
+			"1": {
+				"text": {
+					"ru": "Взять опять!",
+					"en": "Do it!"
+				},
+				"next": function(operators) {
+					// изменяем операторы
+					if (operators.taken_1 && operators.taken_2) {
+						return "plot_1-6"
+					} else {
+						return "plot_1-5"
+					}
+				}
+			},
+			"2": {
+				"text": {
+					"ru": "Не брать :3",
+					"en": "dont"
+				},
+				"next": function(operators) {
+					// изменяем операторы
+					return "plot_1-5"
+				}
+			}
+		}
+	},
+	"plot_1-5": {
+		"title": {
+			"ru": "Вы не решились?",
+			"en": "Do or not to do 2?!"
+		},
+		"text": {
+			"ru": "Ты взял явно не всё...",
+			"en": "If you want it, then you'll have to take it"
+		},
+		"img": "url('./images/6.jpg')",
+		"answers": {
+			"1": {
+				"text": {
+					"ru": "Начать заново!",
+					"en": "Do it!"
+				},
+				"next": function(operators) {
+					// изменяем операторы
+					
+					return "plot_1-1"
+					
+				}
+			},
+			"2": {
+				"text": {
+					"ru": "Не начинать заново",
+					"en": "dont"
+				},
+				"next": function(operators) {
+					// изменяем операторы
+					return "plot_1-1"
+				}
+			}
+		}
+	},
+	"plot_1-6": {
+		"title": {
+			"ru": "Вы взяли всё!",
+			"en": "Do or not to do 2?!"
+		},
+		"text": {
+			"ru": "Ты догадался взять всё! Теперь у тебя есть суперспособность",
+			"en": "If you want it, then you'll have to take it"
+		},
+		"img": "url('./images/5.jpg')",
+		"answers": {
+			"1": {
+				"text": {
+					"ru": "Начать заново!",
+					"en": "Do it!"
+				},
+				"next": function(operators) {
+					// изменяем операторы
+					operators.taken_1 = 0;
+					operators.taken_2 = 0;
+					return "plot_1-1"
+					
+				}
+			},
+			"2": {
+				"text": {
+					"ru": "Не начинать заново",
+					"en": "dont"
+				},
+				"next": function(operators) {
+					// изменяем операторы
+					operators.taken_1 = 0;
+					operators.taken_2 = 0;
+					return "plot_1-1"
+				}
+			}
+		}
+	}
+}
+
+// структура, колоды?
+var chapters = {
+	"1": {
+		"first_card": "plot_1-1",
+		"plot_cards": [],
+		"random_cards": []
+	}
+}

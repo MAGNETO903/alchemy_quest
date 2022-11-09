@@ -15,6 +15,7 @@ var tech_core = {
     "ysdk_player": 1,
     "local_storage_ready": false,
     "cloud_storage_ready": false,
+    "my_server_ready": false,
     "init_sdk": function() {
         YaGames
             .init({
@@ -234,6 +235,7 @@ var tech_core = {
 
         } else {
             // данные по умолчанию (при первом запуске)
+
         }
         
     },
@@ -576,6 +578,30 @@ var tech_core = {
             }
         }
     },
+    "say_hello_to_server": function() {
+        var xhr = new XMLHttpRequest();
+        
+        var report = {
+            "time": Date.now(),
+        }
+
+        xhr.open('POST', SERVER_URL + 'hello', true)
+        xhr.setRequestHeader("Access-Control-Allow-Origin", "*")
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Accept", "application/json");
+        
+        // 3. Отсылаем запрос
+        xhr.send(JSON.stringify(report));
+        xhr.onload = function() {
+            if (xhr.status == 200) { 
+                var user = JSON.parse(xhr.responseText)
+                console.log(user.msg);
+                tech_core.my_server_ready = true;
+            } else {
+                console.log("Server response: ", xhr.statusText);
+            }
+        }
+    },
     "send_data_to_server": function() {
         var xhr = new XMLHttpRequest();
         
@@ -585,7 +611,11 @@ var tech_core = {
     
         // 2. Конфигурируем его: POST-запрос на URL http://127.17.0.1:8080/function/histogram/
         //xhr.open('POST', 'https://ingenium-alchemy.herokuapp.com/report', true);
-        xhr.open('POST', 'http://localhost:3000/report', true);
+        //xhr.open('POST', 'http://localhost:3000/report', true);
+        //xhr.open('POST', 'https://alchemy-quest.onrender.com/report', true)
+
+        xhr.open('POST', SERVER_URL + 'report', true)
+
         //xhr.setRequestHeader("Access-Control-Allow-Origin", "https://evil-eagle-97.loca.lt")
         xhr.setRequestHeader("Access-Control-Allow-Origin", "*")
 
@@ -602,7 +632,7 @@ var tech_core = {
         xhr.onload = function() {
             if (xhr.status == 200) { 
                 var user = JSON.parse(xhr.responseText)
-                console.log(user.name);
+                console.log(user.name)
             } else {
                 console.log("Server response: ", xhr.statusText);
             }
@@ -618,12 +648,47 @@ var graph_core = {
     "lang": DEFAULT_LANG,
     "resize_screen": function() {},
     "translate": function(lang = this.lang) {
-        document.title = text.title[lang]
+        document.title = text.title[lang];
+       
+        
+            graph_core.html_blocks["game_options"].children['title_block'].options.text = text['game_options_title'][lang];
+            graph_core.html_blocks["game_options"].children['back_btn'].options.text = text['game_options_back_btn'][lang];
+            //graph_core.html_blocks["game_options"].children['title_block'].recalculate();
+            //graph_core.html_blocks["game_options"].children['title_block'].recalculate();
+        
+        graph_core.resize_screen();
     },
     
     "open_game_viewport": function() {
         //$('#game_viewport').css('display', 'block')
         $('#game_viewport').fadeIn(ANIMATION*1000)
+    },
+    "html_blocks": {
+        
+    },
+    "open_options": function () {
+        //console.log(1);
+        $('#game_options').css('display', 'block')
+        $('#game_viewport').css('display', 'none')
+    },
+    "open_game_viewport": function() {
+        $('#game_options').css('display', 'none')
+        $('#game_viewport').css('display', 'block')
+    },
+    "update_card": function(card) {
+        var card = cards[card]
+        //console.log(graph_core.lang)
+        graph_core.html_blocks["game_viewport"].children['card_block'].children['card_title'].options.text = card.title[graph_core.lang];
+
+        graph_core.html_blocks["game_viewport"].children['card_block'].children['card_description'].options.text = card.text[graph_core.lang];
+
+        graph_core.html_blocks["game_viewport"].children['card_block'].children['card_img'].options.background = card['img'];
+
+        graph_core.html_blocks["game_viewport"].children['ans_block_1'].options.text = card.answers['1'].text[graph_core.lang];
+
+        graph_core.html_blocks["game_viewport"].children['ans_block_2'].options.text = card.answers['2'].text[graph_core.lang];
+
+        graph_core.html_blocks["game_viewport"].recalculate();
     }
 }
 
@@ -631,6 +696,8 @@ var graph_core = {
 var game_core = {
     "data": {
         "history": [],
+        "cur_card": "plot_1-1",
+        "operators": operators
     },
     "start_game": function() {
         if (tech_core.platform == 'yandex') {
@@ -649,7 +716,7 @@ var game_core = {
 
         graph_core.open_game_viewport();
         tech_core.load_progress();
-        
+        graph_core.update_card(game_core.data.cur_card)
     },
     
     
@@ -701,6 +768,12 @@ var game_core = {
         data_obj.history = game_core.data.history;
  
         return data_obj;
+    },
+    "next_card": function(num) {
+        var next_card = cards[game_core.data.cur_card].answers[num].next(game_core.data.operators);
+        game_core.data.cur_card = next_card;
+
+        graph_core.update_card(game_core.data.cur_card);
     }
 }
 
