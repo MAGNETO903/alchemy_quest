@@ -3,7 +3,8 @@ const PLATFORM_TYPE = 'yandex'
 
 
 //const SERVER_URL = 'https://alchemy-quest.adaptable.app/';
-const SERVER_URL = 'https://alchemy-quest.onrender.com/'
+//const SERVER_URL = 'https://alchemy-quest.onrender.com/'
+const SERVER_URL = 'https://statuesque-mousse-af3981.netlify.app'
 //const SERVER_URL = 'http://localhost:3000/'
 
 const build = 65;
