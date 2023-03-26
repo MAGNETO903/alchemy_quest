@@ -4,8 +4,9 @@ const PLATFORM_TYPE = 'yandex'
 
 //const SERVER_URL = 'https://alchemy-quest.adaptable.app/';
 //const SERVER_URL = 'https://alchemy-quest.onrender.com/'
-const SERVER_URL = 'https://statuesque-mousse-af3981.netlify.app/'
+//const SERVER_URL = 'https://statuesque-mousse-af3981.netlify.app/'
 //const SERVER_URL = 'http://localhost:3000/'
+var SERVER_URL = 'https://test-cherkashindaniel.b4a.run/'
 
 const build = 65;
 var SHOULD_LOAD_PROGRESS = false;
