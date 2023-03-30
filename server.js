@@ -13,7 +13,7 @@ var fs = require('fs');
 var privateKey  = fs.readFileSync('key.pem', 'utf8');
 var certificate = fs.readFileSync('certificate.pem', 'utf8');
 
-var credentials = {key: privateKey, cert: certificate};
+
 const router = express.Router();
 const http = require('http')
 const https = require('https')
@@ -90,10 +90,10 @@ app.post('/report', (req, res) => {
 app.use(express.json())
 // запуск сервера
 var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
+
 
 httpServer.listen(port);
-httpsServer.listen(8443);
+
 
 // уведомление о запуске
 console.log(cur_dir)
