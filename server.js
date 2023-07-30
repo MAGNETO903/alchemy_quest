@@ -1,13 +1,11 @@
 
 // алхимический квест
 /*
+
 https://yandex.ru/games/play/199672/?draft=true&game_url=https://localhost:8443
-<<<<<<< HEAD
 https://yandex.ru/games/play/199672/?draft=true&game_url=https://079a-188-32-16-198.ngrok.io
 https://079a-188-32-16-198.ngrok.io
 https://alchemy-quest.onrender.com/
-=======
->>>>>>> ab51e1ef3ffa2c8adf6312db18a6e6aea9c36856
 */
 
 // загрузка тех. модулей
@@ -71,6 +69,7 @@ client.query(command, (err, res) => {
     console.log(JSON.stringify(row));
   }
 })
+
 */
 
 // подготовка
@@ -424,7 +423,6 @@ io.on('connection', (socket) => {
 
 // уведомление о запуске
 console.log(cur_dir)
-<<<<<<< HEAD
 console.log('The game avialable at: ');
 console.log("http://localhost:"+port);
 console.log("https://localhost:8443");
@@ -437,6 +435,3 @@ const ngrok = require('ngrok');
   console.log(url)
   //console.log("https://yandex.ru/games/play/199672/?draft=true&game_url="+url)
 })();
-=======
-console.log('The server avialable at', port);
->>>>>>> ab51e1ef3ffa2c8adf6312db18a6e6aea9c36856
