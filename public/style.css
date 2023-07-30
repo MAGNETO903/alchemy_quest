@@ -1,6 +1,6 @@
 @font-face {
 	font-family: font_1; /* Имя шрифта */
-    src: url('fonts/Proxima Nova.ttf'); /* Путь к файлу со шрифтом */
+    src: url('fonts/Connie-Regular.ttf'); /* Путь к файлу со шрифтом */
 }
 
 html {
@@ -17,13 +17,16 @@ body {
 	padding: 0;
 	overflow: hidden;
 	webkit-touch-callout: none; /* iOS Safari */
-  	-webkit-user-select: none;   /* Chrome/Safari/Opera */
-  	-khtml-user-select: none;    /* Konqueror */
-  	-moz-user-select: none;      /* Firefox */
-  	-ms-user-select: none;       /* Internet Explorer/Edge */
-  	user-select: none;           /* Non-prefixed version, currently */
+	-webkit-user-select: none;   /* Chrome/Safari/Opera */
+	-khtml-user-select: none;    /* Konqueror */
+	-moz-user-select: none;      /* Firefox */
+	-ms-user-select: none;       /* Internet Explorer/Edge */
+	user-select: none;           /* Non-prefixed version, currently */
 	zoom:  100%;
 	 background: linear-gradient(#1A1D31, #350024);
+	 font-family: font_1;
+	 height: 100%;
+
 
 }
 
@@ -33,14 +36,87 @@ body {
     outline-offset: 0;
 }
 
-#game_viewport, #game_options {
+#game_viewport, #game_options, #game_shop, #game_special_offers, .big_block {
 	background: linear-gradient(#1A1D31, #350024);
 }
 
-#game_options {
+#game_viewport, #game_characters, #game_endings {
+	z-index: -2;
+}
+
+#game_options, #game_shop, #game_special_offers {
 	display: block;
 }
 
-div {
+div, textarea {
 	position: absolute;
+}
+
+span {
+	position: relative;
+}
+
+.red {
+	color: red;
+}
+
+.orange {
+	color: orange;
+}
+
+.blue {
+	color: #00a3a3;
+}
+
+.ultramarin {
+	color: #0000ff;
+}
+
+.auripigment {
+	color: #f1c232;
+}
+
+.green {
+	color: #00ff00;
+}
+
+#gs_card_block, #gso_cb_desc {
+	line-height: 1.25;
+}
+
+#gs_popup_back, #gs_popup2_back, #gs_popup3_back {
+	display: none;
+}
+
+.coin_ico {
+	position: relative;
+}
+
+span.text {
+	margin-top: -1.75%;
+}
+
+#gso_cb_img {
+	border-radius:20px;
+}
+
+#go_br_popup_textarea, #gso_p_poup_textarea {
+	color: rgb(205, 136, 58);
+	border: none;
+	outline: none;
+}
+
+#go_cb_i2_btn_2_ok {
+	display: none;
+}
+
+#ga_card_block, #gch_card, #ge_card {
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#game_debug {
+	box-sizing: border-box;
+	  touch-action: none;
+
 }

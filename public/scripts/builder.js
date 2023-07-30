@@ -50,4 +50,6 @@ if (yandex_metrika) {
 }
 
 
+
+
 console.log('Сборка завершена')
