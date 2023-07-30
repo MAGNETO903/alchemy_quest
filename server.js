@@ -21,7 +21,7 @@ const http = require('http')
 const https = require('https')
 const { Client } = require('pg')
 var bodyParser = require('body-parser');
-const { Server } = require("socket.io");
+//const { Server } = require("socket.io");
 const { randomUUID } = require('crypto'); 
 
 //const server = require('https').createServer(options, app); //сервер
@@ -361,7 +361,7 @@ var httpsServer = https.createServer(options, app);
 
 httpServer.listen(port);
 httpsServer.listen(8443);
-
+/*
 const io = new Server(httpServer);
 
 io.on('connection', (socket) => {
@@ -420,7 +420,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('make_screenshot');
   })
 });
-
+*/
 // уведомление о запуске
 console.log(cur_dir)
 console.log('The game avialable at: ');
