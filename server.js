@@ -445,6 +445,7 @@ console.log("http://localhost:"+port);
 console.log("https://localhost:8443");
 console.log("https://yandex.ru/games/play/199672/?draft=true&game_url=https://localhost:8443")
 
+/*
 var use_ngrok = process.env.USE_NGROK;
 
 
@@ -459,3 +460,4 @@ if (use_ngrok == undefined || use_ngrok == 1) {
 }
 
 
+*/
