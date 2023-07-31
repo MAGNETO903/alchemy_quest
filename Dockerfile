@@ -1,6 +1,7 @@
 
 # Use the official Node.js image as the base image
-FROM node:18.17.0-bookworm
+# FROM node:18.17.0-bookworm
+FROM nginx
 
 # # Set the working directory in the container
 # WORKDIR /app
