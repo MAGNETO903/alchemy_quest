@@ -21,7 +21,11 @@ const http = require('http')
 const https = require('https')
 const { Client } = require('pg')
 var bodyParser = require('body-parser');
+<<<<<<< Updated upstream
 //const { Server } = require("socket.io");
+=======
+
+>>>>>>> Stashed changes
 const { randomUUID } = require('crypto'); 
 
 //const server = require('https').createServer(options, app); //сервер
@@ -359,6 +363,7 @@ app.use(express.json())
 var start_htpps = process.env.START_HTTPS;
 
 var httpServer = http.createServer(app);
+<<<<<<< Updated upstream
 httpServer.listen(port);
 
 if (start_htpps == undefined || start_htpps == 1) {
@@ -366,6 +371,20 @@ if (start_htpps == undefined || start_htpps == 1) {
   httpsServer.listen(8443);
 }
 /*
+=======
+
+
+httpServer.listen(port);
+
+
+
+var httpsServer = https.createServer(options, app);
+httpsServer.listen(8443);
+
+
+/*
+const { Server } = require("socket.io");
+>>>>>>> Stashed changes
 const io = new Server(httpServer);
 
 io.on('connection', (socket) => {
@@ -424,7 +443,13 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('make_screenshot');
   })
 });
+<<<<<<< Updated upstream
 */
+=======
+
+*/
+
+>>>>>>> Stashed changes
 // уведомление о запуске
 console.log(cur_dir)
 console.log('The game avialable at: ');
@@ -434,6 +459,7 @@ console.log("https://yandex.ru/games/play/199672/?draft=true&game_url=https://lo
 
 var use_ngrok = process.env.USE_NGROK;
 
+<<<<<<< Updated upstream
 if (use_ngrok == undefined || use_ngrok == 1) {
 
 	const ngrok = require('ngrok');
@@ -443,3 +469,12 @@ if (use_ngrok == undefined || use_ngrok == 1) {
 	  //console.log("https://yandex.ru/games/play/199672/?draft=true&game_url="+url)
 	})();
 }
+=======
+const ngrok = require('ngrok');
+(async function() {
+  await ngrok.authtoken('1kPiMow2GghbdPhIfPpbXv5DTB3_2sPuTLACk7X68oyGrNxua');
+  const url = await ngrok.connect("https://localhost:8443");
+  console.log(url)
+  //console.log("https://yandex.ru/games/play/199672/?draft=true&game_url="+url)
+})();
+>>>>>>> Stashed changes
