@@ -356,11 +356,15 @@ app.post('/hello', (req, response) => {
 app.use(express.json())
 // запуск сервера
 
-var httpServer = http.createServer(app);
-var httpsServer = https.createServer(options, app);
+var start_htpps = process.env.START_HTTPS;
 
+var httpServer = http.createServer(app);
 httpServer.listen(port);
-httpsServer.listen(8443);
+
+if (start_htpps == undefined || start_htpps == 1) {
+  var httpsServer = https.createServer(options, app);
+  httpsServer.listen(8443);
+}
 /*
 const io = new Server(httpServer);
 
