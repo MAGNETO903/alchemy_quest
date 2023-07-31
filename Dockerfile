@@ -9,7 +9,7 @@ WORKDIR /app
 COPY . /app
 
 # Install the application dependencies
-RUN npm install --no-package-lock   # Added the flag --no-package-lock to prevent npm from generating the package-lock.json file
+RUN npm install
 
 EXPOSE 3000
 CMD [ "node", "server.js" ]
