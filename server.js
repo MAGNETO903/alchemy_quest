@@ -21,11 +21,9 @@ const http = require('http')
 const https = require('https')
 const { Client } = require('pg')
 var bodyParser = require('body-parser');
-<<<<<<< Updated upstream
-//const { Server } = require("socket.io");
-=======
 
->>>>>>> Stashed changes
+
+
 const { randomUUID } = require('crypto'); 
 
 //const server = require('https').createServer(options, app); //сервер
