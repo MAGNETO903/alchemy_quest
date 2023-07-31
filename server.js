@@ -1,57 +1,35 @@
-
-// алхимический квест
-/*
-
-https://yandex.ru/games/play/199672/?draft=true&game_url=https://localhost:8443
-https://yandex.ru/games/play/199672/?draft=true&game_url=https://079a-188-32-16-198.ngrok.io
-https://079a-188-32-16-198.ngrok.io
-https://alchemy-quest.onrender.com/
-*/
-
 // загрузка тех. модулей
 const express = require('express'); //фреймворк
 const app = express()
-var fs = require('fs');
-const options = {
-  key: fs.readFileSync("server.key"),
-  cert: fs.readFileSync("server.cert"),
-};
-const router = express.Router();
-const http = require('http')
-const https = require('https')
+const cors = require('cors')
+const server = require('http').Server(app); //сервер
+//const port = process.env.PORT || 3000; //активный порт
+var port = 3000
+//const restler = require('restler');
+const querystring = require('querystring');
+//const nerdamer = require('nerdamer');
+const bodyParser = require('body-parser');
+const io = require('socket.io')(server, {
+  cors: {
+    //origin: ['https://nmpud-cherkashindaniel.b4a.run', 'https://nmpud.netlify.app'],
+    origin: 'https://nmpud.netlify.app',
+    methods: ["GET", "POST"]
+  }
+});
+
+const fs = require("fs");
+
 const { Client } = require('pg')
-var bodyParser = require('body-parser');
 
+//const connect_str = "postgres://ihsldngbqytdhn:79ce14241351340b35e3767ea443c28d41ac3057a1d08caeae60b57526662dfb@ec2-44-205-159-94.compute-1.amazonaws.com:5432/d4qgpgdcl49fr1"
+//const connect_str = "postgres://gocbkenodcpgoz:d177c4713c73ed80cc3264dacccce40e22af7aa3d47f95cbd30cb701b318934b@ec2-54-146-142-58.compute-1.amazonaws.com:5432/d3ndne7rqbci5h"
+//const connect_str = 'postgres://nmpud_db_user:ii0WAYpPEK6ZcEbK9K4nkg1kTWQAOD3o@dpg-ce55mpda499e19j1a6j0-a.frankfurt-postgres.render.com/nmpud_db'
+//var connect_str = 'postgres://sgdncwxc:iWlrq4ST83vZ9Q895ljEIsvkC472NP9k@surus.db.elephantsql.com/sgdncwxc'
 
-
-const { randomUUID } = require('crypto'); 
-
-//const server = require('https').createServer(options, app); //сервер
-const port = process.env.PORT || 3000; //активный порт
-
-
-const cur_dir = '/public'
-
-var streamer_id = -1;
-var streamer_data;
-
-//const connect_str = "postgres://uptnwmzzkwicwg:7acceb845514472f0c2363e5550b1d933974cb879dd7d7e63eb7a432353ca011@ec2-63-34-223-144.eu-west-1.compute.amazonaws.com:5432/daee65gi6qvsos"
-
-// postgres://alchemy_quest_db_user:rSEaYKdO0mXZk4wYPWnBQ8upmtPDLdx9@dpg-cdcvtnaen0htugj0bpd0-a.frankfurt-postgres.render.com/alchemy_quest_db
-
-/*
-
-dpg-cdcvtnaen0htugj0bpd0-a.frankfurt-postgres.render.com
-
-alchemy_quest_db_user
-rSEaYKdO0mXZk4wYPWnBQ8upmtPDLdx9
-
-
-*/
-
-const connect_str = 'postgresql://postgres:AIMFQWnGdsg9LlHA@db.mpvmdgybecrqprjzvpne.supabase.co:5432/postgres'
+var connect_str = 'postgres://postgres:onFLzJZNhKxe0LY9@db.xhxwbrvegsjzfbyzmroy.supabase.co:6543/postgres'
 
 // подключаемся к БД
+
 const client = new Client({
   connectionString: connect_str,
   ssl: { rejectUnauthorized: false }
@@ -59,405 +37,270 @@ const client = new Client({
 
 client.connect();
 
-/*
-var command = `CREATE TABLE system_logs (
-  id serial PRIMARY KEY,
-  data json
-);`
-client.query(command, (err, res) => {
+// загрузка личных модулей
+//var rnd40_64 = require("./random_generator.js");
+//var get_graph_5 = require("./functions.js").get_graph_5;
+//var get_hist_5 = require("./functions.js").get_hist_5;
+//var get_model_formula = require("./functions.js").get_model_formula;
+
+var process_date = function(date) {
+  return date.getFullYear() + "-" + (Number(date.getMonth())+1) + "-" + date.getDate() + "|" + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
+}
+
+
+var save_log = function(data) {
+  var date = data.date.split("|")[0];
+  var time = data.date.split("|")[1];
+  var username = data.name;
+  var action = data.action;
+  var data = JSON.stringify(data.data)
+
+  var command = `INSERT INTO system_logs (date, time, username, action, data) \n Values('${date}', '${time}', '${username}', ${action}, '${data}');`
+  console.log(command)
+  client.query(command, (err, res) => {
   if (err) {
     console.log(err);
   } else for (let row of res.rows) {
     console.log(JSON.stringify(row));
   }
-})
-
-*/
-
-// подготовка
-app.use(express.static(__dirname + cur_dir, {
-   //etag: true,
-    //maxAge: '25920000000'
-}));
-
-
-app.use(bodyParser.json()) // note: this is before the route
-app.use((req, res, next) => {
-  //res.set('Cache-control', 'public, max-age=25920000000')
-   next();
+  //client.end();
 });
-
-const cors=require("cors");
-const corsOptions ={
-   origin:'*', 
-   credentials:true,            //access-control-allow-credentials:true
-   optionSuccessStatus:200,
+  //var file = JSON.parse(fs.readFileSync('log.json', 'utf-8'))
+  //file.log.push(data)
+  //fs.writeFileSync('log.json', JSON.stringify(file, null, 2));
+  
 }
 
-app.use(cors(corsOptions))
 
-app.post('/report', (req, res) => {
-  console.log(req.body)
+// список пользователи
+var users = [{
+  "nickname": "Admin",
+  "real_name": "Данил Черкашин Андреевич",
+  "access": 3,
+  "password": "438253"
+}, {
+  "nickname": "test_user",
+  "real_name": "тестовый пользователь",
+  "access": 1,
+  "password": "-"
+}]
 
-  var report = JSON.stringify(req.body);
+var users_info = [
+ 'Бочко Владимир Александрович',
+  'Ли Роман Викторович',
+  'Пузикова Карина Максимовна',
+  'Кузьмин Никита Сергеевич',
+  'Сарыпов Даниил Игоревич',
+  'Ванданов Сергей Александрович',
+  'Бородулина Александра Владимир.',
+  'Колоколов Михаил Игоревич',
+  'Сагитов Альберт Рушанович',
+  'Соснин Егор Александрович',
+  'Здорников Семён Александрович',
+  'Белова Ольга Сергеевна',
+  'Чепурной Николай Александрович',
+  'Баздырев Никита Андреевич',
+  'Скляров Артём Николаевич',
+  'Сулиман Гадир',
+  'Неверов Андрей Вячеславович'
+]
 
-  var command = `INSERT INTO reports (report) \n Values('${report}');`
+users_info.sort()
+
+users_info.unshift('Войтишек Антон Вацлавович')
+users_info.unshift("Черкашин Данил Андреевич")
+
+var valid = function(info) {
+  var valid_name = info.name == '' || users_info.includes(info.name)
+
+  var valid_date = true
+
   
-  client.query(command, (err, res) => {
-    if (err) {
-      console.log(err);
-    } else for (let row of res.rows) {
-      console.log(JSON.stringify(row));
+
+  return valid_name && valid_date
+}
+
+var active_users = []
+
+io.on('connection', function(socket) {
+  console.log("Someone connected!")
+  socket.emit('users', users_info);
+
+  socket.on('register', function(data) {
+    var date = new Date(new Date().toUTCString())
+    console.log(socket.id)
+    for (var i=0; i < active_users.length; i++) {
+      if (active_users[i].id == socket.id) {
+        var info = {
+          "date": process_date(date),
+          "name": active_users[i].name,
+          "action": 2,
+          "data": {
+
+          }
+        }
+        if (valid(info)) {
+          save_log(info)
+        }
+        active_users.splice(i, 1)
+        break;
+      }
+    }
+    var info = {
+      "date": process_date(date),
+      "name": data,
+      "action": 1,
+      "data": {
+
+      }
+    }
+    if (valid(info)) {
+      save_log(info)
+    }
+    var date_str = process_date(date);
+    console.log(date_str, "- пользователь авторизовался как", data)
+    active_users.push({"id": socket.id, "name": data})
+  })
+
+  socket.on('generated_hist', function(data) {
+    var date = new Date(new Date().toUTCString())
+    var info = {
+      "date": process_date(date),
+      "action": 4,
+      "name": data.name,
+      "data": {
+        "expr": data.expr,
+        "type": 'hist',
+        "tex_expr": data.tex_expr,
+        "options": data.options
+      }
+    }
+    //console.log(info)
+    if (valid(info)) {
+      save_log(info)
+    }
+    //console.log(date_str, "- пользователь ", data.name, "сгенерировал новую гистограмму")
+  })
+
+  socket.on('generated_graph', function(data) {
+    var date = new Date(new Date().toUTCString())
+    var info = {
+      "date": process_date(date),
+      "action": 3,
+      "name": data.name,
+      "data": {
+        "expr": data.expr,
+        "tex_expr": data.tex_expr,
+        "type": 'graph',
+        "options": data.options
+      }
+    }
+    //console.log(info)
+    if (valid(info)) {
+      save_log(info)
     }
   })
 
-  if (!req.body) return res.sendStatus(400)
+  socket.on('disconnect', function() {
+    for (var i=0; i < active_users.length; i++) {
+      if (active_users[i].id == socket.id) {
+        var date = new Date(new Date().toUTCString())
+        var info = {
+          "date": process_date(date),
+          "name": active_users[i].name,
+          "action": 2,
+          "data": {
 
-  res.set("Access-Control-Allow-Origin", "*");
-	res.set("Access-Control-Allow-Credentials", "true");
-	res.set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-	res.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-  
-  data = {
-    "name": "Tony Stark",
-  }
-  res.send(JSON.stringify(data))
-})
-
-app.post('/promocode', (req, res) => {
-
-    res.set("Access-Control-Allow-Origin", "*");
-    res.set("Access-Control-Allow-Credentials", "true");
-    res.set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-    res.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-                        
-    var command = `SELECT * FROM players WHERE player_id = '` + req.body.player_id + `'`
-    console.log(command)
-    client.query(command, (err1, res1) => {
-        if (err1) {
-            console.log(err1); 
-            data = {
-                "msg": "error",
-            }
-            res.send(JSON.stringify(data))
-        } else {
-            if (res1.rowCount > 0) {
-            // теперь ищем этот промокод
-                var command2 = `SELECT * FROM promocodes WHERE code = '` + req.body.promocode + `'`
-                client.query(command2, (err2, res2) => {
-                    if (err2) {
-                        console.log(err2);
-                        
-                        data = {
-                            "msg": "error",
-                        }
-                        res.send(JSON.stringify(data))
-                    } else {
-                        if (res2.rowCount > 0) {
-                            //console.log(res2);
-                            // успешный сценарий
-                            var uses_limit_reached = false; // кол-во использований
-                            var date_limit_reached = false; // дата использования
-                            var already_used = false; // уже использовался (для случая если он одноразовый)
-
-                            // если есть лимит на кол-во использований
-                            if (res2.rows[0].limited) {
-                                //console.log(res2.rows[0].times_used + 1,  res2.rows[0].times_used_limit);
-                                if (Number(res2.rows[0].times_used) + 1 > Number(res2.rows[0].times_used_limit)) {
-                                    uses_limit_reached = true;
-                                }
-                            }
-
-                            if (res2.rows[0].have_expiration_date) {
-                                var date_1 = new Date();
-                                var date_2 = new Date(res2.rows[0].expiration_date);
-
-                                if (date_1 > date_2) {
-                                    date_limit_reached = true;
-                                }
-                            }
-
-                            if (res2.rows[0].disposable) {
-                                if (res1.rows[0].used_promos == null) {
-                                    res1.rows[0].used_promos = [];
-                                }
-                                console.log(res1.rows[0].used_promos);
-                                if (res1.rows[0].used_promos.includes(res2.rows[0].code)) {
-                                    already_used = true;
-                                }
-                            }
-
-
-                            console.log(date_limit_reached);
-
-                            if (uses_limit_reached == false && date_limit_reached == false && already_used == false) {
-                                data = {
-                                    "msg": res2.rows[0].bonus_type,
-                                }
-                               
-                                res.send(JSON.stringify(data))
-
-                                // обновляем счётчик использований
-
-                                if (res2.rows[0].limited) {
-                                    
-                                    var command3 = `UPDATE promocodes SET times_used = `+ (Number(res2.rows[0].times_used) + 1) +` WHERE id = `+ res2.rows[0].id +`;`
-                                    console.log(command3);
-                                    client.query(command3, (err3, res3) => {
-                                        if (err3) {
-                                            console.log(err3);
-                                        }
-                                    })
-                                }
-
-                                if (res2.rows[0].disposable) {
-                                    var command4 = `UPDATE players SET used_promos = array_append(used_promos, '`+ res2.rows[0].code +`') WHERE id = `+ res1.rows[0].id +`;`
-                                    console.log(command4);
-                                    client.query(command4, (err4, res4) => {
-                                        if (err4) {
-                                            console.log(err4);
-                                        }
-                                    })
-                                }
-
-                            } else {
-                                data = {
-                                    "msg": "error",
-                                }
-                                if (already_used) {
-                                    data.msg = "already_used"
-                                }
-                                res.send(JSON.stringify(data))
-                            }
-
-                        } else {
-                            // нет такого промокода
-                            data = {
-                                "msg": "error",
-                            }
-                            res.send(JSON.stringify(data))
-                        }
-                    }
-                })
-            } else {
-                data = {
-                    "msg": "error",
-                }
-                res.send(JSON.stringify(data))
-            }
-        }
-    })
-})
-
-app.post('/hello', (req, response) => {
-  // игрок только вошёл
-  console.log(req.body)
-  if (!req.body) return response.sendStatus(400)
-
-  response.set("Access-Control-Allow-Origin", "*");
-  response.set("Access-Control-Allow-Credentials", "true");
-  response.set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  response.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-  
-  if (req.body.player_id == 0) {
-    // новый игрок, генерируем ID и высылаем
-    var new_player_id = randomUUID();
-    req.body.player_id = new_player_id;
-
-    // добавляем в БД
-    var command = `INSERT INTO players (player_id) \n Values('${new_player_id}');`
-  
-    client.query(command, (err, res) => {
-      if (err) {
-        console.log(err);
-      } else { 
-        for (let row of res.rows) {
-          console.log(JSON.stringify(row));
-        }
-        data = {
-          "msg": "hello!",
-          "player_id": new_player_id
-        }
-        response.send(JSON.stringify(data))
-      }
-    })
-  } else {
-    // ищем в БД такой id
-    var command = `SELECT * FROM players WHERE player_id = '` + req.body.player_id + `'`
-    console.log(command)
-    client.query(command, (err, res) => {
-      if (err) {
-        console.log(err);
-        // создаем новый ID
-          var new_player_id = randomUUID();
-          req.body.player_id = new_player_id;
-
-          // добавляем в БД
-          var command = `INSERT INTO players (player_id) \n Values('${new_player_id}');`
-        
-          client.query(command, (err, res) => {
-            if (err) {
-              console.log(err);
-            } else {
-              for (let row of res.rows) {
-                console.log(JSON.stringify(row));
-              }
-              data = {
-                "msg": "hello!",
-                "player_id": new_player_id
-              }
-              response.send(JSON.stringify(data))
-            }
-          })
-      } else {
-        console.log(res.rowCount);
-        for (let row of res.rows) {
-          
-          console.log(JSON.stringify(row));
-        }
-        if (res.rowCount == 0) {
-          // создаем новый ID
-          /*
-          var new_player_id = randomUUID();
-          req.body.player_id = new_player_id;
-
-          // добавляем в БД
-          var command = `INSERT INTO players (player_id) \n Values('${new_player_id}');`
-        
-          client.query(command, (err, res) => {
-            if (err) {
-              console.log(err);
-            } else {
-              for (let row of res.rows) {
-                console.log(JSON.stringify(row));
-              }
-              data = {
-                "msg": "hello!",
-                "player_id": new_player_id
-              }
-              response.send(JSON.stringify(data))
-            }
-          })
-          */
-          // ыыы игрок сломал себе игру
-        } else {
-          // всё хорошо
-          data = {
-            "msg": "hello!",
-            "player_id": req.body.player_id
           }
-          response.send(JSON.stringify(data))
         }
+        if (valid(info)) {
+          save_log(info)
+        }
+        //var date_str = process_date(date);
+        //console.log(date_str, "- пользователь", active_users[i].name, " вышел из системы")
+        active_users.splice(i, 1)
       }
-    })
-  }
+    }
+  })
 
-  
 })
 
-app.use(express.json())
+
+// подготовка
+app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json())
+app.use(cors());
+
 // запуск сервера
-
-var httpServer = http.createServer(app);
-httpServer.listen(port);
-
-var start_htpps = process.env.START_HTTPS;
-
-
-
-if (start_htpps == undefined || start_htpps == 1) {
-  var httpsServer = https.createServer(options, app);
-  httpsServer.listen(8443);
-}
-/*
-
-
-
-/*
-const { Server } = require("socket.io");
->>>>>>> Stashed changes
-const io = new Server(httpServer);
-
-io.on('connection', (socket) => {
-  console.log('a user connected');
-  socket.on('i_am_streamer', function(data) {
-    console.log('streamer_connected');
-    console.log(data);
-    console.log(socket.id);
-    streamer_id = socket.id;
-  })
-  if (streamer_id != -1) {
-    socket.emit('streamer_action', streamer_data);
-  }
-  socket.on('streamer_action', function(data) {
-    socket.broadcast.emit('streamer_action', data);
-    streamer_data = data;
-  })
-
-  socket.on('open_game_viewport', function(data) {
-    socket.broadcast.emit('open_game_viewport');
-  })
-
-  socket.on('open_options', function(data) {
-    socket.broadcast.emit('open_options');
-  })
-
-  socket.on('open_shop', function(data) {
-    socket.broadcast.emit('open_shop');
-  })
-
-  socket.on('open_shop_popup', function(data) {
-    socket.broadcast.emit('open_shop_popup');
-  })
-
-  socket.on('open_shop_popup2', function(data) {
-    socket.broadcast.emit('open_shop_popup2');
-  })
-
-  socket.on('open_shop_popup3', function(data) {
-    socket.broadcast.emit('open_shop_popup3');
-  })
-
-  socket.on('close_shop_popup', function(data) {
-    socket.broadcast.emit('close_shop_popup');
-  })
-
-  socket.on('close_shop_popup2', function(data) {
-    socket.broadcast.emit('close_shop_popup2');
-  })
-
-  socket.on('close_shop_popup3', function(data) {
-    socket.broadcast.emit('close_shop_popup3');
-  })
-
-  socket.on('make_screenshot', function(data) {
-    socket.broadcast.emit('make_screenshot');
-  })
-});
-
-*/
-
+server.listen(port);
 
 // уведомление о запуске
-console.log(cur_dir)
-console.log('The game avialable at: ');
-console.log("http://localhost:"+port);
-console.log("https://localhost:8443");
-console.log("https://yandex.ru/games/play/199672/?draft=true&game_url=https://localhost:8443")
+console.log('The server avialable at', port);
+
+// проверка на наличие файла log.json
+
+fs.access("log.json", fs.F_OK, (err) => {
+  if (err) {
+    //console.error(err)
+    var empty_file = {
+      "log": []
+    }
+    fs.writeFileSync("log.json", JSON.stringify(empty_file, null, 2))
+    return
+  }
+
+  //file exists
+})
+
+
+
+var get_last_log = function() {
+  var command = `
+  SELECT Id,
+    Date,
+    Time,
+    Username
+  FROM system_logs
+  ORDER BY Id DESC
+  LIMIT 1
+`;
+
+
+ //console.log(command)
+  client.query(command, (err, res) => {
+  if (err) {
+    console.log(err);
+  } else for (let row of res.rows) {
+    //console.log(row)
+    console.log(row)
+    return row
+    //console.log(JSON.stringify(row));
+  }
+});
+}
+
+
+
+setInterval(function() {
+  get_last_log();
+}, 24*60*60*1000);
 
 /*
-var use_ngrok = process.env.USE_NGROK;
-
-
-if (use_ngrok == undefined || use_ngrok == 1) {
-
-	const ngrok = require('ngrok');
-	(async function() {
-	  const url = await ngrok.connect("https://localhost:8443");
-	  console.log(url)
-	  //console.log("https://yandex.ru/games/play/199672/?draft=true&game_url="+url)
-	})();
-}
+var command = `
+DELETE FROM system_logs
+WHERE Username = user;
+`
+client.query(command, (err, res) => {
+  if (err) {
+    console.log(err);
+  } else for (let row of res.rows) {
+    //console.log(row)
+    console.log(row)
+    //return row
+    //console.log(JSON.stringify(row));
+  }
+})
 
 
 */

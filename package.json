@@ -1,18 +1,18 @@
 {
-  "name": "alchemy quest game",
-  "dependencies": {
-    "@ngrok/ngrok": "^0.5.2",
-    "body-parser": "^1.20.1",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "fs": "^0.0.1-security",
-    "https": "^1.0.0",
-    "ngrok": "^4.3.3",
-    "pg": "^8.7.3",
-    "puppeteer": "^19.4.1"
-  },
+  "name": "nmpud system",
+  "version": "3.0.0",
+  "description": "A sample Node.js app using Express 4",
+  "main": "server.js",
   "scripts": {
     "build": "npm install",
-    "start": "node server"
+    "start" : "node server"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.15.2",
+    "mathjs-expression-parser": "^1.0.2",
+    "querystring": "^0.2.0",
+    "socket.io": "^4.0.0",
+    "pg": "^8.4.1"
   }
 }
