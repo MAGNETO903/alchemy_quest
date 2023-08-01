@@ -739,6 +739,9 @@ var tech_core = {
         
         // 3. Отсылаем запрос
         xhr.send(JSON.stringify(report));
+
+        var s_time = Date.now()
+
         xhr.onload = function() {
             if (xhr.status == 200) { 
                 var user = JSON.parse(xhr.responseText)
@@ -746,6 +749,8 @@ var tech_core = {
                 tech_core.my_server_ready = true;
                 // записываем себе ID-шник от сервера
                 game_core.data.player_id = user.player_id;
+
+                console.log(Date.now() - s_time)
             } else {
                 console.log("Server response: ", xhr.statusText);
             }
