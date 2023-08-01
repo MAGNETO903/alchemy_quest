@@ -74,6 +74,17 @@ client.query(command, (err, res) => {
 
 */
 
+const cors=require("cors");
+const corsOptions ={
+  origin: '*', 
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTION",
+  preflightContinue: true,
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200,
+}
+
+app.use(cors(corsOptions))
+
 // подготовка
 app.use(express.static(__dirname + cur_dir, {
    //etag: true,
@@ -87,15 +98,6 @@ app.use((req, res, next) => {
    next();
 });
 
-const cors=require("cors");
-const corsOptions ={
-   origin: '*', 
-   credentials:true,            //access-control-allow-credentials:true
-   optionSuccessStatus:200,
-}
-
-app.use(cors(corsOptions))
-app.options('*', cors()) // include before other routes
 
 app.post('/report', (req, res) => {
   console.log(req.body)
@@ -104,7 +106,7 @@ app.post('/report', (req, res) => {
 
   var command = `INSERT INTO reports (report) \n Values('${report}');`
   
-  client.query(command, (err, res) => {
+  client.query(command, (err, res2) => {
     if (err) {
       console.log(err);
     } else for (let row of res.rows) {
@@ -117,8 +119,8 @@ app.post('/report', (req, res) => {
   res.set("Access-Control-Allow-Origin", "*");
     res.set("Access-Control-Allow-Credentials", "true");
     res.set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT, PATCH, DELETE");
-    res.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, X-Auth-Token");
-     
+    //res.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, X-Auth-Token");
+     res.set("Access-Control-Allow-Headers", "*");
   data = {
     "name": "Tony Stark",
   }
@@ -250,14 +252,14 @@ app.post('/promocode', (req, res) => {
     })
 })
 
-app.post('/hello', (req, response) => {
+app.post('/hello', cors(),  (req, response) => {
   // игрок только вошёл
   console.log(req.body) 
   response.set("Access-Control-Allow-Origin", "*");
     response.set("Access-Control-Allow-Credentials", "true");
     response.set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT, PATCH, DELETE");
-    response.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, X-Auth-Token");
-      
+    //response.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, X-Auth-Token");
+    response.set("Access-Control-Allow-Headers", "*");
   if (!req.body) return response.sendStatus(400)
 
  
@@ -269,11 +271,11 @@ app.post('/hello', (req, response) => {
     // добавляем в БД
     var command = `INSERT INTO players (player_id) \n Values('${new_player_id}');`
   
-    client.query(command, (err, res) => {
+    client.query(command, (err, res2) => {
       if (err) {
         console.log(err);
       } else { 
-        for (let row of res.rows) {
+        for (let row of res2.rows) {
           console.log(JSON.stringify(row));
         }
         data = {
