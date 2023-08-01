@@ -114,10 +114,10 @@ app.post('/report', (req, res) => {
   if (!req.body) return res.sendStatus(400)
 
   res.set("Access-Control-Allow-Origin", "*");
-	res.set("Access-Control-Allow-Credentials", "true");
-	res.set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-	res.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-  
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT, PATCH, DELETE");
+    res.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, X-Auth-Token");
+     
   data = {
     "name": "Tony Stark",
   }
@@ -128,8 +128,8 @@ app.post('/promocode', (req, res) => {
 
     res.set("Access-Control-Allow-Origin", "*");
     res.set("Access-Control-Allow-Credentials", "true");
-    res.set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-    res.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+    res.set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT, PATCH, DELETE");
+    res.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, X-Auth-Token");
                         
     var command = `SELECT * FROM players WHERE player_id = '` + req.body.player_id + `'`
     console.log(command)
@@ -255,10 +255,10 @@ app.post('/hello', (req, response) => {
   if (!req.body) return response.sendStatus(400)
 
   response.set("Access-Control-Allow-Origin", "*");
-  response.set("Access-Control-Allow-Credentials", "true");
-  response.set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  response.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-  
+    response.set("Access-Control-Allow-Credentials", "true");
+    response.set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT, PATCH, DELETE");
+    response.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, X-Auth-Token");
+      
   if (req.body.player_id == 0) {
     // новый игрок, генерируем ID и высылаем
     var new_player_id = randomUUID();

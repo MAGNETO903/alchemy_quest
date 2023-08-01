@@ -6,7 +6,7 @@ const PLATFORM_TYPE = 'yandex'
 //const SERVER_URL = 'https://alchemy-quest.onrender.com/'
 //const SERVER_URL = 'http://localhost:3000/'
 
-const SERVER_URL = 'https://lively-culottes-bull.cyclic.cloud/'
+var SERVER_URL = 'https://lively-culottes-bull.cyclic.cloud/'
 
 const build = 65;
 var SHOULD_LOAD_PROGRESS = true;
