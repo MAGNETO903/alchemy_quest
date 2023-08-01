@@ -89,12 +89,13 @@ app.use((req, res, next) => {
 
 const cors=require("cors");
 const corsOptions ={
-   origin:'*', 
+   origin: '*', 
    credentials:true,            //access-control-allow-credentials:true
    optionSuccessStatus:200,
 }
 
 app.use(cors(corsOptions))
+app.options('*', cors()) // include before other routes
 
 app.post('/report', (req, res) => {
   console.log(req.body)
@@ -251,14 +252,15 @@ app.post('/promocode', (req, res) => {
 
 app.post('/hello', (req, response) => {
   // игрок только вошёл
-  console.log(req.body)
-  if (!req.body) return response.sendStatus(400)
-
+  console.log(req.body) 
   response.set("Access-Control-Allow-Origin", "*");
     response.set("Access-Control-Allow-Credentials", "true");
     response.set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT, PATCH, DELETE");
     response.set("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, X-Auth-Token");
       
+  if (!req.body) return response.sendStatus(400)
+
+ 
   if (req.body.player_id == 0) {
     // новый игрок, генерируем ID и высылаем
     var new_player_id = randomUUID();
