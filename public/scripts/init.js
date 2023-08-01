@@ -721,15 +721,18 @@ var tech_core = {
             }
         }
     },
-    "say_hello_to_server": function() {
+    "say_hello_to_server": function(custom_server_url = 'none') {
         var xhr = new XMLHttpRequest();
         
         var report = {
             "time": Date.now(),
             "player_id": game_core.data.player_id
         }
-
-        xhr.open('POST', SERVER_URL + 'hello', true)
+        if (custom_server_url == 'none') {
+            xhr.open('POST', SERVER_URL + 'hello', true)
+        } else  {
+            xhr.open('POST', custom_server_url + 'hello', true)
+        }
         xhr.setRequestHeader("Access-Control-Allow-Origin", "*")
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("Accept", "application/json");
