@@ -4713,3 +4713,22 @@ var desks_options = {
 
 }
 
+var shop_items = {
+	"1": {
+		title: {
+			ru: "предмет",
+			en: "item"
+		},
+		description: {
+			ru: "описание",
+			en: "description"
+		},
+		icon_src: "images/for_shop/Ресурс 10.png",
+		cost: 100,
+		available:true,
+		bought: false,
+		effect: function() {
+			
+		}
+	}
+}
