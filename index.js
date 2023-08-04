@@ -467,4 +467,3 @@ if (use_ngrok == undefined || use_ngrok == 1) {
 
 */
 
-module.exports = app;
