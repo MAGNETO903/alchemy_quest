@@ -10,7 +10,9 @@ const PLATFORM_TYPE = 'yandex'
 
 //var SERVER_URL = 'https://test4-cherkashindaniel.b4a.run/' 
 
-var SERVER_URL = 'https://alchemy-quest.zeabur.app/'
+//var SERVER_URL = 'https://alchemy-quest.zeabur.app/'
+
+var SERVER_URL = 'https://alchemy-quest-umber.vercel.app/'
 
 const build = 65;
 var SHOULD_LOAD_PROGRESS = true;
