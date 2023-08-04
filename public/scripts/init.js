@@ -729,9 +729,9 @@ var tech_core = {
             "player_id": game_core.data.player_id
         }
         if (custom_server_url == 'none') {
-            xhr.open('POST', SERVER_URL + 'hello', true)
+            xhr.open('GET', SERVER_URL + 'hello', true)
         } else  {
-            xhr.open('POST', custom_server_url + 'hello', true)
+            xhr.open('GET', custom_server_url + 'hello', true)
         }
         xhr.setRequestHeader("Access-Control-Allow-Origin", "*")
         xhr.setRequestHeader("Content-Type", "application/json");
