@@ -253,7 +253,7 @@ app.post('/promocode', (req, res) => {
 })
 
 //app.options('/hello', cors())
-app.get('/hello', cors(),  (req, response) => {
+app.post('/hello', cors(),  (req, response) => {
   // игрок только вошёл
   console.log(req.body) 
   response.set("Access-Control-Allow-Origin", "*");
