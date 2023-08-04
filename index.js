@@ -252,7 +252,7 @@ app.post('/promocode', (req, res) => {
     })
 })
 
-app.options('/hello', cors())
+//app.options('/hello', cors())
 app.post('/hello', cors(),  (req, response) => {
   // игрок только вошёл
   console.log(req.body) 
