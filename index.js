@@ -283,7 +283,7 @@ app.post('/hello', cors(),  (req, response) => {
           "msg": "hello!",
           "player_id": new_player_id
         }
-        response.send(JSON.stringify(data))
+        response.json(data)
       }
     })
   } else {
