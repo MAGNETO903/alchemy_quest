@@ -74,7 +74,7 @@ client.query(command, (err, res) => {
 
 */
 
-const cors=require("cors");
+const cors = require("cors");
 const corsOptions ={
   origin: '*', 
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTION",
@@ -466,3 +466,5 @@ if (use_ngrok == undefined || use_ngrok == 1) {
 
 
 */
+
+module.exports = app;

@@ -8,7 +8,9 @@ const PLATFORM_TYPE = 'yandex'
 
 //var SERVER_URL = 'https://lively-culottes-bull.cyclic.cloud/'
 
-var SERVER_URL = 'https://test4-cherkashindaniel.b4a.run/' 
+//var SERVER_URL = 'https://test4-cherkashindaniel.b4a.run/' 
+
+var SERVER_URL = 'https://alchemy-quest.zeabur.app/'
 
 const build = 65;
 var SHOULD_LOAD_PROGRESS = true;
@@ -4732,5 +4734,192 @@ var shop_items = {
 		effect: function() {
 			
 		}
-	}
+	},
+	"2": {
+		title: {
+			ru: "предмет",
+			en: "item"
+		},
+		description: {
+			ru: "описание",
+			en: "description"
+		},
+		icon_src: "images/for_shop/Ресурс 10.png",
+		cost: 100,
+		available:true,
+		bought: false,
+		effect: function() {
+			
+		}
+	},
+	"3": {
+		title: {
+			ru: "предмет",
+			en: "item"
+		},
+		description: {
+			ru: "описание",
+			en: "description"
+		},
+		icon_src: "images/for_shop/Ресурс 10.png",
+		cost: 100,
+		available:true,
+		bought: false,
+		effect: function() {
+			
+		}
+	},
+	"4": {
+		title: {
+			ru: "предмет",
+			en: "item"
+		},
+		description: {
+			ru: "описание",
+			en: "description"
+		},
+		icon_src: "images/for_shop/Ресурс 10.png",
+		cost: 100,
+		available:true,
+		bought: false,
+		effect: function() {
+			
+		}
+	},
+	"5": {
+		title: {
+			ru: "предмет",
+			en: "item"
+		},
+		description: {
+			ru: "описание",
+			en: "description"
+		},
+		icon_src: "images/for_shop/Ресурс 10.png",
+		cost: 100,
+		available:true,
+		bought: false,
+		effect: function() {
+			
+		}
+	},
+	"6": {
+		title: {
+			ru: "предмет",
+			en: "item"
+		},
+		description: {
+			ru: "описание",
+			en: "description"
+		},
+		icon_src: "images/for_shop/Ресурс 10.png",
+		cost: 100,
+		available:true,
+		bought: false,
+		effect: function() {
+			
+		}
+	},
+	"7": {
+		title: {
+			ru: "предмет",
+			en: "item"
+		},
+		description: {
+			ru: "описание",
+			en: "description"
+		},
+		icon_src: "images/for_shop/Ресурс 10.png",
+		cost: 100,
+		available:true,
+		bought: false,
+		effect: function() {
+			
+		}
+	},
+	"8": {
+		title: {
+			ru: "предмет",
+			en: "item"
+		},
+		description: {
+			ru: "описание",
+			en: "description"
+		},
+		icon_src: "images/for_shop/Ресурс 10.png",
+		cost: 100,
+		available:true,
+		bought: false,
+		effect: function() {
+			
+		}
+	},
+	"9": {
+		title: {
+			ru: "предмет",
+			en: "item"
+		},
+		description: {
+			ru: "описание",
+			en: "description"
+		},
+		icon_src: "images/for_shop/Ресурс 10.png",
+		cost: 100,
+		available:true,
+		bought: false,
+		effect: function() {
+			
+		}
+	},
+	"10": {
+		title: {
+			ru: "предмет",
+			en: "item"
+		},
+		description: {
+			ru: "описание",
+			en: "description"
+		},
+		icon_src: "images/for_shop/Ресурс 10.png",
+		cost: 100,
+		available:true,
+		bought: false,
+		effect: function() {
+			
+		}
+	},
+	"11": {
+		title: {
+			ru: "предмет",
+			en: "item"
+		},
+		description: {
+			ru: "описание",
+			en: "description"
+		},
+		icon_src: "images/for_shop/Ресурс 10.png",
+		cost: 100,
+		available:true,
+		bought: false,
+		effect: function() {
+			
+		}
+	},
+	"12": {
+		title: {
+			ru: "предмет",
+			en: "item"
+		},
+		description: {
+			ru: "описание",
+			en: "description"
+		},
+		icon_src: "images/for_shop/Ресурс 10.png",
+		cost: 100,
+		available:true,
+		bought: false,
+		effect: function() {
+			
+		}
+	},
 }
