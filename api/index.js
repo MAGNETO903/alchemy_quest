@@ -12,10 +12,12 @@ https://alchemy-quest.onrender.com/
 const express = require('express'); //фреймворк
 const app = express()
 var fs = require('fs');
+/*
 const options = {
   key: fs.readFileSync("server.key"),
   cert: fs.readFileSync("server.cert"),
 };
+*/
 const router = express.Router();
 const http = require('http')
 const https = require('https')
@@ -369,11 +371,12 @@ httpServer.listen(port);
 var start_htpps = process.env.START_HTTPS;
 
 
-
+/*
 if (start_htpps == undefined || start_htpps == 1) {
   var httpsServer = https.createServer(options, app);
   httpsServer.listen(8443);
 }
+*/
 /*
 
 
