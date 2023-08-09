@@ -112,7 +112,7 @@ span.text {
 	display: none;
 }
 
-#ga_card_block, #gch_card, #ge_card {
+#ga_card_block, #gch_card, #ge_card, #gs_card_block {
 	overflow-y: auto;
 	overflow-x: hidden;
 }
@@ -121,4 +121,44 @@ span.text {
 	box-sizing: border-box;
 	  touch-action: none;
 
+}
+
+.horizontal-shake {
+  animation: horizontal-shaking 0.25s infinite;
+}
+
+.red-color-shake {
+	animation-name: color_change;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+@keyframes horizontal-shaking {
+ 0% { transform: translateX(0) }
+ 25% { transform: translateX(5px) }
+ 50% { transform: translateX(-5px) }
+ 75% { transform: translateX(5px) }
+ 100% { transform: translateX(0) }
+}
+
+@-webkit-keyframes color_change {
+	from { color: #cd883a; }
+	to { color: red; }
+}
+@-moz-keyframes color_change {
+	from { color: #cd883a; }
+	to { color: red; }
+}
+@-ms-keyframes color_change {
+	from { color: #cd883a; }
+	to { color: red; }
+}
+@-o-keyframes color_change {
+	from { color: #cd883a; }
+	to { color: red; }
+}
+@keyframes color_change {
+	from { color: #cd883a; }
+	to { color: red; }
 }

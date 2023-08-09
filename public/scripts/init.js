@@ -91,6 +91,7 @@ var tech_core = {
     "cloud_storage_ready": false,
     "my_server_ready": false,
     "streaming": false,
+    "item_id": 0,
     "init_sdk": function() {
         YaGames
             .init({
@@ -900,6 +901,17 @@ var tech_core = {
             graph_core.update_promocode_result_block(user.msg);
             graph_core.open_popup('#gso_popup3_back')
         }
+    },
+    buy_item: function() {
+        // проверка на достаточность монет
+        if (game_core.data.money >= shop_items[tech_core.item_id].cost) {
+            game_core.data.money -= shop_items[tech_core.item_id].cost;
+            shop_items[tech_core.item_id].effect();
+            graph_core.close_all_popups();
+        } else {
+            // не хватает монет
+            graph_core.animation_not_enough_money();
+        }
     }
 }
 
@@ -915,7 +927,7 @@ var graph_core = {
         "frames": 20,
         "cur_frame": 1
     },
-    popup_ids: ['go_bug_report_popup_back', 'gso_promocode_popup_back', 'gso_popup_back', 'gso_popup3_back'],
+    popup_ids: ['go_bug_report_popup_back', 'gso_promocode_popup_back', 'gso_popup_back', 'gso_popup3_back', 'gs_popup_back'],
     big_blocks_ids: [],
     "start_animation": function(name) {
         graph_core.animation.playing = true;
@@ -1002,6 +1014,7 @@ var graph_core = {
     },
     "open_shop_popup": function(item_id) {
         $('#gs_popup_back').css('display', 'block');
+        tech_core.item_id = item_id;
         graph_core.update_shop_popup(item_id);
         if (tech_core.streaming) {
             socket.emit('open_shop_popup');
@@ -1017,11 +1030,11 @@ var graph_core = {
     "update_shop_popup": function(item_id) {
         var popup_block = graph_core.html_blocks['game_shop'].children['gs_popup_back'].children['gs_popup'];
         console.log(text.shop, item_id)
-        popup_block.children['gs_popup_title'].options.text = text.shop[item_id].title[graph_core.lang];
-        popup_block.children['gs_popup_desk'].options.text = text.shop[item_id].long_desk[graph_core.lang];
-        popup_block.children['gs_popup_slot'].children['gs_p_s_img'].options.background = "url('./images/for_shop/unicorn_"+(item_id+1)+".png')"
-        popup_block.children['gs_popup_item_title'].options.text = text.shop[item_id].title[graph_core.lang];
-        popup_block.children['gs_popup_buy_btn'].children["gs_p_bb_text"].options.text = "{coin} " + text.shop[item_id].cost;
+        popup_block.children['gs_popup_title'].options.text = shop_items[item_id].title[graph_core.lang];
+        popup_block.children['gs_popup_desk'].options.text = shop_items[item_id].long_description[graph_core.lang];
+        popup_block.children['gs_popup_slot'].children['gs_p_s_img'].options.background = `url(${shop_items[item_id].icon_src})`
+        popup_block.children['gs_popup_item_title'].options.text = shop_items[item_id].title[graph_core.lang];
+        popup_block.children['gs_popup_buy_btn'].children["gs_p_bb_text"].options.text = "{coin} " + shop_items[item_id].cost;
 
         popup_block.recalculate(graph_core.html_blocks['game_shop'].children['gs_popup_back'])
     },
@@ -1093,13 +1106,26 @@ var graph_core = {
         set_size("#sb_anti_progressbar_2", 'none', (1 - game_core.data.operators.hp_stat / scale) * max_h);
         set_size("#sb_anti_progressbar_3", 'none', (1 - game_core.data.operators.reputation_stat / scale) * max_h);
         set_size("#sb_anti_progressbar_4", 'none', (1 - game_core.data.operators.money_stat / scale) * max_h);
+    
+        // если купили товар
+        for (var i=0; i < 4; i++) {
+            if (game_core.data.operators[shop_codes[i]]) {
+                graph_core.all_html_blocks['sb_img_'+(i+1)].options.background = `url('./images/stats/0${(i+1)}_blue.png')`;
+
+            } else  {
+                graph_core.all_html_blocks['sb_img_'+(i+1)].options.background = `url('./images/stats/0${(i+1)}.png')`;
+            }
+        }
+        graph_core.all_html_blocks['top_block'].recalculate();
+
     },
     "update_balance": function() {
-        var block = graph_core.html_blocks["game_shop"].children['gs_second_block'].children['gs_sb_balance_block']
-        block.children['gs_sb_bb_text'].options.text = String(game_core.data.money);
+       
+        graph_core.all_html_blocks['gs_sb_bb_text'].options.text = String(game_core.data.money);
+        graph_core.all_html_blocks['gs_sb_balance_block'].recalculate();
 
-        block.children['gs_sb_bb_text'].recalculate(block);
-
+        graph_core.all_html_blocks['gso_sb_bb_text'].options.text = String(game_core.data.money);
+        graph_core.all_html_blocks['gso_sb_balance_block'].recalculate();
     },
 
     "play_animation": function() {
@@ -1142,6 +1168,59 @@ var graph_core = {
             graph_core.all_html_blocks[i].options.text = text.promocode_result[msg][i][graph_core.lang];
         }
         graph_core.all_html_blocks['gso_popup3_back'].recalculate();
+    },
+    update_shop: function() {
+        // первые 4 всегда доступны
+        for (var i=0; i < 4; i++) {
+            if (game_core.data.operators[shop_codes[i]]) {
+                graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.text = text.bought[graph_core.lang];
+                graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.background = "url('./images/for_shop/button_on.png')";
+                graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.onclick = ""
+            } else {
+                graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.text = text.buy[graph_core.lang];
+                graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.background = "url('./images/for_shop/button_off.png')";
+                graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.onclick = "graph_core.open_shop_popup("+i+");"
+            
+            }
+        }
+
+        var counter = 4;
+
+        for (var i=4; i < 12; i++) {
+            if (game_core.data.operators[shop_codes[i] + '_available']) {
+                $('#'+'gs_cb_item_'+(i+1)).css('display', 'block');
+                if (game_core.data.operators[shop_codes[i]] >= shop_items[i+1].shards) {
+                    graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.text = text.bought[graph_core.lang];
+                    graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.background = "url('./images/for_shop/button_on.png')";
+                    graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.onclick = ""
+                } else {
+                    graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.text = text.buy[graph_core.lang];
+                    graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.background = "url('./images/for_shop/button_off.png')";
+                    graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.onclick = "graph_core.open_shop_popup("+i+");"
+                }
+                graph_core.all_html_blocks['gs_cb_item_'+(i+1)].options.pos_y =  0.06 + counter*0.435;
+                counter++;
+            } else {
+                $('#'+'gs_cb_item_'+(i+1)).css('display', 'none');
+            }
+
+            if (shop_items[i+1].shards > 1) {
+                graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_title'].options.text = `${shop_items[i+1].title[graph_core.lang]} (${game_core.data.operators[shop_codes[i]]}/${shop_items[i+1].shards})`
+            }
+            
+
+        }
+
+        graph_core.all_html_blocks['gs_card_block'].recalculate();
+    },
+    animation_not_enough_money: function() {
+        $('#gs_popup_buy_btn').toggleClass('horizontal-shake');
+        $('#gs_p_bb_text > div > span').toggleClass('red-color-shake');
+        setTimeout(function() {
+            $('#gs_popup_buy_btn').toggleClass('horizontal-shake');
+            $('#gs_p_bb_text > div > span').toggleClass('red-color-shake');
+        }, 250)
+
     }
 }
 
@@ -1165,7 +1244,7 @@ var game_core = {
         
         //"cur_card": "plot1-1",
         "cur_card": START_POS,
-        "money": 100,
+        "money": 1000,
         "cur_desk": "main",
         "cur_chapter": 1,
         "used_desks": {
@@ -1220,6 +1299,7 @@ var game_core = {
 
         graph_core.update_card(desks[game_core.data.cur_desk][game_core.data.cur_card])
         graph_core.update_stats();
+        //graph_core.update_balance();
         // игра готова
         tech_core.game_ready = true;
         if (tech_core.platform == 'yandex' && tech_core.sdk_ready) {

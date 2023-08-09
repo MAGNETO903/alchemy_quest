@@ -15,7 +15,7 @@ const PLATFORM_TYPE = 'yandex'
 var SERVER_URL = 'https://alchemy-quest-umber.vercel.app/'
 
 const build = 65;
-var SHOULD_LOAD_PROGRESS = true;
+var SHOULD_LOAD_PROGRESS = false;
 var MAKE_SCREEN_ON_X = true;
 var HIDE_VERSION = false;
 
@@ -392,6 +392,14 @@ var text = {
 				"en": ""
 			}
 		}
+	},
+	"buy": {
+		"ru": "купить",
+		en: "buy"
+	},
+	"bought": {
+		ru: "куплено",
+		en: "bought"
 	}
 }
 
@@ -507,6 +515,22 @@ var html_block_texts = {
 	}
 }
 
+// коды товаров
+var shop_codes = [
+	'Art_extra_power',
+	'Art_extra_hp',
+	'Art_extra_reputation',
+	'Art_extra_money',
+	'Art_cosmos',
+	'Art_stormglass',
+	'Art_flower',
+	'Art_ball',
+	'Art_reins',
+	'Art_crystal',
+	'Art_book',
+	'Art_phoenix'	
+]
+
 
 // операторы
 var operators = {
@@ -536,15 +560,41 @@ var operators = {
 	Dr_sym: 0,
 	U_sum: 0,
 
-	// артефакты
+	// артефакты - доп жизни
+	Art_extra_power: 0,
+	Art_extra_hp: 0,
+	Art_extra_reputation: 0,
+	Art_extra_money: 0,
+
+	// артефакты - доп сюжет
 	Art_cosmos: 0,
 	Art_stormglass: 0,
 	Art_flower: 0,
+
 	Art_ball: 0,
 	Art_reins: 0,
 	Art_crystal: 0,
+
 	Art_book: 0,
-	Art_phoenix: 0
+	Art_phoenix: 0,
+
+	// Доп операторы
+	// доступность товаров
+
+	// артефакты - доп сюжет
+	Art_cosmos_available: 0,
+	Art_stormglass_available: 0,
+	Art_flower_available: 0,
+
+	Art_ball_available: 0,
+	Art_reins_available: 0,
+	Art_crystal_available: 0,
+
+	Art_book_available: 0,
+	Art_phoenix_available: 0
+
+
+
 }
 
 
@@ -4729,12 +4779,19 @@ var shop_items = {
 			ru: "описание",
 			en: "description"
 		},
-		icon_src: "images/for_shop/Ресурс 10.png",
+		long_description: {
+			ru: "длинное описание",
+			en: "long description"
+		},
+		icon_src: "images/for_shop/item_1.png",
 		cost: 100,
+		shards: 1,
 		available:true,
 		bought: false,
 		effect: function() {
-			
+			game_core.data.operators.Art_extra_power = 1;
+			graph_core.update_stats();
+			graph_core.update_shop();
 		}
 	},
 	"2": {
@@ -4746,12 +4803,19 @@ var shop_items = {
 			ru: "описание",
 			en: "description"
 		},
-		icon_src: "images/for_shop/Ресурс 10.png",
+		long_description: {
+			ru: "длинное описание",
+			en: "long description"
+		},
+		shards: 1,
+		icon_src: "images/for_shop/item_2.png",
 		cost: 100,
 		available:true,
 		bought: false,
 		effect: function() {
-			
+			game_core.data.operators.Art_extra_hp = 1;
+			graph_core.update_stats();
+			graph_core.update_shop();
 		}
 	},
 	"3": {
@@ -4763,12 +4827,19 @@ var shop_items = {
 			ru: "описание",
 			en: "description"
 		},
-		icon_src: "images/for_shop/Ресурс 10.png",
+		long_description: {
+			ru: "длинное описание",
+			en: "long description"
+		},
+		shards: 1,
+		icon_src: "images/for_shop/item_3.png",
 		cost: 100,
 		available:true,
 		bought: false,
 		effect: function() {
-			
+			game_core.data.operators.Art_extra_power = 1;
+			graph_core.update_stats();
+			graph_core.update_shop();
 		}
 	},
 	"4": {
@@ -4780,12 +4851,19 @@ var shop_items = {
 			ru: "описание",
 			en: "description"
 		},
-		icon_src: "images/for_shop/Ресурс 10.png",
+		long_description: {
+			ru: "длинное описание",
+			en: "long description"
+		},
+		shards: 1,
+		icon_src: "images/for_shop/item_4.png",
 		cost: 100,
 		available:true,
 		bought: false,
 		effect: function() {
-			
+			game_core.data.operators.Art_extra_power = 1;
+			graph_core.update_stats();
+			graph_core.update_shop();
 		}
 	},
 	"5": {
@@ -4797,7 +4875,12 @@ var shop_items = {
 			ru: "описание",
 			en: "description"
 		},
-		icon_src: "images/for_shop/Ресурс 10.png",
+		long_description: {
+			ru: "длинное описание",
+			en: "long description"
+		},
+		shards: 1,
+		icon_src: "images/for_shop/item_5.png",
 		cost: 100,
 		available:true,
 		bought: false,
@@ -4814,7 +4897,12 @@ var shop_items = {
 			ru: "описание",
 			en: "description"
 		},
-		icon_src: "images/for_shop/Ресурс 10.png",
+		long_description: {
+			ru: "длинное описание",
+			en: "long description"
+		},
+		shards: 10,
+		icon_src: "images/for_shop/item_6.png",
 		cost: 100,
 		available:true,
 		bought: false,
@@ -4831,7 +4919,12 @@ var shop_items = {
 			ru: "описание",
 			en: "description"
 		},
-		icon_src: "images/for_shop/Ресурс 10.png",
+		long_description: {
+			ru: "длинное описание",
+			en: "long description"
+		},
+		shards: 1,
+		icon_src: "images/for_shop/item_7.png",
 		cost: 100,
 		available:true,
 		bought: false,
@@ -4848,7 +4941,12 @@ var shop_items = {
 			ru: "описание",
 			en: "description"
 		},
-		icon_src: "images/for_shop/Ресурс 10.png",
+		long_description: {
+			ru: "длинное описание",
+			en: "long description"
+		},
+		shards: 1,
+		icon_src: "images/for_shop/item_8.png",
 		cost: 100,
 		available:true,
 		bought: false,
@@ -4865,7 +4963,12 @@ var shop_items = {
 			ru: "описание",
 			en: "description"
 		},
-		icon_src: "images/for_shop/Ресурс 10.png",
+		long_description: {
+			ru: "длинное описание",
+			en: "long description"
+		},
+		shards: 1,
+		icon_src: "images/for_shop/item_9.png",
 		cost: 100,
 		available:true,
 		bought: false,
@@ -4882,7 +4985,12 @@ var shop_items = {
 			ru: "описание",
 			en: "description"
 		},
-		icon_src: "images/for_shop/Ресурс 10.png",
+		long_description: {
+			ru: "длинное описание",
+			en: "long description"
+		},
+		shards: 1,
+		icon_src: "images/for_shop/item_10.png",
 		cost: 100,
 		available:true,
 		bought: false,
@@ -4899,7 +5007,12 @@ var shop_items = {
 			ru: "описание",
 			en: "description"
 		},
-		icon_src: "images/for_shop/Ресурс 10.png",
+		long_description: {
+			ru: "длинное описание",
+			en: "long description"
+		},
+		shards: 1,
+		icon_src: "images/for_shop/item_1.png",
 		cost: 100,
 		available:true,
 		bought: false,
@@ -4916,7 +5029,12 @@ var shop_items = {
 			ru: "описание",
 			en: "description"
 		},
-		icon_src: "images/for_shop/Ресурс 10.png",
+		long_description: {
+			ru: "длинное описание",
+			en: "long description"
+		},
+		shards: 1,
+		icon_src: "images/for_shop/item_1.png",
 		cost: 100,
 		available:true,
 		bought: false,

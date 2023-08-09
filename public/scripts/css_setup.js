@@ -905,42 +905,50 @@ graph_core.html_blocks["game_shop"].children['gs_second_block'].children['gs_sb_
     "text_color": "#e8cd66",
 })
 
-graph_core.html_blocks["game_shop"].add_block('gs_card_block', {
+graph_core.html_blocks["game_shop"].add_block('gs_card_block_outer', {
     "ratio_x": 860/935,
     "ratio_y": 1000/1540,
     "ratio": 764/1083,
     "pos_x": 0.5,
     "pos_y": 0.45,
     "is_prop": true,
-    "background": "url('./images/for_shop/new_for_shop.png')",
+    "background": "url('./images/for_shop/card.png')",
+})
+
+graph_core.all_html_blocks["gs_card_block_outer"].add_block('gs_card_block', {
+    "ratio_x": 0.95,
+    "ratio_y": 0.9,
+    "pos_x": 0.5,
+    "pos_y": 0.5,
 })
 
 
-for (var i=0; i < 3; i++) {
 
-    graph_core.html_blocks['game_shop'].children['gs_card_block'].add_block('gs_cb_item_'+(i+1), {
+for (var i=0; i < 12; i++) {
+
+    graph_core.all_html_blocks['gs_card_block'].add_block('gs_cb_item_'+(i+1), {
         "ratio_x": 700/763,
         "ratio_y": 295/1085,
-        "ratio": 700/295,
+        "ratio": 697/290,
         //"color": '#f48aff',
-        //"background": "url('./images/clock.png')",
+        "background": "url('./images/for_shop/block.png')",
         "is_prop": true,
         "pos_x": 0.5,
         "pos_y": 0.06 + i*0.435
     })
 
-    graph_core.html_blocks['game_shop'].children['gs_card_block'].children['gs_cb_item_'+(i+1)].add_block('gs_cb_i'+(i+1)+'_pic', {
+    graph_core.all_html_blocks['gs_card_block'].children['gs_cb_item_'+(i+1)].add_block('gs_cb_i'+(i+1)+'_pic', {
         "ratio_x": 200/700,
         "ratio_y": 200/295,
         "ratio": 1/1,
         //"color": '#f48aff',
-        "background": "url('./images/for_shop/unicorn_"+(i+1)+".png')",
+        "background": "url('"+shop_items[i+1].icon_src+"')",
         "is_prop": true,
         "pos_x": 0.03,
         "pos_y": 0.5
     })
 
-    graph_core.html_blocks['game_shop'].children['gs_card_block'].children['gs_cb_item_'+(i+1)].add_block('gs_cb_i'+(i+1)+'_title', {
+    graph_core.all_html_blocks['gs_card_block'].children['gs_cb_item_'+(i+1)].add_block('gs_cb_i'+(i+1)+'_title', {
         "ratio_x": 500/700,
         "ratio_y": 75/295,
         "ratio": 500/75,
@@ -949,13 +957,13 @@ for (var i=0; i < 3; i++) {
         "is_prop": true,
         "pos_x": 0.9,
         "pos_y": 0.05,
-        "text": text.shop[i].title[graph_core.lang],
+        "text": shop_items[i+1].title[graph_core.lang],
         "text_color": "#ffcf13",
         "text_align": "center",
         "font_size": 0.3,
     })
 
-    graph_core.html_blocks['game_shop'].children['gs_card_block'].children['gs_cb_item_'+(i+1)].add_block('gs_cb_i'+(i+1)+'_desk', {
+    graph_core.all_html_blocks['gs_card_block'].children['gs_cb_item_'+(i+1)].add_block('gs_cb_i'+(i+1)+'_desk', {
         "ratio_x": 400/700,
         "ratio_y": 100/295,
         "ratio": 400/100,
@@ -965,11 +973,11 @@ for (var i=0; i < 3; i++) {
         "pos_x": 0.85,
         "pos_y": 0.45,
         "text_align": "right",
-        "text": text.shop[i].desk[graph_core.lang],
+        "text":  shop_items[i+1].description[graph_core.lang],
         "text_color": "#fa8f1d",
     })
 
-    graph_core.html_blocks['game_shop'].children['gs_card_block'].children['gs_cb_item_'+(i+1)].add_block('gs_cb_i'+(i+1)+'_buy_btn', {
+    graph_core.all_html_blocks['gs_card_block'].children['gs_cb_item_'+(i+1)].add_block('gs_cb_i'+(i+1)+'_buy_btn', {
         "ratio_x": 360/700,
         "ratio_y": 80/295,
         "ratio": 372/82,
@@ -982,8 +990,8 @@ for (var i=0; i < 3; i++) {
         "text": "Купить",
         "text_color": "#ffcf13",
         "text_padding_w": 0.75,
-        "text_padding_h": 0.7,
-        "onclick": "graph_core.open_shop_popup("+i+");"
+        "text_padding_h": 0.8,
+        "onclick": "graph_core.open_shop_popup("+(i+1)+");"
     })
 }
 
@@ -1186,7 +1194,7 @@ graph_core.html_blocks['game_shop'].children['gs_popup_back'].children['gs_popup
     "text_color": "#cd883a",
     "text_align": "center",
     "text_padding_h": 0.85,
-    "onclick": "graph_core.close_shop_popup()"
+    "onclick": "tech_core.buy_item();"
 })
 
 

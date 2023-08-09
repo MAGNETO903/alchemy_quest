@@ -199,7 +199,11 @@ var my_html_block = function(id, html_element, options = {}, big_block = false, 
 
 		if (options.onclick) {
 			new_html_element.setAttribute('onclick', options.onclick);
-			new_html_element.style['cursor'] = 'pointer';
+			if (options.onclick != "") {
+				new_html_element.style['cursor'] = 'pointer';
+			} else {
+				new_html_element.style['cursor'] = 'cursor'
+			}
 		}
 
 		if (options.style) {
@@ -317,6 +321,11 @@ var my_html_block = function(id, html_element, options = {}, big_block = false, 
 
 		$('#' + this.id).css('display', 'block');
 		$('#' + this.id).css('opacity', '0%');
+
+		var display_parent_state = $('#' + this.parent_id).css('display');
+
+		$('#' + this.parent_id).css('display', 'block');
+		$('#' + this.parent_id).css('opacity', '0%');
 
 		if (this.big_block) {
 			set_size('#'+this.id, graph_core.winW, graph_core.winH);
@@ -496,6 +505,16 @@ var my_html_block = function(id, html_element, options = {}, big_block = false, 
 				this.html_element.style['background-size'] = '100%'
 			}
 
+			if (this.options.onclick != undefined) {
+
+				this.html_element.setAttribute('onclick', this.options.onclick);
+				if (this.options.onclick == "") {
+					this.html_element.style['cursor'] = 'default';
+				} else {
+					this.html_element.style['cursor'] = 'cursor';
+					
+				}
+			}
 		}
 
 		for (var i in this.children) {
@@ -507,5 +526,8 @@ var my_html_block = function(id, html_element, options = {}, big_block = false, 
 
 		$('#' + this.id).css('display', display_state);
 		$('#' + this.id).css('opacity', '100%');
+		
+		$('#' + this.parent_id).css('display', display_parent_state);
+		$('#' + this.parent_id).css('opacity', '100%');
 	}
 }
