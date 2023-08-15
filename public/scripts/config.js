@@ -115,7 +115,7 @@ var MONEY_STAT_DELTA_1 = 10;
 var HEALTH_STAT_DELTA_1 = 10;
 var MAX_STAT_VALUE = 100;
 
-var START_POS = 'plot1-1'
+var START_POS = 'plot_1-1'
 var PROGRESS_PROTOCOL = 1;
 
 var DUR_ACHIEVE = 3000;
@@ -591,9 +591,10 @@ var operators = {
 	Art_crystal_available: 0,
 
 	Art_book_available: 0,
-	Art_phoenix_available: 0
+	Art_phoenix_available: 0,
 
-
+	// критическое значение статов
+	critical: 0
 
 }
 
@@ -611,9 +612,11 @@ var frames = {
 // всё поделено на колоды
 // главная сюжетная линия - колода main, все остальные - вспомогательные
 var desks = {
-	"main": {
+	"plot": { 
+		"type": "script", // сценарий: важна последовательность, карточки не повторяются. 
+		"cards": {
 		// ID-шник карточки. Используется для указания ссылок
-		"plot1-1": {
+		"plot_1-1": {
 			// заголовок карточки
 			"title": { "ru": "Кристалл", "en": "Crystal" },
 			// текст на самой карточке
@@ -634,10 +637,10 @@ var desks = {
 				"1": {
 					// текст ответа 
 					"text": { "ru": "...", "en": "..." },
-					// что произойдёт при выборе этого ответа (в данном случае просто переход на карточку с ID "plot1-2")
+					// что произойдёт при выборе этого ответа (в данном случае просто переход на карточку с ID "plot_1-2")
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot1-2"
+						return "plot_1-2"
 					}
 				},
 				// аналогично, второй ответ
@@ -648,12 +651,12 @@ var desks = {
 					},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot1-2"
+						return "plot_1-2"
 					}
 				}
 			}
 		},
-		"plot1-2": {
+		"plot_1-2": {
 			"title": { "ru": "Кристалл", "en": "Crystal" },
 			"text": {
 				"ru": "...но Великому Демиургу подвластно все, не так ли?",
@@ -667,7 +670,7 @@ var desks = {
 					"text": { "ru": "...", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot1-3"
+						return "plot_1-3"
 					}
 				},
 				"2": {
@@ -677,12 +680,12 @@ var desks = {
 					},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot1-3"
+						return "plot_1-3"
 					}
 				}
 			}
 		},
-		"plot1-3": {
+		"plot_1-3": {
 			"title": { "ru": "Кристалл", "en": "Crystal" },
 			"text": {
 				"ru": "Сейчас 1089 ц.у. с момента заточения Великого Демиурга",
@@ -696,7 +699,7 @@ var desks = {
 					"text": { "ru": "Что...", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-0"
+						return "plot_2-0"
 					}
 				},
 				"2": {
@@ -704,12 +707,12 @@ var desks = {
 						"ru": "Как...", "en": "..."},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-0"
+						return "plot_2-0"
 					}
 				}
 			}
 		},
-		"plot2-0": {
+		"plot_2-0": {
 			"title": text.CHARACTER_1,
 			"text": {
 				"ru": "Ну вот и все. Ты готов принять то, что тебя ждет?",
@@ -722,7 +725,7 @@ var desks = {
 					"text": { "ru": "Да", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-1"
+						return "plot_2-1"
 					}
 				},
 				"2": {
@@ -730,12 +733,12 @@ var desks = {
 						"ru": "Нет", "en": "..."},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-2"
+						return "plot_2-2"
 					}
 				}
 			}
 		},
-		"plot2-1": {
+		"plot_2-1": {
 			"title": text.CHARACTER_1,
 			"text": {
 				"ru": "Отлично! Значит история повторяется вновь. Смотри, не оплошай, ладно?",
@@ -747,7 +750,7 @@ var desks = {
 					"text": { "ru": "Конечно", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot3-0"
+						return "plot_3-0"
 					}
 				},
 				"2": {
@@ -755,12 +758,12 @@ var desks = {
 						"ru": "Посмотрим...", "en": "..."},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot3-0"
+						return "plot_3-0"
 					}
 				}
 			}
 		},
-		"plot2-2": {
+		"plot_2-2": {
 			"title": text.CHARACTER_1,
 			"text": {
 				"ru": "В любом случае назад пути нет. Объяснить тебе, как тут что работает?",
@@ -772,7 +775,7 @@ var desks = {
 					"text": { "ru": "Да", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-3"
+						return "plot_2-3"
 					}
 				},
 				"2": {
@@ -780,12 +783,12 @@ var desks = {
 						"ru": "Нет", "en": "..."},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-4"
+						return "plot_2-4"
 					}
 				}
 			}
 		},
-		"plot2-3": {
+		"plot_2-3": {
 			"title": text.CHARACTER_1,
 			"text": {
 				"ru": "Посмотри в верхнюю часть экрана. Это параметры - магия, здоровье, репутация, деньги. Они будут меняться в зависимости от выборов.",
@@ -797,19 +800,19 @@ var desks = {
 					"text": { "ru": "Ясно", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-3-1"
+						return "plot_2-3-1"
 					}
 				},
 				"2": {
 					"text": { "ru": "Понятно", "en": "..."},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-3-1"
+						return "plot_2-3-1"
 					}
 				}
 			}
 		},
-		"plot2-3-1": {
+		"plot_2-3-1": {
 			"title": text.CHARACTER_1,
 			"text": {
 				"ru": " Они могут понижаться и повышаться. Не позволяй им достигать минимума или максимума.",
@@ -821,7 +824,7 @@ var desks = {
 					"text": { "ru": "Ага", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-3-2"
+						return "plot_2-3-2"
 					}
 				},
 				"2": {
@@ -829,12 +832,12 @@ var desks = {
 						"ru": "...", "en": "..."},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-3-2"
+						return "plot_2-3-2"
 					}
 				}
 			}
 		},
-		"plot2-3-2": {
+		"plot_2-3-2": {
 			"title": text.CHARACTER_1,
 			"text": {
 				"ru": "Последствия не у всех выборов будут проявляться немедленно. Выбирай с осторожностью. Просто, да?",
@@ -846,7 +849,7 @@ var desks = {
 					"text": { "ru": "Да", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-5"
+						return "plot_2-5"
 					}
 				},
 				"2": {
@@ -854,12 +857,12 @@ var desks = {
 						"ru": "Нет", "en": "..."},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-5"
+						return "plot_2-5"
 					}
 				}
 			}
 		},
-		"plot2-5": {
+		"plot_2-5": {
 			"title": text.CHARACTER_1,
 			"text": {
 				"ru": " Хорошо. Я вывела тебя из безвременья. И то, что было до, уже не имеет значения.",
@@ -871,7 +874,7 @@ var desks = {
 					"text": { "ru": "Кто ты?", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-6"
+						return "plot_2-6"
 					}
 				},
 				"2": {
@@ -879,12 +882,12 @@ var desks = {
 						"ru": "Нет", "Где я теперь?": "..."},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-7"
+						return "plot_2-7"
 					}
 				}
 			}
 		},
-		"plot2-6": {
+		"plot_2-6": {
 			"title": text.CHARACTER_1,
 			"text": {
 				"ru": "Мы еще увидимся. А пока что… Это неважно. ",
@@ -896,7 +899,7 @@ var desks = {
 					"text": { "ru": "Где я теперь?", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-7"
+						return "plot_2-7"
 					}
 				},
 				"2": {
@@ -904,12 +907,12 @@ var desks = {
 						"ru": "Понятно…", "en": "..."},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-8"
+						return "plot_2-8"
 					}
 				}
 			}
 		},
-		"plot2-7": {
+		"plot_2-7": {
 			"title": text.CHARACTER_1,
 			"text": {
 				"ru": "Это город на берегу моря, к западу от столицы. Тебя ждет простая человеческая жизнь. Если, конечно, жизнь алхимика можно назвать таковой. Все, как ты и хотел…",
@@ -921,7 +924,7 @@ var desks = {
 					"text": { "ru": "Хорошо", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-8"
+						return "plot_2-8"
 					}
 				},
 				"2": {
@@ -929,12 +932,12 @@ var desks = {
 						"ru": "Понятно", "en": "..."},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot2-8"
+						return "plot_2-8"
 					}
 				}
 			}
 		},
-		"plot2-8": {
+		"plot_2-8": {
 			"title": text.CHARACTER_1,
 			"text": {
 				"ru": "Тебе предстоит заново познать… многое. Больше ты узнаешь, когда придет время.",
@@ -946,7 +949,7 @@ var desks = {
 					"text": { "ru": "Ясно...", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot3-0"
+						return "plot_3-0"
 					}
 				},
 				"2": {
@@ -954,12 +957,12 @@ var desks = {
 						"ru": "...", "en": "..."},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot3-0"
+						return "plot_3-0"
 					}
 				}
 			}
 		},
-		"plot2-4": {
+		"plot_2-4": {
 			"title": text.CHARACTER_1,
 			"text": {
 				"ru": "Чудно. Тогда увидимся позже. Не забывай меня, ладно?",
@@ -971,7 +974,7 @@ var desks = {
 					"text": { "ru": "Прощай", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot3-0"
+						return "plot_3-0"
 					}
 				},
 				"2": {
@@ -979,12 +982,12 @@ var desks = {
 						"ru": "Ещё увидимся", "en": "..."},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot3-0"
+						return "plot_3-0"
 					}
 				}
 			}
 		},
-		"plot3-0": {
+		"plot_3-0": {
 			"title": {"ru": "...", "en": "..."},
 			"text": {
 				"ru": " Солнечный диск поднимается над горизонтом. Что уготовил день грядущий?",
@@ -997,19 +1000,19 @@ var desks = {
 					"text": { "ru": "...", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot3-1"
+						return "plot_3-1"
 					}
 				},
 				"2": {
 					"text": {"ru": "...", "en": "..."},
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot3-1"
+						return "plot_3-1"
 					}
 				}
 			}
 		},
-		"plot3-1": {
+		"plot_3-1": {
 			"title": text.CHARACTER_4,
 			"text": {
 				"ru": "А... Добрый день, уважаемый. А я все думаю, кто это здесь поселился! В нашем-то городке таких нечасто встретишь... Алхимиков. Пойду расскажу остальным…",
@@ -1021,7 +1024,7 @@ var desks = {
 					"text": { "ru": " Ладно…", "en": "..." },
 					"next": function(operators) {
 						// изменяем операторы
-						return "plot3-2"
+						return "plot_3-2"
 					}
 				},
 				"2": {
@@ -1029,15 +1032,15 @@ var desks = {
 						"ru": "Добрый день!", "en": "..."},
 					"next": function(operators) {
 						// изменяем операторы
-						// А здесь уже не просто переход на "plot3-2", но ещё и изменение операторов (+ к репутации, + к оператоу D)
+						// А здесь уже не просто переход на "plot_3-2", но ещё и изменение операторов (+ к репутации, + к оператоу D)
 						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
 						operators.D+=1;
-						return "plot3-2"
+						return "plot_3-2"
 					}
 				}
 			}
 		},
-		"plot3-2": {
+		"plot_3-2": {
 			"title": text.CHARACTER_3, "img": 3,
 			"text": {
 				// здесь мы текст, который хотим покрасить заключили в <span class='цвет'> цветоной текст </span>
@@ -1051,15 +1054,15 @@ var desks = {
 						operators.money_stat -= MONEY_STAT_DELTA_1;
 						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
 						operators.D++;
-						return "plot3-3" }
+						return "plot_3-3" }
 				},
 				"2": {
 					"text": {"ru": "Нет", "en": "..."},
-					"next": function(operators) { return "plot3-3" }
+					"next": function(operators) { return "plot_3-3" }
 				}
 			}
 		},
-		"plot3-3": {
+		"plot_3-3": {
 			"title": text.CHARACTER_5, "img": 5,
 			"text": {
 				"ru": "Здравствуйте! Вы ведь алхимик? Вот - это то, что осталось от предыдущего Мастера. Возможно, что-то из этого сможет вам пригодиться.",
@@ -1071,15 +1074,15 @@ var desks = {
 					"next": function(operators) { 
 						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
 						operators.D++;
-						return "plot3-4" }
+						return "plot_3-4" }
 				},
 				"2": {
 					"text": {"ru": "Хлам какой-то... Но ладно", "en": "..."},
-					"next": function(operators) { return "plot3-4" }
+					"next": function(operators) { return "plot_3-4" }
 				}
 			}
 		},
-		"plot3-4": {
+		"plot_3-4": {
 			"title": text.CHARACTER_6, "img": 6,
 			"text": {
 				"ru": " Приветствую! Уже освоились в нашем городке? Надеюсь, вместе мы придем к процветанию. Если будет что-нибудь подозрительное - обязательно сообщите.",
@@ -1088,63 +1091,61 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Обязательно!", "en": "..." },
-					"next": function(operators) { return "plot3-5" }
+					"next": function(operators) { return "plot_3-5" }
 				},
 				"2": {
 					"text": {"ru": "“Деньги не пахнут”", "en": "..."},
 					"next": function(operators) { 
 						operators.Z++;
-						return "plot3-5" }
+						return "plot_3-5" }
 				}
 			}
 		},
-		"plot3-5": {
+		"plot_3-5": {
 			"title": {"ru": "...", "en": "..."}, "img": 0,
 			"text": {
 				"ru": " Город Сант-Марим расположился на берегу спокойного моря. Пожалуй, это то место, которое вы и искали… ",
 				"en": "- Hello there! \n - General Kenobi..."
 			},
 			"save_point": "chapter_1",
+			"out_point": "plot_4-1",
 			"answers": {
 				"1": {
 					"text": { "ru": "...", "en": "..." },
-					"next": function(operators) { return "plot4-0" }
+					"next": function(operators) { return "plot_4-0" }
 				},
 				"2": {
 					"text": {"ru": "...", "en": "..."},
-					"next": function(operators) { return "plot4-0" }
+					"next": function(operators) { return "plot_4-0" }
 				}
 			}
 		},
-		// окошко для вставки другой колоды
-		"plot4-0": {
-			// название колоды, откуда будем брать карточки
-			"desk": "rand_4",
-			// что будет после нажатия на вытянутую карточку
+		"plot_4-0": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-1"
+				return "plot_4-1"
 			}
 		},
-		"plot4-1": {
-			"desk": "rand_4",
+		"plot_4-1": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-2"
+				return "plot_4-2"
 			}
 		},
-		"plot4-2": {
-			"desk": "rand_4",
+		"plot_4-2": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-3"
+				return "plot_4-3"
 			}
 		},
-		"plot4-3": {
-			"desk": "rand_4",
+		"plot_4-3": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-4"
+				return "plot_4-4"
 			}
 		},
 
-		"plot4-4": {
+		"plot_4-4": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "Подайте... Подайте нищему. У меня ничего нет. Подайте монетку и немного еды",
@@ -1156,23 +1157,23 @@ var desks = {
 					"next": function(operators) { 
 						operators.money_stat -= MONEY_STAT_DELTA_1;
 						operators.power_stat -= POWER_STAT_DELTA_1;
-						return "plot4-4-1" }
+						return "plot_4-4-1" }
 				},
 				"2": {
 					"text": {"ru": " Ничего не давать", "en": "..."},
 					"next": function(operators) { 
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
-						return "plot4-4-1" }
+						return "plot_4-4-1" }
 				}
 			}
 		},
-		"plot4-4-1": {
-			"desk": "rand_4",
+		"plot_4-4-1": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-5"
+				return "plot_4-5"
 			}
 		},
-		"plot4-5": {
+		"plot_4-5": {
 			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "Внезапно дыхание перехватило, окружающий мир завертелся. Вы оказались во власти смутных видений, не поддающихся описанию.",
@@ -1181,15 +1182,15 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "...", "en": "..." },
-					"next": function(operators) { return "plot4-6" }
+					"next": function(operators) { return "plot_4-6" }
 				},
 				"2": {
 					"text": {"ru": "...", "en": "..."},
-					"next": function(operators) { return "plot4-6" }
+					"next": function(operators) { return "plot_4-6" }
 				}
 			}
 		},
-		"plot4-6": {
+		"plot_4-6": {
 			"title": text.CHARACTER_9, "img": 9,
 			"text": {
 				"ru": "Значит бессмертие. Есть один способ...",
@@ -1198,15 +1199,15 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "...", "en": "..." },
-					"next": function(operators) { return "plot4-7" }
+					"next": function(operators) { return "plot_4-7" }
 				},
 				"2": {
 					"text": {"ru": "...", "en": "..."},
-					"next": function(operators) { return "plot4-7" }
+					"next": function(operators) { return "plot_4-7" }
 				}
 			}
 		},
-		"plot4-7": {
+		"plot_4-7": {
 			"title": text.CHARACTER_8, "img": 8,
 			"text": {
 				"ru": "Ищите что-нибудь удивительное? Мои товары не просто товары. Это новые возможности, которые могут значительно изменить историю. ",
@@ -1217,15 +1218,15 @@ var desks = {
 					"text": { "Звучит заманчиво": "Да", "en": "..." },
 					"next": function(operators) { 
 						operators.D++;
-						return "plot4-8" }
+						return "plot_4-8" }
 				},
 				"2": {
 					"text": {"ru": "Буду иметь в виду", "en": "..."},
-					"next": function(operators) { return "plot4-8" }
+					"next": function(operators) { return "plot_4-8" }
 				}
 			}
 		},
-		"plot4-8": {
+		"plot_4-8": {
 			"title": text.CHARACTER_8, "img": 8,
 			"text": {
 				"ru": "У меня как раз есть кое-что для вас. Заглянете?",
@@ -1238,24 +1239,24 @@ var desks = {
 				},
 				"2": {
 					"text": {"ru": "Не сегодня", "en": "..."},
-					"next": function(operators) { return "plot4-9" }
+					"next": function(operators) { return "plot_4-9" }
 				}
 			}
 		},
-		"plot4-9": {
-			"desk": "rand_4",
+		"plot_4-9": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-10"
+				return "plot_4-10"
 			}
 		},
-		"plot4-10": {
-			"desk": "rand_4",
+		"plot_4-10": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-11"
+				return "plot_4-11"
 			}
 		},
 
-		"plot4-11": {
+		"plot_4-11": {
 			"title": text.CHARACTER_11, "img": 11,
 			"text": {
 				"ru": "Здравствуйте… Вы - Мастер? А я художник. Приятно познакомиться.",
@@ -1266,15 +1267,15 @@ var desks = {
 					"text": { "ru": "Мне тоже", "en": "..." },
 					"next": function(operators) { 
 						operators.D++;
-						return "plot4-12" }
+						return "plot_4-12" }
 				},
 				"2": {
 					"text": {"ru": "...", "en": "..."},
-					"next": function(operators) { return "plot4-12" }
+					"next": function(operators) { return "plot_4-12" }
 				}
 			}
 		},
-		"plot4-12": {
+		"plot_4-12": {
 			"title": text.CHARACTER_6, "img": 6,
 			"text": {
 				"ru": "Этот художник... Крайне подозрительный. Кто-то даже считает, что он одержим! Не помогайте ему!",
@@ -1285,34 +1286,34 @@ var desks = {
 					"text": { "ru": "Я сам решу...", "en": "..." },
 					"next": function(operators) { 
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
-						return "plot4-13" }
+						return "plot_4-13" }
 				},
 				"2": {
 					"text": {"ru": "Хорошо", "en": "..."},
-					"next": function(operators) { return "plot4-13" }
+					"next": function(operators) { return "plot_4-13" }
 				}
 			}
 		},
-		"plot4-13": {
+		"plot_4-13": {
 			"desk": "phoenix",
 			// если условие выполнено - выдаст карточку из указанной колоды, если не выполнено, сразу выдаст то, что в next()
 			"check_condition": function(operators) {
 				return operators.Art_phoenix >= 1
 			},
 			"next": function(operators) {
-				return "plot4-14"
+				return "plot_4-14"
 			}
 		},
-		"plot4-14": {
+		"plot_4-14": {
 			"desk": "flower",
 			"check_condition": function(operators) {
 				return operators.Art_flower >= 1
 			},
 			"next": function(operators) {
-				return "plot4-15"
+				return "plot_4-15"
 			}
 		},
-		"plot4-15": {
+		"plot_4-15": {
 			"title": text.CHARACTER_10, "img": 10,
 			"text": {
 				"ru": "Приветствую! А вот и вы… Хо-хо. Его Величеству служат все, кто владеет Искусством. Распишитесь здесь, и вот здесь.",
@@ -1321,18 +1322,18 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Выбора нет…", "en": "..." },
-					"next": function(operators) { return "plot4-16" }
+					"next": function(operators) { return "plot_4-16" }
 				},
 				"2": {
 					"text": {"ru": "Отлично!", "en": "..."},
 					"next": function(operators) { 
 						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
 						operators.D++;
-						return "plot4-16" }
+						return "plot_4-16" }
 				}
 			}
 		},
-		"plot4-16": {
+		"plot_4-16": {
 			"title": text.CHARACTER_10, "img": 10,
 			"text": {
 				"ru": " Отлично! Поздравляю, теперь вы на службе у короны",
@@ -1344,30 +1345,30 @@ var desks = {
 					"next": function(operators) { 
 						operators.Z+=1;
 
-						return "plot4-17" }
+						return "plot_4-17" }
 				},
 				"2": {
 					"text": {"ru": "Ураа!", "en": "..."},
-					"next": function(operators) { return "plot4-17" }
+					"next": function(operators) { return "plot_4-17" }
 				}
 			}
 		},
-		"plot4-17": {
-			"desk": "rand_4",
+		"plot_4-17": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-18"
+				return "plot_4-18"
 			}
 		},
-		"plot4-18": {
+		"plot_4-18": {
 			"desk": "ball",
 			"check_condition": function(operators) {
 				return operators.Art_ball >= 1
 			},
 			"next": function(operators) {
-				return "plot4-19"
+				return "plot_4-19"
 			}
 		},
-		"plot4-19": {
+		"plot_4-19": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "Подайте... Подайте нищему. У меня ничего нет. Подайте монетку и немного еды.",
@@ -1380,45 +1381,45 @@ var desks = {
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						operators.money_stat -= MONEY_STAT_DELTA_1;
 						operators.N += 1;
-						return "plot4-20" }
+						return "plot_4-20" }
 				},
 				"2": {
 					"text": {"ru": "Не давать", "en": "..."},
 					"next": function(operators) { 
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
-						return "plot4-20" }
+						return "plot_4-20" }
 				}
 			}
 		},
 		
-		"plot4-20": {
-			"desk": "rand_4",
+		"plot_4-20": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-21"
+				return "plot_4-21"
 			}
 		},
-		"plot4-21": {
-			"desk": "rand_4",
+		"plot_4-21": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-22"
+				return "plot_4-22"
 			}
 		},
-		"plot4-22": {
+		"plot_4-22": {
 			"desk": "cosmos",
 			"check_condition": function(operators) {
 				return operators.Art_cosmos >= 1
 			},
 			"next": function(operators) {
-				return "plot4-23"
+				return "plot_4-23"
 			}
 		},
-		"plot4-23": {
-			"desk": "rand_4",
+		"plot_4-23": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-24"
+				return "plot_4-24"
 			}
 		},
-		"plot4-24": {
+		"plot_4-24": {
 			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "Луна сегодня в благоприятной фазе. Зачаровать несколько лунных монет?",
@@ -1428,21 +1429,21 @@ var desks = {
 				"1": {
 					"text": { "ru": "Да (за рекламу)", "en": "..." },
 					// здесь при нажатии на этот вариант ответа происходит не переход на другую карточку, а показ рекламы (либо другое действие может быть)
-					"next": function(operators) { return "show_rewarded_ad;plot4-25" }
+					"next": function(operators) { return "show_rewarded_ad;plot_4-25" }
 				},
 				"2": {
 					"text": {"ru": "Нет", "en": "..."},
-					"next": function(operators) { return "plot4-25" }
+					"next": function(operators) { return "plot_4-25" }
 				}
 			}
 		},
-		"plot4-25": {
-			"desk": "rand_4",
+		"plot_4-25": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-26"
+				return "plot_4-26"
 			}
 		},
-		"plot4-26": {
+		"plot_4-26": {
 			"title": text.CHARACTER_8, "img": 8,
 			"text": {
 				"ru": "Сегодня прекрасная погода, правда? Самое время для выгодных приобретений!",
@@ -1455,11 +1456,11 @@ var desks = {
 				},
 				"2": {
 					"text": {"ru": "Нет", "en": "..."},
-					"next": function(operators) { return "plot4-27" }
+					"next": function(operators) { return "plot_4-27" }
 				}
 			}
 		},
-		"plot4-27": {
+		"plot_4-27": {
 			"title": text.CHARACTER_11, "img": 11,
 			"text": {
 				"ru": "Это будет величайший шедевр. Вот только у меня совсем кончился <i class='ultramarin'>синий ультрамарин.</i> Поможете с этим?",
@@ -1473,26 +1474,26 @@ var desks = {
 						operators.hp_stat -= HEALTH_STAT_DELTA_1;
 						operators.money_stat += MONEY_STAT_DELTA_1;
 						operators.H += 1;
-						return "plot4-28" }
+						return "plot_4-28" }
 				},
 				"2": {
 					"text": {"ru": "Это же вредно!", "en": "..."},
 					"next": function(operators) { 
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
-						return "plot4-28" }
+						return "plot_4-28" }
 				}
 			}
 		},
-		"plot4-28": {
+		"plot_4-28": {
 			"desk": "phoenix",
 			"check_condition": function(operators) {
 				return operators.Art_phoenix >= 1
 			},
 			"next": function(operators) {
-				return "plot4-29"
+				return "plot_4-29"
 			}
 		},
-		"plot4-29": {
+		"plot_4-29": {
 			"title": text.CHARACTER_12, "img": 12,
 			"text": {
 				"ru": "Здравствуйте! Я видал многое. Страну фей и эльфов и страну тех, кто предан Луне… Я рад, что теперь у нас есть толковый человек.",
@@ -1503,15 +1504,15 @@ var desks = {
 					"text": { "ru": "Приятно познакомиться", "en": "..." },
 					"next": function(operators) { 
 						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
-						return "plot4-30" }
+						return "plot_4-30" }
 				},
 				"2": {
 					"text": {"ru": "Хм...", "en": "..."},
-					"next": function(operators) { return "plot4-30" }
+					"next": function(operators) { return "plot_4-30" }
 				}
 			}
 		},
-		"plot4-30": {
+		"plot_4-30": {
 			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "К вам в мастерскую зашла девушка. Она проворно стянула туфельку, шёлковые завязки которой разошлись.",
@@ -1520,15 +1521,15 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "...", "en": "..." },
-					"next": function(operators) { return "plot4-31" }
+					"next": function(operators) { return "plot_4-31" }
 				},
 				"2": {
 					"text": {"ru": "...", "en": "..."},
-					"next": function(operators) { return "plot4-31" }
+					"next": function(operators) { return "plot_4-31" }
 				}
 			}
 		},
-		"plot4-31": {
+		"plot_4-31": {
 			"title": text.CHARACTER_13, "img": 13,
 			"text": {
 				"ru": "Алхимик, не так ли? Вы мне не поможете?",
@@ -1539,17 +1540,17 @@ var desks = {
 					"text": { "ru": "Да, конечно…", "en": "..." },
 					"next": function(operators) { 
 						operators.Sym += 1;
-						return "plot4-31-1" }
+						return "plot_4-31-1" }
 				},
 				"2": {
 					"text": {"ru": "Эм… Эм!...", "en": "..."},
 					"next": function(operators) { 
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
-						return "plot4-32" }
+						return "plot_4-32" }
 				}
 			}
 		},
-		"plot4-31-1": {
+		"plot_4-31-1": {
 			"title": text.CHARACTER_13, "img": 13,
 			"text": {
 				"ru": "Спасибо вам большое, у вас очень доброе сердце… Меня зовут Алия. Будем знакомы, Мастер!",
@@ -1558,17 +1559,17 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Она странная", "en": "..." },
-					"next": function(operators) { return "plot4-32" }
+					"next": function(operators) { return "plot_4-32" }
 				},
 				"2": {
 					"text": {"ru": "Она очаровательная", "en": "..."},
 					"next": function(operators) { 
 						operators.Sym += 1;
-						return "plot4-32" }
+						return "plot_4-32" }
 				}
 			}
 		},
-		"plot4-32": {
+		"plot_4-32": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "Подайте... Подайте нищему. У меня ничего нет. Подайте монетку и немного еды.",
@@ -1580,53 +1581,53 @@ var desks = {
 					"next": function(operators) { 
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						operators.money_stat -= MONEY_STAT_DELTA_1;
-						return "plot4-33" }
+						return "plot_4-33" }
 				},
 				"2": {
 					"text": {"ru": "Не давать", "en": "..."},
 					"next": function(operators) { 
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
-						return "plot4-33" }
+						return "plot_4-33" }
 				}
 			}
 		},
-		"plot4-33": {
+		"plot_4-33": {
 			"desk": "flower",
 			"check_condition": function(operators) {
 				return operators.Art_flower >= 1
 			},
 			"next": function(operators) {
-				return "plot4-34"
+				return "plot_4-34"
 			}
 		},
-		"plot4-34": {
-			"desk": "rand_4",
+		"plot_4-34": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-35"
+				return "plot_4-35"
 			}
 		},
-		"plot4-35": {
-			"desk": "rand_4",
+		"plot_4-35": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-36"
+				return "plot_4-36"
 			}
 		},
-		"plot4-36": {
-			"desk": "rand_4",
+		"plot_4-36": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-37"
+				return "plot_4-37"
 			}
 		},
-		"plot4-37": {
+		"plot_4-37": {
 			"desk": "cosmos",
 			"check_condition": function(operators) {
 				return operators.Art_cosmos >= 1
 			},
 			"next": function(operators) {
-				return "plot4-38"
+				return "plot_4-38"
 			}
 		},
-		"plot4-38": {
+		"plot_4-38": {
 			"title": text.CHARACTER_8, "img": 8,
 			"text": {
 				"ru": "Ну как дела? Нравится в городе?",
@@ -1637,21 +1638,21 @@ var desks = {
 					"text": { "ru": "Очень!", "en": "..." },
 					"next": function(operators) { 
 						operators.O += 1;
-						return "plot4-39" }
+						return "plot_4-39" }
 				},
 				"2": {
 					"text": {"ru": "Да скучно пока как-то…", "en": "..."},
-					"next": function(operators) { return "plot4-39" }
+					"next": function(operators) { return "plot_4-39" }
 				}
 			}
 		},
-		"plot4-39": {
-			"desk": "rand_4",
+		"plot_4-39": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-40"
+				return "plot_4-40"
 			}
 		},
-		"plot4-40": {
+		"plot_4-40": {
 			"title": text.CHARACTER_8, "img": 8,
 			"text": {
 				"ru": "В городе говорят, что я, дескать, жадный. Но это неправда! Знали бы все они скольких трудов стоит все это…",
@@ -1660,53 +1661,53 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Очень жадный", "en": "..." },
-					"next": function(operators) { return "plot4-41" }
+					"next": function(operators) { return "plot_4-41" }
 				},
 				"2": {
 					"text": {"ru": "Да ну нет, конечно", "en": "..."},
 					"next": function(operators) { 
 						operators.D += 1;
-						return "plot4-41" }
+						return "plot_4-41" }
 				}
 			}
 		},
-		"plot4-41": {
-			"desk": "rand_4",
+		"plot_4-41": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-42"
+				return "plot_4-42"
 			}
 		},
-		"plot4-42": {
-			"desk": "rand_4",
+		"plot_4-42": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-43"
+				return "plot_4-43"
 			}
 		},
-		"plot4-43": {
+		"plot_4-43": {
 			"desk": "stormglass",
 			"check_condition": function(operators) {
 				return operators.Art_stormglass >= 1
 			},
 			"next": function(operators) {
-				return "plot4-44"
+				return "plot_4-44"
 			}
 		},
-		"plot4-44": {
-			"desk": "rand_4",
+		"plot_4-44": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-45"
+				return "plot_4-45"
 			}
 		},
-		"plot4-45": {
-			"desk": "rand_4",
+		"plot_4-45": {
+			"desk": "rand4",
 			"next": function(operators) {
 				if (operators.N == 3) {
-					return "plot4-46-1"
+					return "plot_4-46-1"
 				}
-				return "plot4-47"
+				return "plot_4-47"
 			}
 		},
-		"plot4-46-1": {
+		"plot_4-46-1": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "...",
@@ -1715,15 +1716,15 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Ну, чего тебе?", "en": "..." },
-					"next": function(operators) { return "plot4-46-2" }
+					"next": function(operators) { return "plot_4-46-2" }
 				},
 				"2": {
 					"text": {"ru": "...", "en": "..."},
-					"next": function(operators) { return "plot4-46-2" }
+					"next": function(operators) { return "plot_4-46-2" }
 				}
 			}
 		},
-		"plot4-46-2": {
+		"plot_4-46-2": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "Вы были добры. Очень добры… Вот. Примите это. Это хорошая вещь…",
@@ -1732,15 +1733,15 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "...", "en": "..." },
-					"next": function(operators) { return "plot4-46-3" }
+					"next": function(operators) { return "plot_4-46-3" }
 				},
 				"2": {
 					"text": {"ru": "Спасибо?", "en": "..."},
-					"next": function(operators) { return "plot4-46-3" }
+					"next": function(operators) { return "plot_4-46-3" }
 				}
 			}
 		},
-		"plot4-46-3": {
+		"plot_4-46-3": {
 			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "У вас в руках оказался золотой медальон. Он источал слабое волшебное сияние. Его можно продать. Или усилить.",
@@ -1751,18 +1752,18 @@ var desks = {
 					"text": { "ru": "Продать", "en": "..." },
 					"next": function(operators) { 
 						operators.money_stat += MONEY_STAT_DELTA_1;
-						return "plot4-46-3-1" }
+						return "plot_4-46-3-1" }
 				},
 				"2": {
 					"text": {"ru": "Зачаровать", "en": "..."},
 					"next": function(operators) { 
 
 						operators.power_stat -= POWER_STAT_DELTA_1;
-						return "plot4-47" }
+						return "plot_4-47" }
 				}
 			}
 		},
-		"plot4-46-3-1": {
+		"plot_4-46-3-1": {
 			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "Теперь медальон защитит владельца от любого негативного воздействия. В будущем это может пригодиться…",
@@ -1773,29 +1774,29 @@ var desks = {
 					"text": { "ru": "Продать", "en": "..." },
 					"next": function(operators) { 
 						operators.money_stat += MONEY_STAT_DELTA_1;
-						return "plot4-47" }
+						return "plot_4-47" }
 				},
 				"2": {
 					"text": {"ru": "Зачаровать", "en": "..."},
 					"next": function(operators) { 
 						operators.M = 1;
-						return "plot4-47" }
+						return "plot_4-47" }
 				}
 			}
 		},
-		"plot4-47": {
-			"desk": "rand_4",
+		"plot_4-47": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-48"
+				return "plot_4-48"
 			}
 		},
-		"plot4-48": {
-			"desk": "rand_4",
+		"plot_4-48": {
+			"desk": "rand4",
 			"next": function(operators) {
-				return "plot4-49"
+				return "plot_4-49"
 			}
 		},
-		"plot4-49": {
+		"plot_4-49": {
 			"title": text.CHARACTER_11, "img": 11,
 			"text": {
 				"ru": "Что-то необыкновенное витает в воздухе… Я это чувствую…",
@@ -1804,17 +1805,17 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Что за вздор!", "en": "..." },
-					"next": function(operators) { return "plot4-50" }
+					"next": function(operators) { return "plot_4-50" }
 				},
 				"2": {
 					"text": {"ru": "Что-то грядет…", "en": "..."},
 					"next": function(operators) { 
 						operators.S += 1;
-						return "plot4-50" }
+						return "plot_4-50" }
 				}
 			}
 		},
-		"plot4-50": {
+		"plot_4-50": {
 			"title": text.CHARACTER_8, "img": 8,
 			"text": {
 				"ru": "В честь нашей дружбы я хочу сделать подарок. Это <i class='orange'>яйцо</i>. Я, правда, не совсем уверен, кто из него вылупится…",
@@ -1825,15 +1826,15 @@ var desks = {
 					"text": { "ru": "Круто! Спасибо!", "en": "..." },
 					"next": function(operators) { 
 						operators.D += 1;
-						return "plot4-50-1" }
+						return "plot_4-50-1" }
 				},
 				"2": {
 					"text": {"ru": "Мне это не надо", "en": "..."},
-					"next": function(operators) { return "plot4-50-2" }
+					"next": function(operators) { return "plot_4-50-2" }
 				}
 			}
 		},
-		"plot4-50-1": {
+		"plot_4-50-1": {
 			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "Яйцо лежало, загадочно переливаясь в свете огня. (Внимание: от ваших действий будет зависеть какой вид получится)",
@@ -1845,15 +1846,15 @@ var desks = {
 					"text": { "ru": "Положить в огонь", "en": "..." },
 					"next": function(operators) { 
 						operators.Dr += 1;
-						return "plot4-50-1-2" }
+						return "plot_4-50-1-2" }
 				},
 				"2": {
 					"text": {"ru": "Оставить на столе", "en": "..."},
-					"next": function(operators) { return "plot4-50-1-2" }
+					"next": function(operators) { return "plot_4-50-1-2" }
 				}
 			}
 		},
-		"plot4-50-1-2": {
+		"plot_4-50-1-2": {
 			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "Яйцо лежало, загадочно переливаясь в свете огня. (Внимание: от ваших действий будет зависеть какой вид получится)",
@@ -1865,16 +1866,16 @@ var desks = {
 					"text": { "ru": "Положить в огонь", "en": "..." },
 					"next": function(operators) { 
 						operators.Dr += 1;
-						return "plot4-50-1-3" }
+						return "plot_4-50-1-3" }
 				},
 				"2": {
 					"text": {"ru": "Оставить на столе", "en": "..."},
-					"next": function(operators) { return "plot4-50-1-3" }
+					"next": function(operators) { return "plot_4-50-1-3" }
 				}
 			}
 		},
 		
-		"plot4-50-1-3": {
+		"plot_4-50-1-3": {
 			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "Яйцо лежало, загадочно переливаясь в свете огня. (Внимание: от ваших действий будет зависеть какой вид получится)",
@@ -1886,15 +1887,15 @@ var desks = {
 					"text": { "ru": "Положить в огонь", "en": "..." },
 					"next": function(operators) { 
 						operators.Dr += 1;
-						return "plot4-50-3" }
+						return "plot_4-50-3" }
 				},
 				"2": {
 					"text": {"ru": "Оставить на столе", "en": "..."},
-					"next": function(operators) { return "plot4-50-3" }
+					"next": function(operators) { return "plot_4-50-3" }
 				}
 			}
 		},
-		"plot4-50-2": {
+		"plot_4-50-2": {
 			"title": text.CHARACTER_8, "img": 8,
 			"text": {
 				"ru": "А я не спрашиваю! Бери, а то разобью его прямо тебе на прилавок. Куда мне девать его, а?",
@@ -1903,15 +1904,15 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Слов нет!", "en": "..." },
-					"next": function(operators) { return "plot4-50-1" }
+					"next": function(operators) { return "plot_4-50-1" }
 				},
 				"2": {
 					"text": {"ru": "Ну ладно", "en": "..."},
-					"next": function(operators) { return "plot4-50-1" }
+					"next": function(operators) { return "plot_4-50-1" }
 				}
 			}
 		},
-		"plot4-50-3": {
+		"plot_4-50-3": {
 			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "Теперь нужно только ждать. Время до вылупления: <timer>. Пропустить за рекламу?",
@@ -1924,11 +1925,11 @@ var desks = {
 				},
 				"2": {
 					"text": {"ru": "Нет", "en": "..."},
-					"next": function(operators) { return "plot4-50-4" }
+					"next": function(operators) { return "plot_4-50-4" }
 				}
 			}
 		},
-		"plot4-50-4": {
+		"plot_4-50-4": {
 			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				// здесь у нас подстановка: вместо <dragon_type> будет подставлено нужное значение. Нужно будет потом мне написать список всех подстановок и на что они заменяются
@@ -1938,42 +1939,42 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Ну здравствуй, малыш!", "en": "..." },
-					"next": function(operators) { return "plot5-0" }
+					"next": function(operators) { return "plot_5-0" }
 				},
 				"2": {
 					"text": {"ru": "Хочу другого дракона!", "en": "..."},
 					"next": function(operators) { 
 						operators.Dr = 0;
-						return "plot4-50-1" }
+						return "plot_4-50-1" }
 				}
 			}
 		},
-		"plot5-0": {
+		"plot_5-0": {
 			"desk": "chapter_2",
 			"save_point": "chapter_2",
 			"next": function(operators) {
-				return "plot5-1"
+				return "plot_5-1"
 			}
 		},
-		"plot5-1": {
+		"plot_5-1": {
 			"desk": "phoenix",
 			"check_condition": function(operators) {
 				return operators.Art_phoenix >= 1
 			},
 			"next": function(operators) {
-				return "plot5-2"
+				return "plot_5-2"
 			}
 		},
-		"plot5-2": {
+		"plot_5-2": {
 			"desk": "flower",
 			"check_condition": function(operators) {
 				return operators.Art_flower >= 1
 			},
 			"next": function(operators) {
-				return "plot5-3"
+				return "plot_5-3"
 			}
 		},
-		"plot5-3": {
+		"plot_5-3": {
 			"title": text.CHARACTER_3, "img": 3,
 			"text": {
 				"ru": "Дяденька, представляете! Я видел сегодня дракона! Он парил высоко в вышине.",
@@ -1984,15 +1985,15 @@ var desks = {
 					"text": { "ru": "Да неправда!", "en": "..." },
 					"next": function(operators) { 
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
-						return "plot5-4" }
+						return "plot_5-4" }
 				},
 				"2": {
 					"text": {"ru": "Может быть…", "en": "..."},
-					"next": function(operators) { return "plot5-4" }
+					"next": function(operators) { return "plot_5-4" }
 				}
 			}
 		},
-		"plot5-4": {
+		"plot_5-4": {
 			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "Луна сегодня в благоприятной фазе. Зачаровать несколько лунных монет?",
@@ -2002,15 +2003,15 @@ var desks = {
 				"1": {
 					"text": { "ru": "Да (за рекламу)", "en": "..." },
 					// здесь как бы пока рекламы, а потом переход на следующую карточку
-					"next": function(operators) { return "show_rewarded_ad;plot5-5" }
+					"next": function(operators) { return "show_rewarded_ad;plot_5-5" }
 				},
 				"2": {
 					"text": {"ru": "Нет", "en": "..."},
-					"next": function(operators) { return "plot5-5" }
+					"next": function(operators) { return "plot_5-5" }
 				}
 			}
 		},
-		"plot5-5": {
+		"plot_5-5": {
 			"title": text.CHARACTER_11, "img": 11,
 			"text": {
 				"ru": "Это будет величайший шедевр. Вот только у меня совсем кончился <i class='red'>киноварь.</i> Поможете с этим?",
@@ -2023,38 +2024,38 @@ var desks = {
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						operators.hp_stat -= HEALTH_STAT_DELTA_1;
 						operators.money_stat += MONEY_STAT_DELTA_1;
-						return "plot5-6" }
+						return "plot_5-6" }
 				},
 				"2": {
 					"text": {"ru": " Это же вредно!", "en": "..."},
 					"next": function(operators) { 
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
-						return "plot5-6" }
+						return "plot_5-6" }
 				}
 			}
 		},
-		"plot5-6": {
+		"plot_5-6": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-7"
+				return "plot_5-7"
 			}
 		},
-		"plot5-7": {
+		"plot_5-7": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-8"
+				return "plot_5-8"
 			}
 		},
-		"plot5-8": {
+		"plot_5-8": {
 			"desk": "cosmos",
 			"check_condition": function(operators) {
 				return operators.Art_cosmos >= 1
 			},
 			"next": function(operators) {
-				return "plot5-9"
+				return "plot_5-9"
 			}
 		},
-		"plot5-9": {
+		"plot_5-9": {
 			"title": text.CHARACTER_6, "img": 6,
 			"text": {
 				"ru": "Вы видели странного мальчика?",
@@ -2063,28 +2064,28 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Что…", "en": "..." },
-					"next": function(operators) { return "plot5-10" }
+					"next": function(operators) { return "plot_5-10" }
 				},
 				"2": {
 					"text": {"ru": "Эм… Нет?", "en": "..."},
-					"next": function(operators) { return "plot5-10" }
+					"next": function(operators) { return "plot_5-10" }
 				}
 			}
 		},
-		"plot5-10": {
+		"plot_5-10": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-11"
+				return "plot_5-11"
 			}
 		},
-		"plot5-11": {
+		"plot_5-11": {
 			// здесь тоже подстановка, но уже оператора. т.е. если Dr = 0, то выдаст из колоды dragon_0, если Dr=1, то из dragon_1 и т.д.
 			"desk": "dragon_<operators.Dr>",
 			"next": function(operators) {
-				return "plot5-12"
+				return "plot_5-12"
 			}
 		},
-		"plot5-12": {
+		"plot_5-12": {
 			"title": text.CHARACTER_3, "img": 3,
 			"text": {
 				"ru": "Может быть у вас есть какая-то работа для меня?",
@@ -2093,15 +2094,15 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Да", "en": "..." },
-					"next": function(operators) { return "plot5-12-1" }
+					"next": function(operators) { return "plot_5-12-1" }
 				},
 				"2": {
 					"text": {"ru": "Нет, пока нет…", "en": "..."},
-					"next": function(operators) { return "plot5-13" }
+					"next": function(operators) { return "plot_5-13" }
 				}
 			}
 		},
-		"plot5-12-1": {
+		"plot_5-12-1": {
 			"title": text.CHARACTER_3, "img": 3,
 			"text": {
 				"ru": "Я готов",
@@ -2112,27 +2113,27 @@ var desks = {
 					"text": { "ru": "Да", "en": "..." },
 					"next": function(operators) { 
 						operators.U += 1;
-						return "plot5-13" }
+						return "plot_5-13" }
 				},
 				"2": {
 					"text": {"ru": "Мне нужно время подумать", "en": "..."},
-					"next": function(operators) { return "plot5-13" }
+					"next": function(operators) { return "plot_5-13" }
 				}
 			}
 		},
-		"plot5-13": {
+		"plot_5-13": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-14"
+				return "plot_5-14"
 			}
 		},
-		"plot5-14": {
+		"plot_5-14": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-15"
+				return "plot_5-15"
 			}
 		},
-		"plot5-15": {
+		"plot_5-15": {
 			"title": text.CHARACTER_11, "img": 11,
 			"text": {
 				"ru": "Это будет величайший шедевр. Вот только у меня совсем кончился <i class='auripigment'>аурипигмент.</i> Поможете с этим?",
@@ -2146,31 +2147,31 @@ var desks = {
 						operators.hp_stat -= HEALTH_STAT_DELTA_1;
 						operators.money_stat += MONEY_STAT_DELTA_1;
 						operators.H += 1;
-						return "plot5-16" }
+						return "plot_5-16" }
 				},
 				"2": {
 					"text": {"ru": "Это же вредно!", "en": "..."},
 					"next": function(operators) { 
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
-						return "plot5-16" }
+						return "plot_5-16" }
 				}
 			}
 		},
-		"plot5-16": {
+		"plot_5-16": {
 			"desk": "phoenix",
 			"check_condition": function(operators) {
 				return operators.Art_phoenix >= 1
 			},
 			"next": function(operators) {
 				if (operators.U == 1) {
-					return "plot5-17"
+					return "plot_5-17"
 				} else {
-					return "plot5-18"
+					return "plot_5-18"
 				}
 				
 			}
 		},
-		"plot5-17": {
+		"plot_5-17": {
 			"title": text.CHARACTER_3, "img": 3,
 			"text": {
 				"ru": "Вы проверили работу парнишки. На некоторых реактивах отчетливо виднелись следы магического пламени... Теперь их придется выбросить",
@@ -2181,54 +2182,54 @@ var desks = {
 					"text": { "ru": "К насущным делам", "en": "..." },
 					"next": function(operators) { 
 						operators.power_stat -= POWER_STAT_DELTA_1;
-						return "plot5-18" }
+						return "plot_5-18" }
 				},
 				"2": {
 					"text": {"ru": "Эм… Нет?", "en": "..."},
 					"next": function(operators) { 
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						operators.Z -= 1;
-						return "plot5-18" }
+						return "plot_5-18" }
 				}
 			}
 		},
-		"plot5-18": {
+		"plot_5-18": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-19"
+				return "plot_5-19"
 			}
 		},
-		"plot5-19": {
+		"plot_5-19": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-20"
+				return "plot_5-20"
 			}
 		},
-		"plot5-20": {
+		"plot_5-20": {
 			"desk": "ball",
 			"check_condition": function(operators) {
 				return operators.Art_ball >= 1
 			},
 			"next": function(operators) {
-				return "plot5-21"
+				return "plot_5-21"
 			}
 		},
-		"plot5-21": {
+		"plot_5-21": {
 			"desk": "dragon_<operators.Dr>",
 			"next": function(operators) {
-				return "plot5-22"
+				return "plot_5-22"
 			}
 		},
-		"plot5-22": {
+		"plot_5-22": {
 			"desk": "chapter_2",
 			"next": function(operators) {
 				if (operators.U == 1) {
-					return "plot5-22-1"
+					return "plot_5-22-1"
 				}
-				return "plot5-23"
+				return "plot_5-23"
 			}
 		},
-		"plot5-22-1": {
+		"plot_5-22-1": {
 			"title": text.CHARACTER_3, "img": 3,
 			"text": {
 				"ru": " Извините за произошедшее... Не прогоняйте меня. Мне больше некуда идти…",
@@ -2239,15 +2240,15 @@ var desks = {
 					"text": { "ru": "Все хорошо, не переживай", "en": "..." },
 					"next": function(operators) { 
 						operators.U += 1;
-						return "plot5-22-1_good" }
+						return "plot_5-22-1_good" }
 				},
 				"2": {
 					"text": {"ru": "Пшел вон, вредитель!", "en": "..."},
-					"next": function(operators) { return "plot5-22-1_sad" }
+					"next": function(operators) { return "plot_5-22-1_sad" }
 				}
 			}
 		},
-		"plot5-22-1_good": {
+		"plot_5-22-1_good": {
 			"title": text.CHARACTER_3, "img": 3,
 			"text": {
 				"ru": "Вы вновь проверили работу парнишки. На некоторых реактивах отчетливо виднелись следы магического пламени... Кажется, у него дар. И недюжинный…",
@@ -2258,17 +2259,17 @@ var desks = {
 					"text": { "ru": "Вернуться к делам", "en": "..." },
 					"next": function(operators) { 
 						operators.power_stat -= POWER_STAT_DELTA_1;
-						return "plot5-23" }
+						return "plot_5-23" }
 				},
 				"2": {
 					"text": {"ru": "Пойти проветриться", "en": "..."},
 					"next": function(operators) { 
 						operators.power_stat -= POWER_STAT_DELTA_1;
-						return "plot5-23" }
+						return "plot_5-23" }
 				}
 			}
 		},
-		"plot5-22-1_sad": {
+		"plot_5-22-1_sad": {
 			"title": text.CHARACTER_3, "img": 3,
 			"text": {
 				"ru": "Мальчик ушел. Он знал, что вы прогоните его, и знал, что заслужил это. Возможно, это стало последней каплей в становлении его мнения о людях…",
@@ -2279,41 +2280,41 @@ var desks = {
 					"text": { "ru": "...", "en": "..." },
 					"next": function(operators) { 
 						
-						return "plot5-23" }
+						return "plot_5-23" }
 				},
 				"2": {
 					"text": {"ru": "...", "en": "..."},
 					"next": function(operators) { 
 						
-						return "plot5-23" }
+						return "plot_5-23" }
 				}
 			}
 		},
-		"plot5-23": {
+		"plot_5-23": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-24"
+				return "plot_5-24"
 			}
 		},
-		"plot5-24": {
+		"plot_5-24": {
 			"desk": "cosmos",
 			"check_condition": function(operators) {
 				return operators.Art_cosmos >= 1
 			},
 			"next": function(operators) {
-				return "plot5-25"
+				return "plot_5-25"
 			}
 		},
-		"plot5-25": {
+		"plot_5-25": {
 			"desk": "chapter_2",
 			"next": function(operators) {
 				if (operators.U == 2) {
-					return "plot5_boy_7"
+					return "plot_5_boy_7"
 				}
-				return "plot5-26"
+				return "plot_5-26"
 			}
 		},
-		"plot5_boy_7": {
+		"plot_5_boy_7": {
 			"title": text.CHARACTER_3, "img": 3,
 			"text": {
 				"ru": "Простите! Во имя Великого Творца простите! Я... Я буду стараться бороться с этим... Подавлять, если хотите… ",
@@ -2324,15 +2325,15 @@ var desks = {
 					"text": { "ru": "Не стоит. Развивай свою магию", "en": "..." },
 					"next": function(operators) { 
 						operators.U += 1;
-						return "plot5-26" }
+						return "plot_5-26" }
 				},
 				"2": {
 					"text": {"ru": "Да, так будет лучше для всех.", "en": "..."},
-					"next": function(operators) { return "plot5-26" }
+					"next": function(operators) { return "plot_5-26" }
 				}
 			}
 		},
-		"plot5-26": {
+		"plot_5-26": {
 			"title": text.CHARACTER_14, "img": 14,
 			"text": {
 				"ru": " Там это... Животинка погибает. Может, ну... Сможете у себя приютить, а? Необычная животинка, я таких не видывал...",
@@ -2341,15 +2342,15 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Идём", "en": "..." },
-					"next": function(operators) { return "plot5_pegas-1" }
+					"next": function(operators) { return "plot_5_pegas-1" }
 				},
 				"2": {
 					"text": {"ru": "Мне некогда", "en": "..."},
-					"next": function(operators) { return "plot5_27" }
+					"next": function(operators) { return "plot_5_27" }
 				}
 			}
 		},
-		"plot5_pegas-1": {
+		"plot_5_pegas-1": {
 			"title": text.CHARACTER_19, "img": 9,
 			"text": {
 				"ru": "Маленький пегас не может подняться. Он отчаянно хлопает крыльями, но часы его сочтены.(На лечение уйдет много ресурсов, но в этом случае он останется у вас)",
@@ -2362,15 +2363,15 @@ var desks = {
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						operators.money_stat -= MONEY_STAT_DELTA_1;
 						operators.hp_stat -= HEALTH_STAT_DELTA_1;
-						return "plot5_pegas-3" }
+						return "plot_5_pegas-3" }
 				},
 				"2": {
 					"text": {"ru": "У вас нет возможности", "en": "..."},
-					"next": function(operators) { return "plot5-27" }
+					"next": function(operators) { return "plot_5-27" }
 				}
 			}
 		},
-		"plot5_pegas-3": {
+		"plot_5_pegas-3": {
 			"title": text.CHARACTER_19, "img": 9,
 			"text": {
 				"ru": "Спустя пару часов он уже чувствует себя лучше. Теперь он навсегда привяжется к вам и будет рядом в трудную минуту.",
@@ -2381,27 +2382,27 @@ var desks = {
 					"text": { "ru": "...", "en": "..." },
 					"next": function(operators) { 
 						
-						return "plot5-27" }
+						return "plot_5-27" }
 				},
 				"2": {
 					"text": {"ru": "...", "en": "..."},
-					"next": function(operators) { return "plot5-27" }
+					"next": function(operators) { return "plot_5-27" }
 				}
 			}
 		},
-		"plot5-27": {
+		"plot_5-27": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-28"
+				return "plot_5-28"
 			}
 		},
-		"plot5-28": {
+		"plot_5-28": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-29"
+				return "plot_5-29"
 			}
 		},
-		"plot5-29": {
+		"plot_5-29": {
 			"title": text.CHARACTER_24, "img": 24,
 			"text": {
 				"ru": "Здрастье-здрастье! Мы еще не знакомы. Еще бы! Только что вернулся с очередного подвига! А вы, типа, Мастер?",
@@ -2410,15 +2411,15 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Ну, типа; Эм?", "en": "..." },
-					"next": function(operators) { return "plot5-30" }
+					"next": function(operators) { return "plot_5-30" }
 				},
 				"2": {
 					"text": {"ru": " Попрошу!", "en": "..."},
-					"next": function(operators) { return "plot5-30" }
+					"next": function(operators) { return "plot_5-30" }
 				}
 			}
 		},
-		"plot5-30": {
+		"plot_5-30": {
 			"title": text.CHARACTER_14, "img": 14,
 			"text": {
 				"ru": "Ладно, мне некогда! Пока",
@@ -2427,21 +2428,21 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Пока!", "en": "..." },
-					"next": function(operators) { return "plot5-31" }
+					"next": function(operators) { return "plot_5-31" }
 				},
 				"2": {
 					"text": {"ru": "Ну и катись!", "en": "..."},
-					"next": function(operators) { return "plot5_31" }
+					"next": function(operators) { return "plot_5_31" }
 				}
 			}
 		},
-		"plot5-31": {
+		"plot_5-31": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5_children-2"
+				return "plot_5_children-2"
 			}
 		},
-		"plot5_children-2": {
+		"plot_5_children-2": {
 			"title": text.CHARACTER_16, "img": 16,
 			"text": {
 				"ru": "Дяденька, помогите! У этого котенка что-то с лапкой... Ему, наверное, очень больно.",
@@ -2453,17 +2454,17 @@ var desks = {
 					"next": function(operators) { 
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
-						return "plot5-vedma-1" }
+						return "plot_5-vedma-1" }
 				},
 				"2": {
 					"text": {"ru": "Остановить", "en": "..."},
 					"next": function(operators) { 
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
-						return "plot5-vedma-1" }
+						return "plot_5-vedma-1" }
 				}
 			}
 		},
-		"plot5-vedma-1": {
+		"plot_5-vedma-1": {
 			"title": text.CHARACTER_15, "img": 15,
 			"text": {
 				"ru": "Знаете... Они все смеются, но я-то знаю. Морская ведьма бродит по берегу. Берегитесь ее...",
@@ -2473,43 +2474,43 @@ var desks = {
 				"1": {
 					"text": { "ru": "Ой, да ладно!", "en": "..." },
 					"next": function(operators) { 
-						// функция может выполнить только один return. Соотвественно, если вернулось plot5_padawan-1, то остальные уже не будут возвращены
+						// функция может выполнить только один return. Соотвественно, если вернулось plot_5_padawan-1, то остальные уже не будут возвращены
 
 						// в зависимости от условия будет та или иная карточка. (И да-да, можно было через плавающие окна реализовать тоже самое;)  )
 						if (operators.U == 2) {
-							return "plot5_padawan-1"
+							return "plot_5_padawan-1"
 						}
 						if (operators.U == 3) {
-							return "plot5_padawan_m-1"
+							return "plot_5_padawan_m-1"
 						}
-						return "plot5-32" }
+						return "plot_5-32" }
 				},
 				"2": {
 					"text": {"ru": "Как интересно…", "en": "..."},
 					"next": function(operators) { 
 						if (operators.U == 2) {
-							return "plot5_padawan-1"
+							return "plot_5_padawan-1"
 						}
 						if (operators.U == 3) {
-							return "plot5_padawan_m-1"
+							return "plot_5_padawan_m-1"
 						}
-						return "plot5_32" }
+						return "plot_5_32" }
 				}
 			}
 		},
-		"plot5_padawan-1": {
+		"plot_5_padawan-1": {
 			"desk": "padawan",
 			"next": function(operators) {
-				return "plot5_33"
+				return "plot_5_33"
 			}
 		},
-		"plot5_padawan_m-1": {
+		"plot_5_padawan_m-1": {
 			"desk": "padawan_m",
 			"next": function(operators) {
-				return "plot5_33"
+				return "plot_5_33"
 			}
 		},
-		"plot5-33": {
+		"plot_5-33": {
 			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "Вы наводили порядок на полках и нашли сказочную по красоте крупную жемчужину...",
@@ -2520,45 +2521,45 @@ var desks = {
 					"text": { "ru": "Продать", "en": "..." },
 					"next": function(operators) { 
 						operators.money_stat += MONEY_STAT_DELTA_1;
-						return "plot5-34" }
+						return "plot_5-34" }
 				},
 				"2": {
 					"text": {"ru": "Оставить", "en": "..."},
 					"next": function(operators) { 
 						operators.G += 1;
-						return "plot5-34" }
+						return "plot_5-34" }
 				}
 			}
 		},
-		"plot5-34": {
+		"plot_5-34": {
 			"desk": "phoenix",
 			"check_condition": function(operators) {
 				return operators.Art_phoenix >= 1
 			},
 			"next": function(operators) {
-				return "plot5-35"
+				return "plot_5-35"
 			}
 		},
-		"plot5-35": {
+		"plot_5-35": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-36"
+				return "plot_5-36"
 			}
 		},
-		"plot5-36": {
+		"plot_5-36": {
 			"desk": "dragon_<operators.Dr>",
 			"next": function(operators) {
-				return "plot5-37"
+				return "plot_5-37"
 			}
 		},
-		"plot5-37": {
+		"plot_5-37": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-38"
+				return "plot_5-38"
 			}
 		},
 
-		"plot5-38": {
+		"plot_5-38": {
 			"title": text.CHARACTER_11, "img": 11,
 			"text": {
 				"ru": "Картина выходит поистине потрясающей!",
@@ -2567,15 +2568,15 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Покажете потом?", "en": "..." },
-					"next": function(operators) { return "plot5-39" }
+					"next": function(operators) { return "plot_5-39" }
 				},
 				"2": {
 					"text": {"ru": "Рад за вас", "en": "..."},
-					"next": function(operators) { return "plot5-39" }
+					"next": function(operators) { return "plot_5-39" }
 				}
 			}
 		},
-		"plot5-39": {
+		"plot_5-39": {
 			"title": text.CHARACTER_11, "img": 11,
 			"text": {
 				"ru": "Это будет величайший шедевр. Вот только у меня совсем кончился <i class='green'> вердигрис. </i> Поможете с этим?",
@@ -2589,26 +2590,26 @@ var desks = {
 						operators.hp_stat -= HEALTH_STAT_DELTA_1;
 						operators.money_stat += MONEY_STAT_DELTA_1;
 
-						return "plot5-40" }
+						return "plot_5-40" }
 				},
 				"2": {
 					"text": {"ru": "Это же вредно!", "en": "..."},
 					"next": function(operators) { 
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
-						return "plot5-40" }
+						return "plot_5-40" }
 				}
 			}
 		},
-		"plot5-40": {
+		"plot_5-40": {
 			"desk": "pegas",
 			"check_condition": function(operators) {
 				return operators.P >= 1
 			},
 			"next": function(operators) {
-				return "plot5_tigers-2"
+				return "plot_5_tigers-2"
 			}
 		},
-		"plot5_tigers-2": {
+		"plot_5_tigers-2": {
 			"title": text.CHARACTER_12, "img": 12,
 			"text": {
 				"ru": "Скоро я иду в большое плавание. Опасное путешествие… Пожелайте удачи!",
@@ -2617,7 +2618,7 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Пожелать", "en": "..." },
-					"next": function(operators) { return "plot5-41" }
+					"next": function(operators) { return "plot_5-41" }
 				},
 				"2": {
 					"text": {"ru": "Снабдить чем только можно", "en": "..."},
@@ -2625,26 +2626,26 @@ var desks = {
 						operators.money_stat -= MONEY_STAT_DELTA_1;
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						operators.T += 1;
-						return "plot5-41" }
+						return "plot_5-41" }
 				}
 			}
 		},
-		"plot5-41": {
+		"plot_5-41": {
 			"desk": "flower",
 			"check_condition": function(operators) {
 				return operators.Art_flower >= 1
 			},
 			"next": function(operators) {
-				return "plot5-42"
+				return "plot_5-42"
 			}
 		},
-		"plot5-42": {
+		"plot_5-42": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-43"
+				return "plot_5-43"
 			}
 		},
-		"plot5-43": {
+		"plot_5-43": {
 			"title": text.CHARACTER_11, "img": 11,
 			"text": {
 				"ru": "Знаете, хотите узнать секрет? Он избрал меня. Время пришло, и заточению настанет конец… Как только картина будет готова.",
@@ -2653,30 +2654,30 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Какой ужас!", "en": "..." },
-					"next": function(operators) { return "plot5-44" }
+					"next": function(operators) { return "plot_5-44" }
 				},
 				"2": {
 					"text": {"ru": "Наконец свершится!", "en": "..."},
 					"next": function(operators) { 
 						operators.S += 1;
-						return "plot5-44" }
+						return "plot_5-44" }
 				}
 			}
 		},
 
-		"plot5-44": {
+		"plot_5-44": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-45"
+				return "plot_5-45"
 			}
 		},
-		"plot5-45": {
+		"plot_5-45": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-46"
+				return "plot_5-46"
 			}
 		},
-		"plot5-46": {
+		"plot_5-46": {
 			"title": text.CHARACTER_13, "img": 13,
 			"text": {
 				"ru": "Некоторые вещи происходят, можем мы им противостоять или нет. Согласны?",
@@ -2685,15 +2686,15 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Согласен", "en": "..." },
-					"next": function(operators) { return "plot5-47" }
+					"next": function(operators) { return "plot_5-47" }
 				},
 				"2": {
 					"text": {"ru": "Вздор!", "en": "..."},
-					"next": function(operators) { return "plot5-47" }
+					"next": function(operators) { return "plot_5-47" }
 				}
 			}
 		},
-		"plot5-47": {
+		"plot_5-47": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "Он придёт. И тогда миру придёт конец!",
@@ -2702,71 +2703,71 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Да вы все ненормальные!", "en": "..." },
-					"next": function(operators) { return "plot5-48" }
+					"next": function(operators) { return "plot_5-48" }
 				},
 				"2": {
 					"text": {"ru": "Художник говорил об этом…", "en": "..."},
 					"next": function(operators) { 
 						operators.S += 1;
-						return "plot5-48" }
+						return "plot_5-48" }
 				}
 			}
 		},
-		"plot5-48": {
+		"plot_5-48": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-49"
+				return "plot_5-49"
 			}
 		},
-		"plot5-49": {
+		"plot_5-49": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-50"
+				return "plot_5-50"
 			}
 		},
-		"plot5-50": {
+		"plot_5-50": {
 			"desk": "stormglass",
 			"check_condition": function(operators) {
 				return operators.Art_stormglass >= 1
 			},
 			"next": function(operators) {
-				return "plot5-51"
+				return "plot_5-51"
 			}
 		},
-		"plot5-51": {
+		"plot_5-51": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-52"
+				return "plot_5-52"
 			}
 		},
-		"plot5-52": {
+		"plot_5-52": {
 			"desk": "pegas",
 			"check_condition": function(operators) {
 				return operators.P >= 1
 			},
 			"next": function(operators) {
-				return "plot5-53"
+				return "plot_5-53"
 			}
 		},
-		"plot5-53": {
+		"plot_5-53": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-54"
+				return "plot_5-54"
 			}
 		},
-		"plot5-54": {
+		"plot_5-54": {
 			"desk": "chapter_2",
 			"next": function(operators) {
-				return "plot5-55"
+				return "plot_5-55"
 			}
 		},
-		"plot5-55": {
+		"plot_5-55": {
 			"desk": "dragon_<operators.Dr>",
 			"next": function(operators) {
-				return "plot5-56"
+				return "plot_5-56"
 			}
 		},
-		"plot5-56": {
+		"plot_5-56": {
 			"title": text.CHARACTER_21, "img": 21,
 			"text": {
 				"ru": "Мне нужны ингредиенты с неоднозначной репутацией. Понимаете о чем я?",
@@ -2779,24 +2780,24 @@ var desks = {
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
 
-						return "plot5-57" }
+						return "plot_5-57" }
 				},
 				"2": {
 					"text": {"ru": "Не помогать", "en": "..."},
 					"next": function(operators) { 
 						operators.hp_stat -= HEALTH_STAT_DELTA_1;
-						return "plot5-57" }
+						return "plot_5-57" }
 				}
 			}
 		},
-		"plot5-57": {
+		"plot_5-57": {
 			"desk": "eternity",
 			save_point: "chapter_3",
 			"next": function(operators) {
-				return "plot5-58"
+				return "plot_5-58"
 			}
 		},
-		"plot5-58": {
+		"plot_5-58": {
 			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "Наступал день, который так многие ждали -  долгожданный Фестиваль!",
@@ -2806,18 +2807,18 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "...", "en": "..." },
-					"next": function(operators) { return "plot6-0" }
+					"next": function(operators) { return "plot_6-0" }
 				},
 				"2": {
 					"text": {"ru": "...", "en": "..."},
 					"next": function(operators) { 
 						
-						return "plot6-0" }
+						return "plot_6-0" }
 				}
 			}
 		},
 		// НАЧАЛО 3 главы 
-		"plot6-0": {
+		"plot_6-0": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "Он придёт. И тогда миру придёт конец!",
@@ -2826,17 +2827,17 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Да вы все ненормальные!", "en": "..." },
-					"next": function(operators) { return "plot5-48" }
+					"next": function(operators) { return "plot_5-48" }
 				},
 				"2": {
 					"text": {"ru": "Художник говорил об этом…", "en": "..."},
 					"next": function(operators) { 
 						operators.S += 1;
-						return "plot5-48" }
+						return "plot_5-48" }
 				}
 			}
 		},
-		"plot5-47": {
+		"plot_5-47": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "Он придёт. И тогда миру придёт конец!",
@@ -2845,17 +2846,17 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Да вы все ненормальные!", "en": "..." },
-					"next": function(operators) { return "plot5-48" }
+					"next": function(operators) { return "plot_5-48" }
 				},
 				"2": {
 					"text": {"ru": "Художник говорил об этом…", "en": "..."},
 					"next": function(operators) { 
 						operators.S += 1;
-						return "plot5-48" }
+						return "plot_5-48" }
 				}
 			}
 		},
-		"plot5-47": {
+		"plot_5-47": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "Он придёт. И тогда миру придёт конец!",
@@ -2864,17 +2865,17 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Да вы все ненормальные!", "en": "..." },
-					"next": function(operators) { return "plot5-48" }
+					"next": function(operators) { return "plot_5-48" }
 				},
 				"2": {
 					"text": {"ru": "Художник говорил об этом…", "en": "..."},
 					"next": function(operators) { 
 						operators.S += 1;
-						return "plot5-48" }
+						return "plot_5-48" }
 				}
 			}
 		},
-		"plot5-47": {
+		"plot_5-47": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "Он придёт. И тогда миру придёт конец!",
@@ -2883,17 +2884,17 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Да вы все ненормальные!", "en": "..." },
-					"next": function(operators) { return "plot5-48" }
+					"next": function(operators) { return "plot_5-48" }
 				},
 				"2": {
 					"text": {"ru": "Художник говорил об этом…", "en": "..."},
 					"next": function(operators) { 
 						operators.S += 1;
-						return "plot5-48" }
+						return "plot_5-48" }
 				}
 			}
 		},
-		"plot5-47": {
+		"plot_5-47": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "Он придёт. И тогда миру придёт конец!",
@@ -2902,17 +2903,17 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Да вы все ненормальные!", "en": "..." },
-					"next": function(operators) { return "plot5-48" }
+					"next": function(operators) { return "plot_5-48" }
 				},
 				"2": {
 					"text": {"ru": "Художник говорил об этом…", "en": "..."},
 					"next": function(operators) { 
 						operators.S += 1;
-						return "plot5-48" }
+						return "plot_5-48" }
 				}
 			}
 		},
-		"plot5-47": {
+		"plot_5-47": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "Он придёт. И тогда миру придёт конец!",
@@ -2921,17 +2922,17 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Да вы все ненормальные!", "en": "..." },
-					"next": function(operators) { return "plot5-48" }
+					"next": function(operators) { return "plot_5-48" }
 				},
 				"2": {
 					"text": {"ru": "Художник говорил об этом…", "en": "..."},
 					"next": function(operators) { 
 						operators.S += 1;
-						return "plot5-48" }
+						return "plot_5-48" }
 				}
 			}
 		},
-		"plot5-47": {
+		"plot_5-47": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "Он придёт. И тогда миру придёт конец!",
@@ -2940,17 +2941,17 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Да вы все ненормальные!", "en": "..." },
-					"next": function(operators) { return "plot5-48" }
+					"next": function(operators) { return "plot_5-48" }
 				},
 				"2": {
 					"text": {"ru": "Художник говорил об этом…", "en": "..."},
 					"next": function(operators) { 
 						operators.S += 1;
-						return "plot5-48" }
+						return "plot_5-48" }
 				}
 			}
 		},
-		"plot5-47": {
+		"plot_5-47": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "Он придёт. И тогда миру придёт конец!",
@@ -2959,17 +2960,17 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Да вы все ненормальные!", "en": "..." },
-					"next": function(operators) { return "plot5-48" }
+					"next": function(operators) { return "plot_5-48" }
 				},
 				"2": {
 					"text": {"ru": "Художник говорил об этом…", "en": "..."},
 					"next": function(operators) { 
 						operators.S += 1;
-						return "plot5-48" }
+						return "plot_5-48" }
 				}
 			}
 		},
-		"plot5-47": {
+		"plot_5-47": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
 				"ru": "Он придёт. И тогда миру придёт конец!",
@@ -2978,25 +2979,28 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Да вы все ненормальные!", "en": "..." },
-					"next": function(operators) { return "plot5-48" }
+					"next": function(operators) { return "plot_5-48" }
 				},
 				"2": {
 					"text": {"ru": "Художник говорил об этом…", "en": "..."},
 					"next": function(operators) { 
 						operators.S += 1;
-						return "plot5-48" }
+						return "plot_5-48" }
 				}
 			}
 		},
 		"for_rand1-1": {
 			"desk": "rand_3",
 			"next": function(operators) {
-				return "plot1-2"
+				return "plot_1-2"
 			}
 		}
 	},
-	"rand_4": {
-		"rand4-1": {
+	},
+	"rand4": { 
+		"type": "rand_norepeat",
+		"cards": {
+		"rand4-1_start": {
 			"title": text.CHARACTER_14, "img": 14,
 			"text": {
 				"ru": "О! Наконец-то в нашем городе Мастер появился! Это хорошо... да, хорошо... У меня дикая головная боль! А аптекарь лишь фигню говорит. Но вы-то поможете?",
@@ -3023,7 +3027,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-2": {
+		"rand4-2_start": {
 			"title": text.CHARACTER_15, "img": 15,
 			"text": {
 				"ru": "Глядите-ка! Видано ли такую рыбину поймать? Возьмете?",
@@ -3049,7 +3053,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-3": {
+		"rand4-3_start": {
 			"title": text.CHARACTER_15, "img": 15,
 			"text": {
 				"ru": "Эх, совсем не ловит последнее время. Может духи моря гневаются?",
@@ -3075,7 +3079,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-4": {
+		"rand4-4_start": {
 			"title": text.CHARACTER_16, "img": 16,
 			"text": {
 				"ru": "Я принесла травы. Может быть, какие-то из них волшебные?",
@@ -3100,7 +3104,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-5": {
+		"rand4-5_start": {
 			"title": text.CHARACTER_16, "img": 16,
 			"text": {
 				"ru": "Говорят, за Зачарованным лесом водятся златогривые солнечные лошади.",
@@ -3124,7 +3128,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-6": {
+		"rand4-6_start": {
 			"title": text.CHARACTER_3, "img": 3,
 			"text": {
 				"ru": "Дяденька, я принес <что-то>. Давайте меняться? ",
@@ -3149,7 +3153,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-7": {
+		"rand4-7_start": {
 			"title": text.CHARACTER_3, "img": 3,
 			"text": {
 				"ru": "Смотрите, какой краб!",
@@ -3175,7 +3179,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-8": {
+		"rand4-8_start": {
 			"title": text.CHARACTER_5, "img": 5,
 			"text": {
 				"ru": "Посмотрите только на мои руки! Ни одна заживляющая мазь не помогает. На вас, Мастер, вся надежда…",
@@ -3202,7 +3206,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-9": {
+		"rand4-9_start": {
 			"title": text.CHARACTER_5, "img": 5,
 			"text": {
 				"ru": "Знаете, мне нужен амулет.",
@@ -3228,7 +3232,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-10": {
+		"rand4-10_start": {
 			"title": text.CHARACTER_4, "img": 4,
 			"text": {
 				"ru": "Амброзия снова распустилась! Это адово растение! Нужно немедленно его уничтожить!",
@@ -3255,7 +3259,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-11": {
+		"rand4-11_start": {
 			"title": text.CHARACTER_4, "img": 4,
 			"text": {
 				"ru": "Ох. Выпадают волосы! Мне бы чего-нибудь, и чтобы побыстрее и поэффективнее.",
@@ -3282,7 +3286,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-12": {
+		"rand4-12_start": {
 			"title": text.CHARACTER_17, "img": 17,
 			"text": {
 				"ru": "Этот странный художник кормит бродячих псов! У него уже целая свора! Ходить мимо страшно! Это недопустимо!",
@@ -3308,7 +3312,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-13": {
+		"rand4-13_start": {
 			"title": text.CHARACTER_17, "img": 17,
 			"text": {
 				"ru": "Собираем на строительство нового храма. Пожертвуйте хоть самую малость?",
@@ -3334,7 +3338,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-14": {
+		"rand4-14_start": {
 			"title": text.CHARACTER_6, "img": 6,
 			"text": {
 				"ru": "Вечером будет проходить собрание. Все уважаемые люди должны прийти. Не забудьте про взнос.",
@@ -3361,7 +3365,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-15": {
+		"rand4-15_start": {
 			"title": text.CHARACTER_12, "img": 12,
 			"text": {
 				"ru": "Городничий просто хам и нахал. Пускает гнусные слухи обо всех на свете. Вы согласны?",
@@ -3387,7 +3391,7 @@ var desks = {
 				}
 			}
 		},
-		"rand4-16": {
+		"rand4-16_start": {
 			"title": text.CHARACTER_12, "img": 12,
 			"text": {
 				"ru": "Чай здесь совсем не тот, что на Востоке… Моё будущее путешествие будет вновь туда.",
@@ -3409,7 +3413,9 @@ var desks = {
 			}
 		},
 	},
-	"phoenix": {
+	},
+	"phoenix": { 
+		"cards":{
 		"1": {
 			"title": text.CHARACTER_0, "img": 0,
 				"text": {
@@ -3431,7 +3437,9 @@ var desks = {
 			}
 		}
 	},
-	"flower": {
+	},
+	"flower": { 
+		"cards":{
 		"1": {
 			"title": text.CHARACTER_0, "img": 0,
 				"text": {
@@ -3453,7 +3461,9 @@ var desks = {
 			}
 		}
 	},
-	"ball": {
+	},
+	"ball": { 
+		"cards":{
 		"1": {
 			"title": text.CHARACTER_0, "img": 0,
 				"text": {
@@ -3475,7 +3485,9 @@ var desks = {
 			}
 		}
 	},
-	"cosmos": {
+	},
+	"cosmos": { 
+		"cards":{
 		"1": {
 			"title": text.CHARACTER_0, "img": 0,
 				"text": {
@@ -3497,7 +3509,9 @@ var desks = {
 			}
 		}
 	},
-	"stormglass": {
+	},
+	"stormglass": { 
+		"cards":{
 		"1": {
 			"title": text.CHARACTER_0, "img": 0,
 				"text": {
@@ -3519,7 +3533,9 @@ var desks = {
 			}
 		}
 	},
-	chapter_2: {
+	},
+	chapter_2: { 
+		"cards":{
 		"rand_ch_2-1": {
 			"title": text.CHARACTER_8, "img": 8,
 			"text": {
@@ -4034,8 +4050,9 @@ var desks = {
 		}
 		
 	},
-
-	dragon_0: {
+	},
+	dragon_0: { 
+		"cards":{
 		"rand_1": {
 			"title": text.dragon_type_0, "img": 0,
 				"text": {
@@ -4104,7 +4121,7 @@ var desks = {
 				}
 			}
 		},
-		"rand_4": {
+		"rand4": {
 			"title": text.dragon_type_0, "img": 0,
 				"text": {
 					"ru": "Дракон с довольным видом несёт в зубах букет из трав, которые он нашёл на клумбах.",
@@ -4128,8 +4145,9 @@ var desks = {
 			}
 		},
 	},
-
-	dragon_1: {
+	},
+	dragon_1: { 
+		"cards":{
 		"rand_1": {
 			"title": text.dragon_type_1, "img": '20_1',
 				"text": {
@@ -4197,8 +4215,9 @@ var desks = {
 			}
 		},
 	},
-
-	dragon_2: {
+	},
+	dragon_2: { 
+		"cards":{
 		"rand_1": {
 			"title": text.dragon_type_2, "img": '0',
 				"text": {
@@ -4266,8 +4285,9 @@ var desks = {
 			}
 		},
 	},
-
-	dragon_3: {
+	},
+	dragon_3: { 
+		"cards":{
 		"rand_1": {
 			"title": text.dragon_type_3, "img": '20_3',
 				"text": {
@@ -4334,7 +4354,7 @@ var desks = {
 				}
 			}
 		},
-		"rand_4": {
+		"rand4": {
 			"title": text.dragon_type_0, "img": '0',
 				"text": {
 					"ru": "Дракон смотрит вам прямо в душу. Пора бы, может, его снова покормить? ",
@@ -4357,8 +4377,9 @@ var desks = {
 			}
 		},
 	},
-
-	padawan: {
+	},
+	padawan: { 
+		"cards":{
 		"rand_1": {
 			"title": text.dragon_type_18, "img": 18,
 				"text": {
@@ -4382,8 +4403,9 @@ var desks = {
 			}
 		},
 	},
-
-	padawan_m: {
+	},
+	padawan_m: { 
+		"cards":{
 		"rand_1": {
 			"title": text.dragon_type_18, "img": 18,
 				"text": {
@@ -4407,8 +4429,9 @@ var desks = {
 			}
 		},
 	},
-
-	pegas: {
+	},
+	pegas: { 
+		"cards":{
 		"rand_1": {
 			"title": text.dragon_type_19, "img": 19,
 				"text": {
@@ -4475,7 +4498,7 @@ var desks = {
 				}
 			}
 		},
-		"rand_4": {
+		"rand4": {
 			"title": text.dragon_type_19, "img": 19,
 				"text": {
 					"ru": "Странный человек, не называющий имени, просит отдать лошадь за приличную сумму.",
@@ -4498,9 +4521,10 @@ var desks = {
 			}
 		},
 	},
-
-	eternity: {
-		"r_1": {
+	},
+	eternity: { 
+		"cards":{
+		"eternity_start": {
 			"title": text.CHARACTER_0, "img": 0,
 				"text": {
 					"ru": "Мрак и тьма. Холод небытия. И кто-то сзади будто не сводит глаз…",
@@ -4511,18 +4535,18 @@ var desks = {
 					"text": { "ru": "Идти вперёд","en": "Do it!"},
 					"next": function(operators) { 
 						
-						return "2"	}
+						return "eternity_2"	}
 				},
 				"2": {
 					"text": { "ru": "Идти назад", "en": "dont"},
 					"next": function(operators) {
 						// изменяем операторы
-						return "2"
+						return "eternity_2"
 					}
 				}
 			}
 		},
-		"2": {
+		"eternity_2": {
 			"title": text.CHARACTER_0, "img": 0,
 				"text": {
 					"ru": "…",
@@ -4533,18 +4557,18 @@ var desks = {
 					"text": { "ru": "Эм, вы кто?","en": "Do it!"},
 					"next": function(operators) { 
 						
-						return "3"	}
+						return "eternity_3"	}
 				},
 				"2": {
 					"text": { "ru": "Так-так, ближе не надо!", "en": "dont"},
 					"next": function(operators) {
 						// изменяем операторы
-						return "3"
+						return "eternity_3"
 					}
 				}
 			}
 		},
-		"3": {
+		"eternity_3": {
 			"title": text.CHARACTER_0, "img": 0,
 				"text": {
 					"ru": "Существо не ответило. Его уродливые костлявые руки потянулись вам навстречу.",
@@ -4555,18 +4579,18 @@ var desks = {
 					"text": { "ru": "Бежать быстро","en": "Do it!"},
 					"next": function(operators) { 
 						
-						return "4"	}
+						return "eternity_4"	}
 				},
 				"2": {
 					"text": { "ru": "Бежать ещё быстрее", "en": "dont"},
 					"next": function(operators) {
 						// изменяем операторы
-						return "4"
+						return "eternity_4"
 					}
 				}
 			}
 		},
-		"4": {
+		"eternity_4": {
 			"title": text.CHARACTER_0, "img": 0,
 				"text": {
 					"ru": "Погоня привлекла внимание местной фауны. И она согласна помочь вам. За умеренную плату, конечно.",
@@ -4589,7 +4613,7 @@ var desks = {
 						operators.money_stat = 0.35 * MAX_STAT_VALUE;
 						operators.reputation_stat = 0.35 * MAX_STAT_VALUE;
 
-						return "5"	}
+						return "eternity_5"	}
 				},
 				"2": {
 					"text": { "ru": "Пытаться своими силами", "en": "dont"},
@@ -4607,12 +4631,12 @@ var desks = {
 						operators.money_stat = 0.35 * MAX_STAT_VALUE;
 						operators.reputation_stat = 0.35 * MAX_STAT_VALUE;
 						
-						return "5"
+						return "eternity_5"
 					}
 				}
 			}
 		},
-		"5": {
+		"eternity_5": {
 			"title": text.CHARACTER_0, "img": 0,
 				"text": {
 					"ru": "Возвращение в подлунный мир было внезапным и крайне болезненным. Было страшно и непонятно. Под утро получилось немного отвлечься и поспать.",
@@ -4624,7 +4648,7 @@ var desks = {
 					"next": function(operators) { 
 						//operators.money_stat += MONEY_STAT_DELTA_1;
 						//operators.power_stat += POWER_STAT_DELTA_1;
-						return "-"	}
+						return "eternity_end"	}
 				},
 				"2": {
 					"text": { "ru": "Вернуться к делам", "en": "dont"},
@@ -4632,14 +4656,15 @@ var desks = {
 						//operators.money_stat += MONEY_STAT_DELTA_1;
 						//operators.power_stat += POWER_STAT_DELTA_1;
 						// изменяем операторы
-						return "-"
+						return "eternity_end"
 					}
 				}
 			}
 		},
 	},
-
-	ad: {
+	},
+	ad: { 
+		"cards": {
 		"r_1": {
 			"title": text.CHARACTER_0, "img": 0,
 				"text": {
@@ -4729,45 +4754,64 @@ var desks = {
 			}
 		},
 	}
-
-}
-
-var desks_options = {
-	"rand_4": {
-		"norepeat": false
 	},
-	"phoenix": {
-		"norepeat": false
-	},
-	"flower": {
-		"norepeat": false
-	},
-	"ball": {
-		"norepeat": false
-	},
-	"cosmos": {
-		"norepeat": false
-	},
-	stormglass: {
-		norepeat: false
-	},
-	"chapter_2": {
-		norepeat: false
-	},
-	dragon_0: {norepeat:false},
-	dragon_1: {norepeat:false},
-	dragon_2: {norepeat:false},
-	dragon_3: {norepeat:false},
-	padawan: {norepeat:false},
-	padawan_m: {norepeat: false},
-	eternity: {
-		norepeat: false
-	},
-	"ad": {
-		norepeat: false
+	power_low: {
+		type: "script",
+		cards: {
+			"pl_1": {
+				title: {ru: "мощь в упадке", en: ""},
+				text: {ru: "мощь в упадке", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_power) {
+								operators.Art_extra_power = 0;
+								return "pl_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_power) {
+								operators.Art_extra_power = 0;
+								operators.power_stat = 60;
+								graph_core.update_stats();
+								return "pl_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					}
+				}
+			},
+			"pl_2": {
+				title: {ru: "случилось чудо", en: ""},
+				text: {ru: "артефакт вам помог", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					}
+				}
+			}
+		}
 	}
-
 }
+
 
 var shop_items = {
 	"1": {
@@ -4789,7 +4833,7 @@ var shop_items = {
 		available:true,
 		bought: false,
 		effect: function() {
-			game_core.data.operators.Art_extra_power = 1;
+			game_core.data.operators[shop_codes[0]] = 1;
 			graph_core.update_stats();
 			graph_core.update_shop();
 		}
@@ -4813,7 +4857,7 @@ var shop_items = {
 		available:true,
 		bought: false,
 		effect: function() {
-			game_core.data.operators.Art_extra_hp = 1;
+			game_core.data.operators[shop_codes[1]] = 1;
 			graph_core.update_stats();
 			graph_core.update_shop();
 		}
@@ -4837,7 +4881,7 @@ var shop_items = {
 		available:true,
 		bought: false,
 		effect: function() {
-			game_core.data.operators.Art_extra_power = 1;
+			game_core.data.operators[shop_codes[2]] = 1;
 			graph_core.update_stats();
 			graph_core.update_shop();
 		}
@@ -4861,7 +4905,7 @@ var shop_items = {
 		available:true,
 		bought: false,
 		effect: function() {
-			game_core.data.operators.Art_extra_power = 1;
+			game_core.data.operators[shop_codes[3]] = 1;
 			graph_core.update_stats();
 			graph_core.update_shop();
 		}
@@ -4885,7 +4929,9 @@ var shop_items = {
 		available:true,
 		bought: false,
 		effect: function() {
-			
+			game_core.data.operators[shop_codes[4]] += 1;
+			graph_core.update_stats();
+			graph_core.update_shop();
 		}
 	},
 	"6": {
@@ -4907,7 +4953,9 @@ var shop_items = {
 		available:true,
 		bought: false,
 		effect: function() {
-			
+			game_core.data.operators[shop_codes[5]] += 1;
+			graph_core.update_stats();
+			graph_core.update_shop();
 		}
 	},
 	"7": {
@@ -5042,4 +5090,153 @@ var shop_items = {
 			
 		}
 	},
+}
+
+var characters = {
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"1": {
+		title: CHARACTER_1,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/01.jpg"
+	},
+	"2": {
+		title: CHARACTER_2,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/02.jpg"
+	},
+	"3": {
+		title: CHARACTER_3,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	"0": {
+		title: CHARACTER_0,
+		description: {ru: "", en: ""},
+		img_src: "images/cards/00.jpg"
+	},
+	
 }

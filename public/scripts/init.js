@@ -50,6 +50,16 @@ var format_to_frame = function(frame) {
     return String(frame);
 }
 
+var set_size = function(el_id, w='none', h='none') {
+    if (w != 'none') {
+       $(el_id).css('width', w);
+    }
+    if (h != 'none') {
+        $(el_id).css('height', h);
+    }
+}
+
+
 /*
 // store ref to original method in variable
 const originalConsoleError = console.error;
@@ -1029,7 +1039,9 @@ var graph_core = {
     },
     "update_shop_popup": function(item_id) {
         var popup_block = graph_core.html_blocks['game_shop'].children['gs_popup_back'].children['gs_popup'];
-        console.log(text.shop, item_id)
+        
+
+
         popup_block.children['gs_popup_title'].options.text = shop_items[item_id].title[graph_core.lang];
         popup_block.children['gs_popup_desk'].options.text = shop_items[item_id].long_description[graph_core.lang];
         popup_block.children['gs_popup_slot'].children['gs_p_s_img'].options.background = `url(${shop_items[item_id].icon_src})`
@@ -1102,18 +1114,24 @@ var graph_core = {
         // СКОЛЬКИБАЛЬНАЯ ШКАЛА
         var scale = MAX_STAT_VALUE;
         var max_h = get_size('#sb_progressbar_1').y;
-        set_size("#sb_anti_progressbar_1", 'none', (1 - game_core.data.operators.power_stat / scale) * max_h);
+        console.log(max_h);
+        graph_core.all_html_blocks["sb_anti_progressbar_1"].options.ratio_y =  (1 - game_core.data.operators.power_stat / scale) * 0.8;
         set_size("#sb_anti_progressbar_2", 'none', (1 - game_core.data.operators.hp_stat / scale) * max_h);
         set_size("#sb_anti_progressbar_3", 'none', (1 - game_core.data.operators.reputation_stat / scale) * max_h);
         set_size("#sb_anti_progressbar_4", 'none', (1 - game_core.data.operators.money_stat / scale) * max_h);
-    
+        
+        console.log((1 - game_core.data.operators.power_stat / scale) * max_h);
+
         // если купили товар
         for (var i=0; i < 4; i++) {
             if (game_core.data.operators[shop_codes[i]]) {
                 graph_core.all_html_blocks['sb_img_'+(i+1)].options.background = `url('./images/stats/0${(i+1)}_blue.png')`;
-
+                
+                graph_core.all_html_blocks['sb_progressbar_'+(i+1)].options.background = 'linear-gradient(#c2ebeb, #53DCC1)'
             } else  {
                 graph_core.all_html_blocks['sb_img_'+(i+1)].options.background = `url('./images/stats/0${(i+1)}.png')`;
+                graph_core.all_html_blocks['sb_progressbar_'+(i+1)].options.background = 'linear-gradient(#DEE700, #FF2E51)'
+            
             }
         }
         graph_core.all_html_blocks['top_block'].recalculate();
@@ -1155,6 +1173,7 @@ var graph_core = {
             $('#' + graph_core.big_blocks_ids[i]).css('display', 'none');
         }
         $(id).css('display', 'block');
+        graph_core.update_shop();
     },
     open_special_shop_popup: function(product_number) {
         $('#gso_popup_back').css('display', 'block')
@@ -1179,7 +1198,7 @@ var graph_core = {
             } else {
                 graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.text = text.buy[graph_core.lang];
                 graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.background = "url('./images/for_shop/button_off.png')";
-                graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.onclick = "graph_core.open_shop_popup("+i+");"
+                graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.onclick = "graph_core.open_shop_popup("+(i+1)+");"
             
             }
         }
@@ -1196,7 +1215,7 @@ var graph_core = {
                 } else {
                     graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.text = text.buy[graph_core.lang];
                     graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.background = "url('./images/for_shop/button_off.png')";
-                    graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.onclick = "graph_core.open_shop_popup("+i+");"
+                    graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options.onclick = "graph_core.open_shop_popup("+(i+1)+");"
                 }
                 graph_core.all_html_blocks['gs_cb_item_'+(i+1)].options.pos_y =  0.06 + counter*0.435;
                 counter++;
@@ -1232,24 +1251,26 @@ var game_core = {
         "history": {
             // операторы на начало главы
             "beginning": {
-                "cur_card": "plot1-1",
-                "cur_desk": "main",
+                "cur_card": "plot_1-1",
+                "cur_desk": "plot",
                 "operators": operators,
                 "used_desks": {
-                    "rand_4": [],
-                    "chapter_2": [],
-                }
+                    "rand4": [],
+                    "chapter2": [],
+                },
+                "started_scenarios": [], // точки выхода
             }
         },
         
         //"cur_card": "plot1-1",
         "cur_card": START_POS,
+        "started_scenarios": [], // точки выхода
         "money": 1000,
-        "cur_desk": "main",
+        "cur_desk": "plot",
         "cur_chapter": 1,
         "used_desks": {
-            "rand_4": [],
-            "chapter_2": [],
+            "rand4": [],
+            "chapter2": [],
         },
         "operators": operators,
         "real_next_card": "",
@@ -1283,23 +1304,9 @@ var game_core = {
 
         var card = desks[game_core.data.cur_desk][game_core.data.cur_card];
 
-        if (card.title) {
-            //console.log(1);
-        } else {
-            if (card.check_condition) {
-                if (card.check_condition(game_core.data.operators)) {
-                    game_core.get_card_from_desk(card.desk);
-                } else {
-                     game_core.next_card('skip')
-                }
-            } else {
-                game_core.get_card_from_desk(card.desk);
-            }
-        }
-
-        graph_core.update_card(desks[game_core.data.cur_desk][game_core.data.cur_card])
+        graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card])
         graph_core.update_stats();
-        //graph_core.update_balance();
+        graph_core.update_balance();
         // игра готова
         tech_core.game_ready = true;
         if (tech_core.platform == 'yandex' && tech_core.sdk_ready) {
@@ -1356,95 +1363,156 @@ var game_core = {
  
         return data_obj;
     },
-    "next_card": function(num) {
-
-        if (num != "skip") {
-            //console.log(desks[game_core.data.cur_desk]);
-            var next_card = desks[game_core.data.cur_desk][game_core.data.cur_card].answers[num].next(game_core.data.operators);
-            
-            //console.log(next_card)
-            if (next_card == '-') {
-                if (game_core.data.cur_desk == 'eternity') {
-                    game_core.move_to_save_point(game_core.data.last_save_point)
-                }
-                next_card = game_core.data.real_next_card;
-                game_core.data.cur_desk = 'main';
-            }
+    "next_card": function(choice_num='none') {
+        graph_core.update_stats();
+        graph_core.update_shop();
+        var next_card_id;
+        var desk = game_core.data.cur_desk;
+        console.log(choice_num)
+        console.log(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
+        console.log(game_core.data)
+        if (choice_num == 'none') {
+            next_card_id = desks[game_core.data.cur_desk].cards[game_core.data.cur_card].next(game_core.data.operators);
         } else {
-            next_card = game_core.data.real_next_card;
+            next_card_id = desks[game_core.data.cur_desk].cards[game_core.data.cur_card].answers[choice_num].next(game_core.data.operators);
         }
-
-        // НЕОЖИДАННАЯ ВСТАВКА
         
-        // смерть
-        if ((game_core.data.operators.hp_stat < 0 || game_core.data.operators.hp_stat > MAX_STAT_VALUE || 
-            game_core.data.operators.reputation_stat < 0 || game_core.data.operators.reputation_stat > MAX_STAT_VALUE || 
-            game_core.data.operators.power_stat < 0 || game_core.data.operators.power_stat > MAX_STAT_VALUE || 
-            game_core.data.operators.money_stat < 0 || game_core.data.operators.money_stat > MAX_STAT_VALUE) && (game_core.data.cur_desk != 'eternity')) {
-            // делаем замену
-            game_core.data.real_next_card = next_card;
-            next_card = 'r_1'
-            game_core.data.cur_desk = 'eternity';
-        }
-
-        // время рекламы!
-        if (Date.now() - tech_core.last_ad_suggest > AD_INTERVAL && Date.now() - tech_core.launch_time > AD_DELAY && game_core.data.cur_desk != 'eternity') {
-            game_core.data.real_next_card = next_card;
-            next_card = 'r_1'
-            game_core.data.cur_desk = 'ad';
-            tech_core.last_ad_suggest  = Date.now();
-        }
-
-        
-        // особые условия
-        // игрок решил посмотреть рекламу после смерти
-        if (num == 1 && game_core.data.cur_desk == 'eternity' && game_core.data.cur_card == 4) {
-            tech_core.show_rewarded_video(function() {
-                game_core.data.operators.power_stat += 0.2 * MAX_STAT_VALUE;
-                game_core.data.operators.hp_stat += 0.2 * MAX_STAT_VALUE;
-                game_core.data.operators.money_stat += 0.2 * MAX_STAT_VALUE;
-                game_core.data.operators.reputation_stat += 0.2 * MAX_STAT_VALUE;
-                graph_core.update_stats();
-            })
-        }
-
        
 
-        // возврат не к карточке а совершение действия
 
-        /*
-            open_shop - открыть магазин
-            show_rewarded_ad - просмотр рекламы за монетки
-            show_interestial_ad - просмотр полноэкранной рекламы за монетки
 
-        */
+        // ВНЕСЮЖЕТНОЕ СОБЫТИЕ
+        // ПРОИГРЫШ
+        // нехватка мощи
+        if (game_core.data.operators.power_stat < 0 && game_core.data.operators.critical == 0) {
+            game_core.data.started_scenarios.push({
+                desk: desk,
+                card: next_card_id
+            });
 
-        if (next_card == 'show_interstitial_ad') {
-            console.log('ad')
-            tech_core.show_interstitial_ad(
-                false, 
-                function() {
-                    game_core.next_card(1);
-                    game_core.data.money += 2;
-                    tech_core.save_progress();
-                },
+            game_core.data.cur_desk = 'power_low';
+            game_core.data.cur_card = 'pl_1';
+            game_core.data.operators.critical = 1;
+            graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
+            
+            return 
+        } else if ((game_core.data.operators.hp_stat < 0 || game_core.data.operators.hp_stat > 100 ||  
+            game_core.data.operators.power_stat > 100 ||
+            game_core.data.operators.reputation_stat < 0 || game_core.data.operators.reputation_stat > 100 ||
+            game_core.data.operators.money_stat < 0 || game_core.data.operators.money_stat > 100) && game_core.data.operators.critical != 'eternity') {
 
-                function() {
-                    game_core.next_card(2);
-                }
-                );
-            next_card = '2'
+            console.log('eternity')
+            game_core.data.cur_desk = 'eternity';
+            game_core.data.cur_card = 'eternity_start';
 
+            graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
+            return
+        }
+
+        // негативный сценарий
+        if (next_card_id == 'eternity_start') {
+            game_core.data.cur_desk = 'eternity';
+            game_core.data.cur_card = 'eternity_start';
+
+            graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
+            return
+        }
+
+        // возврат к последней контрольной точке
+        if (next_card_id == 'eternity_end') {
+            // 
+            game_core.data.operators.critical = 0;
+            game_core.move_to_save_point(game_core.data.last_save_point)
+
+            return
+        }
+
+        // ПОКАЗ РЕКЛАМЫ
+        // ...
+        // 
+
+        console.log(next_card_id)
+
+        // ПРОДОЛЖЕНИЕ СЮЖЕТА
+
+        // Возврат к предыдущей ветке
+        if (next_card_id == '-') {
+            
+            next_card_id = game_core.data.started_scenarios[game_core.data.started_scenarios.length-1].card;
+            desk = game_core.data.started_scenarios[game_core.data.started_scenarios.length-1].desk;
+            game_core.data.started_scenarios.pop();
+
+            console.log(desk, next_card_id)
         }
 
 
-        var next_card_obj = desks[game_core.data.cur_desk][next_card]
 
+        // Проверка не является ли это новой точкой входа
+        if (desks[desk].cards[next_card_id].desk != undefined) {
+            console.log('[game_core] - новая точка входа в колоду')
+            // есть ли на неё условие?
+            if (desks[desk].cards[next_card_id].check_condition != undefined) {
 
-        var next_card_obj = desks[game_core.data.cur_desk][next_card]
-        
-        
-        console.log('next_card_obj', next_card_obj)
+                if (desks[desk].cards[next_card_id].check_condition(game_core.data.operators) == false) {
+                    // пропуск
+                    console.log('[game_core] - условие не выполнено')
+                    game_core.data.cur_desk = desk;
+                    game_core.data.cur_card = next_card_id;
+                    return game_core.next_card();
+                }
+            } else {
+                console.log('[game_core] - без условия')
+            }
+
+            console.log(desks[desk].cards[next_card_id])
+
+            game_core.data.started_scenarios.push({
+                desk: desk,
+                card: desks[desk].cards[next_card_id].next()
+            });
+            var rand_cards = []; // точки входа
+
+            desk = desks[desk].cards[next_card_id].desk;
+
+            // в колоде несколько точек входа: выбираем любую и запоминаем
+            if (desks[desk].type == 'rand_norepeat') {
+                console.log('[game_core] - в колоде несколько точек входа')
+                for (var i in desks[desk].cards) {       
+                    if (i.split('_')[1] == 'start' && game_core.data.used_desks[desk].includes(i) == false) {
+                        rand_cards.push(i);
+                    }
+                }
+            
+                game_core.data.cur_card = get_random_elements(rand_cards, 1, game_core.data.used_desks[desk])[0]
+                game_core.data.used_desks[desk].push(game_core.data.cur_card)
+                game_core.data.cur_desk = desk;
+
+            // в колоде только одна точка входа
+            } else if (desks[desk].type == 'rand_repeat') {
+                for (var i in desks[desk].cards) {       
+                    if (i.split('_')[1] == 'start') {
+                        rand_cards.push(i);
+                    }
+                }
+                game_core.data.cur_card = get_random_elements(rand_cards, 1, game_core.data.used_desks[desk])[0]
+                game_core.data.used_desks[desk].push(game_core.data.cur_card)
+                game_core.data.cur_desk = desk;
+            } else if (desks[desk].type == 'script') {
+                console.log('[game_core] - в колоде 1 точка входа')
+                game_core.data.cur_desk = desk;
+                game_core.data.cur_card = next_card_id;
+            }
+        } else {
+            // не является
+            game_core.data.cur_desk = desk;
+            game_core.data.cur_card = next_card_id;
+        }
+
+            
+        console.log(game_core.data.cur_desk, game_core.data.cur_card)
+
+        // контрольная точка
+        var next_card_obj = desks[game_core.data.cur_desk].cards[game_core.data.cur_card]
 
         if (next_card_obj.save_point) {
             var save_point = next_card_obj.save_point;
@@ -1454,81 +1522,27 @@ var game_core = {
                 operators: {},
                 used_desks: {},
                 cur_card: game_core.data.cur_card,
-                cur_desk: "main"
+                cur_desk: "main",
+                started_scenarios: []
             }
             for (var i in game_core.data.operators) {
                 game_core.data.history[save_point].operators[i] = game_core.data.operators[i];
             }
             for (var i in game_core.data.used_desks) {
-                game_core.data.history[save_point].used_desks[i] = game_core.data.used_desks[i];
+                game_core.data.history[save_point].used_desks[i] = [...game_core.data.used_desks[i]];
             }
-
+            for (var i in game_core.data.started_scenarios) {
+                game_core.data.history[save_point].started_scenarios[i] = game_core.data.started_scenarios[i];
+            }
             game_core.data.history[save_point].cur_desk = game_core.data.cur_desk;
         }
-
-        //console.log(next_card)
-        if (next_card_obj.title) {
-            // должна быть сюжетная карточка
-            game_core.data.cur_card = next_card;
-            //game_core.data.cur_desk = 'main';
-        } else {
-            game_core.data.real_next_card = next_card_obj.next(game_core.data.operators);
-            var skipping = false;
-            if (next_card_obj.check_condition) {
-                if (next_card_obj.check_condition(game_core.data.operators) == false) {
-                    // не показываем, делаем пропуск
-                    console.log("skipping")
-                    skipping = true;
-                    game_core.next_card("skip")
-
-                }
-            }
-            // набираем массив случайных карточек
-            if (skipping == false) {
-                var rand_cards = []
-                var desk = next_card_obj.desk;
-
-                // Если колода зависит от оператора
-                desk = desk.replace('<operators.Dr>', game_core.data.operators.Dr);
-
-                console.log(desk);
-
-                if (desks_options[desk].norepeat) {
-                    for (var i in desks[desk]) {       
-                        if (i[0] == 'r' && game_core.data.used_desks[desk].includes(i) == false) {
-                            rand_cards.push(i);
-                        }
-                    }
-                    game_core.data.cur_card = get_random_elements(rand_cards, 1, game_core.data.used_desks[desk])[0]
-                    game_core.data.used_desks[desk].push(game_core.data.cur_card)
-                    game_core.data.cur_desk = desk;
-                } else {
-                    for (var i in desks[desk]) {                        
-                        if (i[0] == 'r') {
-                            rand_cards.push(i);
-                        }
-                    }
-
-                    game_core.data.real_next_card = desks[game_core.data.cur_desk][next_card].next(game_core.data.operators);
-                    game_core.data.cur_card = get_random_elements(rand_cards, 1)[0]
-                    game_core.data.cur_desk = desk;
-                }
-            }
-        }
-
-         
-        // сохраняем контрольную точку
-        console.log(desks[game_core.data.cur_desk])
         
-        console.log('cur_desk:', game_core.data.cur_desk);
-        console.log('cur_card:', game_core.data.cur_card);
+
+       
+        
+        graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
 
 
-        
-        graph_core.update_card(desks[game_core.data.cur_desk][game_core.data.cur_card]);
-        
-        graph_core.update_stats();
-        tech_core.save_progress();
 
 
         if (tech_core.streaming) {
@@ -1537,6 +1551,7 @@ var game_core = {
         
     },
     "move_to_save_point": function(save_point) {
+        
         if (game_core.data.history[save_point]) {
             game_core.data.operators = game_core.data.history[save_point].operators;
             game_core.data.used_desks = game_core.data.history[save_point].used_desks;
@@ -1544,11 +1559,13 @@ var game_core = {
             game_core.data.cur_desk = game_core.data.history[save_point].cur_desk;
             game_core.data.cur_card = game_core.data.history[save_point].cur_card;
 
+            console.log(game_core.data.cur_card, game_core.data.history[save_point].cur_card);
+
             if (game_core.data.cur_desk == 'main') {
-                graph_core.update_card(desks[game_core.data.cur_desk][game_core.data.cur_card]);
+                graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
             } else {
                 game_core.data.history[save_point].cur_desk = game_core.data.cur_desk;
-                graph_core.update_card(desks[game_core.data.cur_desk][game_core.data.cur_card]);
+                graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
             }
             graph_core.update_stats();
 
@@ -1556,6 +1573,7 @@ var game_core = {
         } else {
             console.log("[game_core] нет контрольной точки с названием:", save_point);
         }
+        
     },
     "get_card_from_desk": function(desk) {
         var rand_cards = []

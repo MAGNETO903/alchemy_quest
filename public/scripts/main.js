@@ -30,8 +30,8 @@ window.onload = function() {
 	game_core.start_game();
 	//graph_core.open_options();
 	//graph_core.open_popup('#gso_promocode_popup_back');
-	graph_core.open_popup('#gso_popup_back')
-	graph_core.open_big_block('#game_special_offers');
+	//graph_core.open_popup('#gso_popup_back')
+	//graph_core.open_big_block('#game_special_offers');
 	$('#game_preloader').fadeOut(1000)
 }	
 

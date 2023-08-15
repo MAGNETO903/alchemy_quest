@@ -322,10 +322,21 @@ var my_html_block = function(id, html_element, options = {}, big_block = false, 
 		$('#' + this.id).css('display', 'block');
 		$('#' + this.id).css('opacity', '0%');
 
-		var display_parent_state = $('#' + this.parent_id).css('display');
+		var parents_chain = [];
 
-		$('#' + this.parent_id).css('display', 'block');
-		$('#' + this.parent_id).css('opacity', '0%');
+		var parent_id = this.id;
+		var child_id = this.id;
+
+		while (parent_id != -1) {
+			child_id = parent_id;
+			parent_id = graph_core.all_html_blocks[child_id].parent_id;
+			parents_chain.push({
+				"id": parent_id,
+				"display_state": $('#' + parent_id).css('display')
+			})
+			$('#' + parent_id).css('display', 'block');
+			$('#' + parent_id).css('opacity', '0%');
+		}
 
 		if (this.big_block) {
 			set_size('#'+this.id, graph_core.winW, graph_core.winH);
@@ -527,7 +538,10 @@ var my_html_block = function(id, html_element, options = {}, big_block = false, 
 		$('#' + this.id).css('display', display_state);
 		$('#' + this.id).css('opacity', '100%');
 		
-		$('#' + this.parent_id).css('display', display_parent_state);
-		$('#' + this.parent_id).css('opacity', '100%');
+		for (var i in parents_chain) {
+			
+			$('#' + parents_chain[i].id).css('display', parents_chain[i].display_state);
+			$('#' + parents_chain[i].id).css('opacity', '100%');
+		}
 	}
 }
