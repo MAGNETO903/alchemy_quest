@@ -1540,7 +1540,7 @@ graph_core.html_blocks["game_special_offers"].add_block('gso_back_block', {
     "pos_y": 1
 })
 
-graph_core.html_blocks["game_special_offers"].children['gso_back_block'].add_block('gso_bb_back_button', {
+graph_core.all_html_blocks['gso_back_block'].add_block('gso_bb_back_button', {
     "ratio_x": 1,
     "ratio_y": 0.25,
     "ratio": 63/105,
@@ -1584,6 +1584,30 @@ graph_core.html_blocks['game_special_offers'].add_block('gso_promocode_btn', {
     onclick: "graph_core.open_popup('#gso_promocode_popup_back');"
 })
 
+// кнопки переключения 
+graph_core.all_html_blocks['game_special_offers'].add_block('gso_left_button', {
+    "ratio_x": 0.1,
+    "ratio_y": 0.15,
+    "ratio": 63/105,
+    "color": '#f48aff',
+    "background": "url('./images/for_shop/left.png')",
+    "is_prop": true,
+    "pos_x": 0.08,
+    "pos_y": 0.5,
+    "onclick": "graph_core.open_big_block('#game_shop');"
+})
+
+graph_core.all_html_blocks['game_special_offers'].add_block('gso_right_button', {
+    "ratio_x": 0.1,
+    "ratio_y": 0.15,
+    "ratio": 63/105,
+    "color": '#f48aff',
+    "background": "url('./images/for_shop/right.png')",
+    "is_prop": true,
+    "pos_x": 0.92,
+    "pos_y": 0.5,
+    "onclick": "graph_core.open_big_block('#game_shop');"
+})
 
 // ВСПЛЫВАЮЩИЙ БЛОК ДЛЯ ВВОДА ПРОМОКОДА
 graph_core.html_blocks['game_special_offers'].add_block('gso_promocode_popup_back', {
@@ -1969,7 +1993,7 @@ graph_core.all_html_blocks["ga_card_block_outer"].add_block('ga_card_block', {
 
 
 
-for (var i=0; i < 7; i++) {
+for (var i=0; i < 10; i++) {
 
     graph_core.all_html_blocks['ga_card_block'].add_block('ga_cb_item_'+(i+1), {
         "ratio_x": 700/763,
@@ -2113,7 +2137,7 @@ graph_core.html_blocks["game_characters"].add_block('gch_card', {
 })
 
 // карточки внутри подложки
-for (var i=0; i < 10; i++) {
+for (var i=0; i < 30; i++) {
     graph_core.all_html_blocks["gch_card"].add_block('gch_card_block_'+i, {
         "ratio_x": 0.95,
         "ratio_y": 0.5,
@@ -2432,6 +2456,7 @@ var setup_game_viewport = function(winW, winH, profile) {
         }
     };
     
+    // телефон - портретная ориентация
     if (profile == 2) {
         // настройки: делаем нижний блок выше
         //graph_core.all_html_blocks['go_bottom_block'].options.y_ratio = 1000/1540 * 0.4
@@ -2446,8 +2471,15 @@ var setup_game_viewport = function(winW, winH, profile) {
          graph_core.all_html_blocks['ga_bb_text'].options.ratio_y = 0.95;
          graph_core.all_html_blocks['ga_bb_text'].options.ratio_x = 0.95;
          
-         // надпись совет убираем
+         // опускаем кнопки для переключения товаров их раздела особых предложений
+         graph_core.all_html_blocks['gso_left_button'].options.pos_y = 0.85;
+         graph_core.all_html_blocks['gso_right_button'].options.pos_y = 0.85;
 
+
+        // кнопка купить
+        graph_core.all_html_blocks['gsi_cb_buy_btn'].options.pos_y = 0.841
+
+    // ПК - альбомная ориентация
     } else {
         //graph_core.all_html_blocks['go_bottom_block'].options.y_ratio = 1000/1540 * 0.24
          graph_core.all_html_blocks['go_bottom_block'].options.ratio = 3
@@ -2462,6 +2494,14 @@ var setup_game_viewport = function(winW, winH, profile) {
          $('#ga_bb_title').css('display', 'block');
          graph_core.all_html_blocks['ga_bb_text'].options.ratio_y = 0.7;
          graph_core.all_html_blocks['ga_bb_text'].options.ratio_x = 0.9;
+
+
+        // возвращаем на середину кнопки для переключения товаров их раздела особых предложений
+        graph_core.all_html_blocks['gso_left_button'].options.pos_y = 0.5;
+        graph_core.all_html_blocks['gso_right_button'].options.pos_y = 0.5;
+
+        // кнопка купить
+        graph_core.all_html_blocks['gsi_cb_buy_btn'].options.pos_y = 0.86
     }
 
 }

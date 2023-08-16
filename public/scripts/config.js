@@ -594,7 +594,63 @@ var operators = {
 	Art_phoenix_available: 0,
 
 	// критическое значение статов
-	critical: 0
+	critical: 0,
+
+
+	// открытость персов
+	character_0_opened: 0,
+	character_1_opened: 0,
+	character_2_opened: 0,
+	character_3_opened: 0,
+	character_4_opened: 0,
+	character_5_opened: 0,
+	character_6_opened: 0,
+	character_7_opened: 0,
+	character_8_opened: 0,
+	character_9_opened: 0,
+	character_10_opened: 0,
+	character_11_opened: 0,
+	character_12_opened: 0,
+	character_13_opened: 0,
+	character_14_opened: 0,
+	character_15_opened: 0,
+	character_16_opened: 0,
+	character_17_opened: 0,
+	character_18_opened: 0,
+	character_19_opened: 0,
+	character_20_opened: 0,
+	character_21_opened: 0,
+	character_22_opened: 0,
+	character_23_opened: 0,
+	character_24_opened: 0,
+	character_25_opened: 0,
+	character_26_opened: 0,
+	character_27_opened: 0,
+	character_28_opened: 0,
+	character_29_opened: 0,
+	character_30_opened: 0,
+
+	// достижения
+	achievement_1_opened: 0,
+	achievement_2_opened: 0,
+	achievement_3_opened: 0,
+	achievement_4_opened: 0,
+	achievement_5_opened: 0,
+	achievement_6_opened: 0,
+	achievement_7_opened: 0,
+	achievement_8_opened: 0,
+	achievement_9_opened: 0,
+	achievement_10_opened: 0,
+
+	// концовки
+	ending_0_opened: 0,
+	ending_1_opened: 0,
+	ending_2_opened: 0,
+	ending_3_opened: 0,
+	ending_4_opened: 0,
+	ending_5_opened: 0,
+	ending_6_opened: 0,
+	
 
 }
 
@@ -5094,149 +5150,282 @@ var shop_items = {
 
 var characters = {
 	"0": {
-		title: CHARACTER_0,
+		title: text.CHARACTER_0,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
 	"1": {
-		title: CHARACTER_1,
-		description: {ru: "", en: ""},
-		img_src: "images/cards/01.jpg"
+		title: text.CHARACTER_1,
+		description: {ru: "проводница", en: ""},
+		img_src: "./images/cards/01.jpg"
 	},
 	"2": {
-		title: CHARACTER_2,
+		title: text.CHARACTER_2,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/02.jpg"
+		img_src: "./images/cards/02.jpg"
 	},
 	"3": {
-		title: CHARACTER_3,
+		title: text.CHARACTER_3,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/03.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"4": {
+		title: text.CHARACTER_4,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/04.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"5": {
+		title: text.CHARACTER_5,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/05.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"6": {
+		title: text.CHARACTER_6,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/06.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"7": {
+		title: text.CHARACTER_7,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/07.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"8": {
+		title: text.CHARACTER_8,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/08.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"9": {
+		title: text.CHARACTER_9,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/09.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"10": {
+		title: text.CHARACTER_10,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"11": {
+		title: text.CHARACTER_11,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"12": {
+		title: text.CHARACTER_12,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"13": {
+		title: text.CHARACTER_13,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"14": {
+		title: text.CHARACTER_14,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"15": {
+		title: text.CHARACTER_15,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"16": {
+		title: text.CHARACTER_16,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"17": {
+		title: text.CHARACTER_17,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"18": {
+		title: text.CHARACTER_18,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"19": {
+		title: text.CHARACTER_19,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"20": {
+		title: text.CHARACTER_20,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"21": {
+		title: text.CHARACTER_21,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"22": {
+		title: text.CHARACTER_22,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"23": {
+		title: text.CHARACTER_23,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"24": {
+		title: text.CHARACTER_24,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"25": {
+		title: text.CHARACTER_25,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"26": {
+		title: text.CHARACTER_26,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"27": {
+		title: text.CHARACTER_27,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
 	},
-	"0": {
-		title: CHARACTER_0,
+	"28": {
+		title: text.CHARACTER_28,
 		description: {ru: "", en: ""},
-		img_src: "images/cards/00.jpg"
+		img_src: "./images/cards/00.jpg"
+	},
+	
+	"29": {
+		title: text.CHARACTER_29,
+		description: {ru: "", en: ""},
+		img_src: "./images/cards/00.jpg"
+	},
+	"30": {
+		title: text.CHARACTER_30,
+		description: {ru: "", en: ""},
+		img_src: "./images/cards/00.jpg"
+	},
+	"not_opened": {
+		title: {ru: "?", en: "?"},
+		description: {ru: "персонаж не открыт", en: "character is not unlocked"},
+		img_src: "./images/cards/00.jpg"
+	}
+}
+
+var achievements = {
+	"1": {
+		title: {ru: "ачивка 1", en: "achievement 1"},
+		img_src: "./images/for_achievements/icons/0.jpg",
+		description: {ru: "описание ачивки 1", en: ""},
+		hint_description: {ru: "подсказка к первой ачивке", en: ""}
+	},
+	"2": {
+		title: {ru: "ачивка 2", en: "achievement 2"},
+		img_src: "./images/for_achievements/icons/default.png",
+		description: {ru: "", en: ""},
+		hint_description: {ru: "", en: ""}
+	},
+	"3": {
+		title: {ru: "ачивка 3", en: "achievement 3"},
+		img_src: "./images/for_achievements/icons/default.png",
+		description: {ru: "", en: ""},
+		hint_description: {ru: "", en: ""}
+	},
+	"4": {
+		title: {ru: "ачивка 4", en: "achievement 4"},
+		img_src: "./images/for_achievements/icons/default.png",
+		description: {ru: "", en: ""},
+		hint_description: {ru: "", en: ""}
+	},
+	"5": {
+		title: {ru: "ачивка 5", en: "achievement 5"},
+		img_src: "./images/for_achievements/icons/default.png",
+		description: {ru: "", en: ""},
+		hint_description: {ru: "", en: ""}
+	},
+	"6": {
+		title: {ru: "ачивка 6", en: "achievement 6"},
+		img_src: "./images/for_achievements/icons/default.png",
+		description: {ru: "", en: ""},
+		hint_description: {ru: "", en: ""}
+	},
+	"7": {
+		title: {ru: "ачивка 7", en: "achievement 7"},
+		img_src: "./images/for_achievements/icons/default.png",
+		description: {ru: "", en: ""},
+		hint_description: {ru: "", en: ""}
+	},
+	"8": {
+		title: {ru: "ачивка 8", en: "achievement 8"},
+		img_src: "./images/for_achievements/icons/default.png",
+		description: {ru: "", en: ""},
+		hint_description: {ru: "", en: ""}
+	},
+	"9": {
+		title: {ru: "ачивка 9", en: "achievement 9"},
+		img_src: "./images/for_achievements/icons/default.png",
+		description: {ru: "", en: ""},
+		hint_description: {ru: "", en: ""}
+	},
+	"10": {
+		title: {ru: "ачивка 10", en: "achievement 10"},
+		img_src: "./images/for_achievements/icons/default.png",
+		description: {ru: "", en: ""},
+		hint_description: {ru: "", en: ""}
 	},
 	
 }
+
+var endings = {
+	"1": {
+		title: {ru: "концовка 1", en: ""},
+		description: {ru: "короткое описание концовки 1", en: ""},
+		img_src: "./images/for_endings/00.jpg"
+	},
+	"2": {
+		title: {ru: "концовка 2", en: ""},
+		description: {ru: "короткое описание концовки 2", en: ""},
+		img_src: "./images/for_endings/00.jpg"
+	},
+	"3": {
+		title: {ru: "концовка 3", en: ""},
+		description: {ru: "короткое описание концовки 3", en: ""},
+		img_src: "./images/for_endings/00.jpg"
+	},
+	"4": {
+		title: {ru: "концовка 4", en: ""},
+		description: {ru: "короткое описание концовки 4", en: ""},
+		img_src: "./images/for_endings/00.jpg"
+	},
+	"5": {
+		title: {ru: "концовка 5", en: ""},
+		description: {ru: "короткое описание концовки 5", en: ""},
+		img_src: "./images/for_endings/00.jpg"
+	},
+	"6": {
+		title: {ru: "концовка 6", en: ""},
+		description: {ru: "короткое описание концовки 6", en: ""},
+		img_src: "./images/for_endings/00.jpg"
+	},
+	"0": {
+		title: {ru: "концовка 0", en: ""},
+		description: {ru: "короткое описание концовки 0", en: ""},
+		img_src: "./images/for_endings/00.jpg"
+	},
+	"not_opened": {
+		title: {ru: "???", en: ""},
+		description: {ru: "концовка не открыта", en: ""},
+		img_src: "./images/for_endings/00.jpg"
+	
+	}
+}
+
+var special_offers = [
+{
+	title: {ru: "", en: ""},
+	description: {ru: "", en: ""},
+	img_src: ""
+	ico_src:
+
+}
+]

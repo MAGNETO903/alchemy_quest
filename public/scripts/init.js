@@ -201,6 +201,11 @@ var tech_core = {
                             tech_core.payments = payments;
                             console.log('[yandex] покупки доступны')
                             tech_core.payments_ready = true;
+                            // получаем список покупок
+                            payments.getCatalog().then(products => {
+                                
+                                console.log(products)
+                            });
                         }).catch(err => {
                             // Покупки недоступны. Включите монетизацию в консоли разработчика.
                             // Убедитесь, что на вкладке Покупки консоли разработчика присутствует таблица
@@ -1114,14 +1119,12 @@ var graph_core = {
         // СКОЛЬКИБАЛЬНАЯ ШКАЛА
         var scale = MAX_STAT_VALUE;
         var max_h = get_size('#sb_progressbar_1').y;
-        console.log(max_h);
-        graph_core.all_html_blocks["sb_anti_progressbar_1"].options.ratio_y =  (1 - game_core.data.operators.power_stat / scale) * 0.8;
-        set_size("#sb_anti_progressbar_2", 'none', (1 - game_core.data.operators.hp_stat / scale) * max_h);
-        set_size("#sb_anti_progressbar_3", 'none', (1 - game_core.data.operators.reputation_stat / scale) * max_h);
-        set_size("#sb_anti_progressbar_4", 'none', (1 - game_core.data.operators.money_stat / scale) * max_h);
         
-        console.log((1 - game_core.data.operators.power_stat / scale) * max_h);
-
+        graph_core.all_html_blocks["sb_anti_progressbar_1"].options.ratio_y =  (1 - game_core.data.operators.power_stat / scale) * 0.8;
+        graph_core.all_html_blocks["sb_anti_progressbar_2"].options.ratio_y =  (1 - game_core.data.operators.hp_stat / scale) * 0.8;
+        graph_core.all_html_blocks["sb_anti_progressbar_3"].options.ratio_y =  (1 - game_core.data.operators.reputation_stat / scale) * 0.8;
+        graph_core.all_html_blocks["sb_anti_progressbar_4"].options.ratio_y =  (1 - game_core.data.operators.money_stat / scale) * 0.8;
+        
         // если купили товар
         for (var i=0; i < 4; i++) {
             if (game_core.data.operators[shop_codes[i]]) {
@@ -1174,6 +1177,9 @@ var graph_core = {
         }
         $(id).css('display', 'block');
         graph_core.update_shop();
+        graph_core.update_characters_block();
+        graph_core.update_achievements_block();
+        graph_core.update_endings_block();
     },
     open_special_shop_popup: function(product_number) {
         $('#gso_popup_back').css('display', 'block')
@@ -1240,6 +1246,61 @@ var graph_core = {
             $('#gs_p_bb_text > div > span').toggleClass('red-color-shake');
         }, 250)
 
+    },
+    update_characters_block: function() {
+        for (var i=0; i < 30; i++) {
+            if (game_core.data.operators[`character_${i}_opened`]) {
+                graph_core.all_html_blocks['gch_cb_title_'+i].options.text = characters[i].title[graph_core.lang];
+                graph_core.all_html_blocks['gch_cb_img_'+i].options.background = `url('${characters[i].img_src}')`;
+                graph_core.all_html_blocks['gch_cb_description_'+i].options.text = characters[i].description[graph_core.lang];
+            } else {
+                graph_core.all_html_blocks['gch_cb_title_'+i].options.text = characters['not_opened'].title[graph_core.lang];
+                graph_core.all_html_blocks['gch_cb_img_'+i].options.background = `url('${characters['not_opened'].img_src}')`;
+                graph_core.all_html_blocks['gch_cb_description_'+i].options.text = characters['not_opened'].description[graph_core.lang];
+            
+            }
+        }
+
+        graph_core.all_html_blocks['gch_card'].recalculate();
+    },
+    update_achievements_block: function() {
+        for (var i=1; i < 11; i++) {
+            if (game_core.data.operators[`achievement_${i}_opened`]) {
+                graph_core.all_html_blocks[`ga_cb_i${i}_title`].options.text = achievements[i].title[graph_core.lang];
+                graph_core.all_html_blocks[`ga_cb_i${i}_pic`].options.background = `url('${achievements[i].img_src}')`;
+               
+                graph_core.all_html_blocks[`ga_cb_i${i}_desk`].options.text = achievements[i].description[graph_core.lang];
+            } else {
+                graph_core.all_html_blocks[`ga_cb_i${i}_title`].options.text = '???';
+                graph_core.all_html_blocks[`ga_cb_i${i}_pic`].options.background = './images/for_achievements/icons/default.png';
+                graph_core.all_html_blocks[`ga_cb_i${i}_desk`].options.text = achievements[i].hint_description[graph_core.lang];
+            }
+        }
+
+        graph_core.all_html_blocks['ga_card_block'].recalculate();
+    },
+    update_endings_block: function() {
+        for (var i=0; i < 7; i++) {
+            if (game_core.data.operators[`ending_${i}_opened`]) {
+                graph_core.all_html_blocks['ge_cb_title_'+i].options.text = endings[i].title[graph_core.lang];
+                graph_core.all_html_blocks['ge_cb_img_'+i].options.background = `url('${endings[i].img_src}')`;
+                graph_core.all_html_blocks['ge_cb_description_'+i].options.text = endings[i].description[graph_core.lang];
+            } else {
+                graph_core.all_html_blocks['ge_cb_title_'+i].options.text = endings['not_opened'].title[graph_core.lang];
+                graph_core.all_html_blocks['ge_cb_img_'+i].options.background = `url('${endings['not_opened'].img_src}')`;
+                graph_core.all_html_blocks['ge_cb_description_'+i].options.text = endings['not_opened'].description[graph_core.lang];
+            
+            }
+        }
+
+        graph_core.all_html_blocks['ge_card'].recalculate();
+    },
+    update_special_shop: function(products) {
+        // настраивает внешний вид
+        if (tech_core.platform == 'yandex') {
+            // обрабатываем яндекс
+            
+        }
     }
 }
 
@@ -1365,7 +1426,7 @@ var game_core = {
     },
     "next_card": function(choice_num='none') {
         graph_core.update_stats();
-        graph_core.update_shop();
+        
         var next_card_id;
         var desk = game_core.data.cur_desk;
         console.log(choice_num)
@@ -1536,9 +1597,6 @@ var game_core = {
             }
             game_core.data.history[save_point].cur_desk = game_core.data.cur_desk;
         }
-        
-
-       
         
         graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
 
