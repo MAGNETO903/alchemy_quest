@@ -996,7 +996,7 @@ var graph_core = {
         }
     },
     "open_shop": function() {
-
+        graph_core.update_shop();
         $('#game_options').css('display', 'none')
         $('#game_viewport').css('display', 'none')
         $('#game_shop').css('display', 'block');
@@ -1082,7 +1082,7 @@ var graph_core = {
     },
     "update_card": function(card) {
         //console.log(card)
-       
+       graph_core.update_stats();
         //console.log(graph_core.lang)
         graph_core.html_blocks["game_viewport"].children['card_block'].children['card_title'].options.text = card.title[graph_core.lang];
 
@@ -1172,14 +1172,15 @@ var graph_core = {
         $('#go_cb_i2_btn_2_ok').css('display', 'block');
     },
     open_big_block: function(id) {
-        for (var i in graph_core.big_blocks_ids) {
-            $('#' + graph_core.big_blocks_ids[i]).css('display', 'none');
-        }
-        $(id).css('display', 'block');
         graph_core.update_shop();
         graph_core.update_characters_block();
         graph_core.update_achievements_block();
         graph_core.update_endings_block();
+        for (var i in graph_core.big_blocks_ids) {
+            $('#' + graph_core.big_blocks_ids[i]).css('display', 'none');
+        }
+        $(id).css('display', 'block');
+        
     },
     open_special_shop_popup: function(product_number) {
         $('#gso_popup_back').css('display', 'block')
@@ -1299,7 +1300,7 @@ var graph_core = {
         // настраивает внешний вид
         if (tech_core.platform == 'yandex') {
             // обрабатываем яндекс
-            
+
         }
     }
 }
@@ -1317,7 +1318,7 @@ var game_core = {
                 "operators": operators,
                 "used_desks": {
                     "rand4": [],
-                    "chapter2": [],
+                    "chapter_2": [],
                 },
                 "started_scenarios": [], // точки выхода
             }
@@ -1331,7 +1332,7 @@ var game_core = {
         "cur_chapter": 1,
         "used_desks": {
             "rand4": [],
-            "chapter2": [],
+            "chapter_2": [],
         },
         "operators": operators,
         "real_next_card": "",
@@ -1429,17 +1430,20 @@ var game_core = {
         
         var next_card_id;
         var desk = game_core.data.cur_desk;
+        var next_card_func;
         console.log(choice_num)
         console.log(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
         console.log(game_core.data)
         if (choice_num == 'none') {
             next_card_id = desks[game_core.data.cur_desk].cards[game_core.data.cur_card].next(game_core.data.operators);
+            next_card_func = desks[game_core.data.cur_desk].cards[game_core.data.cur_card].next
         } else {
             next_card_id = desks[game_core.data.cur_desk].cards[game_core.data.cur_card].answers[choice_num].next(game_core.data.operators);
+            next_card_func = desks[game_core.data.cur_desk].cards[game_core.data.cur_card].answers[choice_num].next
         }
         
        
-
+        //console.log(next_card_func(game_core.data.operators));
 
 
         // ВНЕСЮЖЕТНОЕ СОБЫТИЕ
@@ -1448,7 +1452,7 @@ var game_core = {
         if (game_core.data.operators.power_stat < 0 && game_core.data.operators.critical == 0) {
             game_core.data.started_scenarios.push({
                 desk: desk,
-                card: next_card_id
+                next_card_func: next_card_func
             });
 
             game_core.data.cur_desk = 'power_low';
@@ -1457,17 +1461,92 @@ var game_core = {
             graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
             
             return 
-        } else if ((game_core.data.operators.hp_stat < 0 || game_core.data.operators.hp_stat > 100 ||  
-            game_core.data.operators.power_stat > 100 ||
-            game_core.data.operators.reputation_stat < 0 || game_core.data.operators.reputation_stat > 100 ||
-            game_core.data.operators.money_stat < 0 || game_core.data.operators.money_stat > 100) && game_core.data.operators.critical != 'eternity') {
+        // избыток мощи
+        } else if (game_core.data.operators.power_stat > 100 && game_core.data.operators.critical == 0) {
+            game_core.data.started_scenarios.push({
+                desk: desk,
+                next_card_func: next_card_func
+            });
 
-            console.log('eternity')
-            game_core.data.cur_desk = 'eternity';
-            game_core.data.cur_card = 'eternity_start';
-
+            game_core.data.cur_desk = 'power_high';
+            game_core.data.cur_card = 'ph_1';
+            game_core.data.operators.critical = 1;
             graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
-            return
+            
+            return 
+        // нехватка здоровья
+        } else if (game_core.data.operators.hp_stat < 0 && game_core.data.operators.critical == 0) {
+            game_core.data.started_scenarios.push({
+                desk: desk,
+                next_card_func: next_card_func
+            });
+
+            game_core.data.cur_desk = 'health_low';
+            game_core.data.cur_card = 'hl_1';
+            game_core.data.operators.critical = 1;
+            graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
+            
+            return 
+        } else if (game_core.data.operators.hp_stat > 100 && game_core.data.operators.critical == 0) {
+            game_core.data.started_scenarios.push({
+                desk: desk,
+                next_card_func: next_card_func
+            });
+
+            game_core.data.cur_desk = 'health_high';
+            game_core.data.cur_card = 'hh_1';
+            game_core.data.operators.critical = 1;
+            graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
+            
+            return 
+        } else if (game_core.data.operators.reputation_stat < 0 && game_core.data.operators.critical == 0) {
+            game_core.data.started_scenarios.push({
+                desk: desk,
+                next_card_func: next_card_func
+            });
+
+            game_core.data.cur_desk = 'reputation_low';
+            game_core.data.cur_card = 'rl_1';
+            game_core.data.operators.critical = 1;
+            graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
+            
+            return 
+        } else if (game_core.data.operators.reputation_stat > 100 && game_core.data.operators.critical == 0) {
+            game_core.data.started_scenarios.push({
+                desk: desk,
+                next_card_func: next_card_func
+            });
+
+            game_core.data.cur_desk = 'reputation_high';
+            game_core.data.cur_card = 'rh_1';
+            game_core.data.operators.critical = 1;
+            graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
+            
+            return 
+        } else if (game_core.data.operators.money_stat < 0 && game_core.data.operators.critical == 0) {
+            game_core.data.started_scenarios.push({
+                desk: desk,
+                next_card_func: next_card_func
+            });
+
+            game_core.data.cur_desk = 'money_low';
+            game_core.data.cur_card = 'ml_1';
+            game_core.data.operators.critical = 1;
+            graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
+            
+            return 
+        } else if (game_core.data.operators.money_stat > 100 && game_core.data.operators.critical == 0) {
+            game_core.data.started_scenarios.push({
+                desk: desk,
+                next_card_func: next_card_func
+            });
+
+            game_core.data.cur_desk = 'money_high';
+            game_core.data.cur_card = 'mh_1';
+            game_core.data.operators.critical = 1;
+            graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
+            
+            return 
         }
 
         // негативный сценарий
@@ -1498,14 +1577,15 @@ var game_core = {
 
         // Возврат к предыдущей ветке
         if (next_card_id == '-') {
-            
-            next_card_id = game_core.data.started_scenarios[game_core.data.started_scenarios.length-1].card;
+            game_core.data.operators.critical = 0;
+            next_card_id = game_core.data.started_scenarios[game_core.data.started_scenarios.length-1].next_card_func(game_core.data.operators);
             desk = game_core.data.started_scenarios[game_core.data.started_scenarios.length-1].desk;
             game_core.data.started_scenarios.pop();
 
             console.log(desk, next_card_id)
         }
 
+        console.log(desk);
 
 
         // Проверка не является ли это новой точкой входа
@@ -1529,7 +1609,7 @@ var game_core = {
 
             game_core.data.started_scenarios.push({
                 desk: desk,
-                card: desks[desk].cards[next_card_id].next()
+                next_card_func: desks[desk].cards[next_card_id].next
             });
             var rand_cards = []; // точки входа
 
@@ -1537,13 +1617,15 @@ var game_core = {
 
             // в колоде несколько точек входа: выбираем любую и запоминаем
             if (desks[desk].type == 'rand_norepeat') {
-                console.log('[game_core] - в колоде несколько точек входа')
+                console.log('[game_core] - в колоде несколько точек входа (колода: ' + desk + ")");
                 for (var i in desks[desk].cards) {       
-                    if (i.split('_')[1] == 'start' && game_core.data.used_desks[desk].includes(i) == false) {
+                    if (i.split('_')[i.split('_').length-1] == 'start' && game_core.data.used_desks[desk].includes(i) == false) {
                         rand_cards.push(i);
                     }
                 }
-            
+                
+                console.log(rand_cards);
+
                 game_core.data.cur_card = get_random_elements(rand_cards, 1, game_core.data.used_desks[desk])[0]
                 game_core.data.used_desks[desk].push(game_core.data.cur_card)
                 game_core.data.cur_desk = desk;
@@ -1590,7 +1672,10 @@ var game_core = {
                 game_core.data.history[save_point].operators[i] = game_core.data.operators[i];
             }
             for (var i in game_core.data.used_desks) {
-                game_core.data.history[save_point].used_desks[i] = [...game_core.data.used_desks[i]];
+                game_core.data.history[save_point].used_desks[i] = [];
+                for  (var j in game_core.data.used_desks[i]) {
+                    game_core.data.history[save_point].used_desks[i].push(game_core.data.used_desks[i][j]);
+                }
             }
             for (var i in game_core.data.started_scenarios) {
                 game_core.data.history[save_point].started_scenarios[i] = game_core.data.started_scenarios[i];
@@ -1611,8 +1696,19 @@ var game_core = {
     "move_to_save_point": function(save_point) {
         
         if (game_core.data.history[save_point]) {
-            game_core.data.operators = game_core.data.history[save_point].operators;
-            game_core.data.used_desks = game_core.data.history[save_point].used_desks;
+            for (var i in game_core.data.history[save_point].operators) {
+                game_core.data.operators[i] = game_core.data.history[save_point].operators[i];
+            }
+            for (var i in game_core.data.history[save_point].used_desks) {
+                game_core.data.used_desks[i] = [];
+                for  (var j in game_core.data.history[save_point].used_desks[i]) {
+                    game_core.data.used_desks[i].push(game_core.data.history[save_point].used_desks[i][j]);
+                }
+            }
+            for (var i in game_core.data.history[save_point].started_scenarios) {
+                game_core.data.started_scenarios[i] = game_core.data.history[save_point].started_scenarios[i];
+            }
+            
 
             game_core.data.cur_desk = game_core.data.history[save_point].cur_desk;
             game_core.data.cur_card = game_core.data.history[save_point].cur_card;

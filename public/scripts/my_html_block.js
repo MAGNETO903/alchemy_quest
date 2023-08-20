@@ -522,7 +522,7 @@ var my_html_block = function(id, html_element, options = {}, big_block = false, 
 				if (this.options.onclick == "") {
 					this.html_element.style['cursor'] = 'default';
 				} else {
-					this.html_element.style['cursor'] = 'cursor';
+					this.html_element.style['cursor'] = 'pointer';
 					
 				}
 			}

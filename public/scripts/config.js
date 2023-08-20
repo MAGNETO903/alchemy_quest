@@ -109,10 +109,10 @@ var tv_moves = {
 
 
 // ДЛЯ БАЛАНСА ИГРЫ
-var REPUTATION_STAT_DELTA_1 = 10;
-var POWER_STAT_DELTA_1 = 10;
-var MONEY_STAT_DELTA_1 = 10;
-var HEALTH_STAT_DELTA_1 = 10;
+var REPUTATION_STAT_DELTA_1 = 5;
+var POWER_STAT_DELTA_1 = 5;
+var MONEY_STAT_DELTA_1 = 5;
+var HEALTH_STAT_DELTA_1 = 5;
 var MAX_STAT_VALUE = 100;
 
 var START_POS = 'plot_1-1'
@@ -265,16 +265,28 @@ var text = {
 		"ru": "Цветок",
 		"en": ""
 	},
+	"CHARACTER_31": {
+		"ru": "Незнакомка",
+		"en": ""
+	},
+	"CHARACTER_32": {
+		"ru": "Алия",
+		"en": ""
+	},
+		"CHARACTER_33": {
+		"ru": "Аралез",
+		"en": ""
+	},
 	"dragon_type_0": {
-		"ru": "цветочный",
+		"ru": "ледяной",
 		"en": ""
 	},
 	"dragon_type_1": {
-		"ru": "переливчатый",
+		"ru": "цветочный",
 		"en": ""
 	},
 	"dragon_type_2": {
-		"ru": "златокрыл",
+		"ru": "золотой",
 		"en": ""
 	},
 	"dragon_type_3": {
@@ -551,6 +563,7 @@ var operators = {
 	Dr: 0,
 	Sym: 0,
 	O: 0,
+	Flo: 0,
 
 	// В ритме города
 	V: 0,
@@ -667,6 +680,7 @@ var frames = {
 // НОВАЯ СТРУКТУРКА
 // всё поделено на колоды
 // главная сюжетная линия - колода main, все остальные - вспомогательные
+
 var desks = {
 	"plot": { 
 		"type": "script", // сценарий: важна последовательность, карточки не повторяются. 
@@ -730,10 +744,7 @@ var desks = {
 					}
 				},
 				"2": {
-					"text": {
-						"ru": "...",
-						"en": "..."
-					},
+					"text": {"ru": "...","en": "..."},
 					"next": function(operators) {
 						// изменяем операторы
 						return "plot_1-3"
@@ -780,6 +791,8 @@ var desks = {
 				"1": {
 					"text": { "ru": "Да", "en": "..." },
 					"next": function(operators) {
+						operators.character_0_opened = 1
+						//console.log(operators)
 						// изменяем операторы
 						return "plot_2-1"
 					}
@@ -788,6 +801,8 @@ var desks = {
 					"text": {
 						"ru": "Нет", "en": "..."},
 					"next": function(operators) {
+						operators.character_0_opened =1
+						//console.log(operators)
 						// изменяем операторы
 						return "plot_2-2"
 					}
@@ -1079,6 +1094,7 @@ var desks = {
 				"1": {
 					"text": { "ru": " Ладно…", "en": "..." },
 					"next": function(operators) {
+						operators.character_3_opened =1
 						// изменяем операторы
 						return "plot_3-2"
 					}
@@ -1087,6 +1103,7 @@ var desks = {
 					"text": {
 						"ru": "Добрый день!", "en": "..."},
 					"next": function(operators) {
+						operators.character_3_opened =1
 						// изменяем операторы
 						// А здесь уже не просто переход на "plot_3-2", но ещё и изменение операторов (+ к репутации, + к оператоу D)
 						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
@@ -1110,11 +1127,14 @@ var desks = {
 						operators.money_stat -= MONEY_STAT_DELTA_1;
 						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
 						operators.D++;
+						operators.character_2_opened =1
 						return "plot_3-3" }
 				},
 				"2": {
 					"text": {"ru": "Нет", "en": "..."},
-					"next": function(operators) { return "plot_3-3" }
+					"next": function(operators) {
+						operators.character_2_opened =1 
+						return "plot_3-3" }
 				}
 			}
 		},
@@ -1129,12 +1149,15 @@ var desks = {
 					"text": { "ru": "Спасибо. Я найду этому применение", "en": "..." },
 					"next": function(operators) { 
 						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
-						operators.D++;
+						operators.D+=1;
+						operators.character_4_opened =1
 						return "plot_3-4" }
 				},
 				"2": {
 					"text": {"ru": "Хлам какой-то... Но ладно", "en": "..."},
-					"next": function(operators) { return "plot_3-4" }
+					"next": function(operators) {
+						operators.character_4_opened =1
+						return "plot_3-4" }
 				}
 			}
 		},
@@ -1147,24 +1170,78 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Обязательно!", "en": "..." },
-					"next": function(operators) { return "plot_3-5" }
+					"next": function(operators) { 
+						operators.character_5_opened =1
+						return "plot_3-5" }
 				},
 				"2": {
 					"text": {"ru": "“Деньги не пахнут”", "en": "..."},
 					"next": function(operators) { 
 						operators.Z++;
+						operators.character_5_opened =1
 						return "plot_3-5" }
 				}
 			}
 		},
 		"plot_3-5": {
-			"title": {"ru": "...", "en": "..."}, "img": 0,
+			"title": text.CHARACTER_14, "img": 14,
+			"text": {
+				"ru": "О! Наконец-то в нашем городе Мастер появился! Это хорошо... да, хорошо... У меня дикая головная боль! А аптекарь лишь фигню говорит. Но вы-то поможете?",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Да","en": "Do it!"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.character_13_opened =1
+						operators.power_stat -= POWER_STAT_DELTA_1;
+						operators.money_stat += MONEY_STAT_DELTA_1;
+						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
+						return "plot_3-6"	
+					}
+				},
+				"2": {
+					"text": { "ru": "Нет", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.character_13_opened =1
+						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
+						return "plot_3-6"
+					}
+				}
+			}
+		},
+			"plot_3-6": {
+			"title": text.CHARACTER_12, "img": 12,
+			"text": {
+				"ru": "Здравствуйте! Я видал многое. Страну фей и эльфов и страну тех, кто предан Луне… Я рад, что теперь у нас есть толковый человек.",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Приятно познакомиться", "en": "..." },
+					"next": function(operators) {
+						operators.character_11_opened =1
+						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
+						return "plot_3-7" }
+				},
+				"2": {
+					"text": {"ru": "Хм...", "en": "..."},
+					"next": function(operators) {
+						operators.character_11_opened =1
+					return "plot_3-7" }
+				}
+			}
+		},
+		"plot_3-7": {
+			"title": {"ru": "...", "en": "..."}, "img": 37,
 			"text": {
 				"ru": " Город Сант-Марим расположился на берегу спокойного моря. Пожалуй, это то место, которое вы и искали… ",
 				"en": "- Hello there! \n - General Kenobi..."
 			},
 			"save_point": "chapter_1",
-			"out_point": "plot_4-1",
+			
 			"answers": {
 				"1": {
 					"text": { "ru": "...", "en": "..." },
@@ -1210,14 +1287,17 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Дать", "en": "..." },
-					"next": function(operators) { 
+					"next": function(operators) {
+						operators.character_6_opened =1
 						operators.money_stat -= MONEY_STAT_DELTA_1;
 						operators.power_stat -= POWER_STAT_DELTA_1;
+						operators.N += 1;
 						return "plot_4-4-1" }
 				},
 				"2": {
 					"text": {"ru": " Ничего не давать", "en": "..."},
-					"next": function(operators) { 
+					"next": function(operators) {
+						operators.character_6_opened =1
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
 						return "plot_4-4-1" }
 				}
@@ -1230,7 +1310,7 @@ var desks = {
 			}
 		},
 		"plot_4-5": {
-			"title": text.CHARACTER_0, "img": 0,
+			"title": text.CHARACTER_0, "img": 31,
 			"text": {
 				"ru": "Внезапно дыхание перехватило, окружающий мир завертелся. Вы оказались во власти смутных видений, не поддающихся описанию.",
 				"en": "- Hello there! \n - General Kenobi..."
@@ -1247,9 +1327,26 @@ var desks = {
 			}
 		},
 		"plot_4-6": {
-			"title": text.CHARACTER_9, "img": 9,
+			"title": text.CHARACTER_9, "img": 32,
 			"text": {
 				"ru": "Значит бессмертие. Есть один способ...",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "...", "en": "..." },
+					"next": function(operators) { return "plot_4-65" }
+				},
+				"2": {
+					"text": {"ru": "...", "en": "..."},
+					"next": function(operators) { return "plot_4-65" }
+				}
+			}
+		},
+		"plot_4-65": {
+			"title": text.CHARACTER_0, "img": 0,
+			"text": {
+				"ru": "Видение исчезло так же внезапно, как и появилось...",
 				"en": "- Hello there! \n - General Kenobi..."
 			},
 			"answers": {
@@ -1272,13 +1369,16 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "Звучит заманчиво": "Да", "en": "..." },
-					"next": function(operators) { 
+					"next": function(operators) {
+						operators.character_7_opened =1 
 						operators.D++;
 						return "plot_4-8" }
 				},
 				"2": {
 					"text": {"ru": "Буду иметь в виду", "en": "..."},
-					"next": function(operators) { return "plot_4-8" }
+					"next": function(operators) { 
+						operators.character_7_opened =1
+						return "plot_4-8" }
 				}
 			}
 		},
@@ -1321,13 +1421,16 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Мне тоже", "en": "..." },
-					"next": function(operators) { 
+					"next": function(operators) {
+						operators.character_10_opened =1
 						operators.D++;
 						return "plot_4-12" }
 				},
 				"2": {
 					"text": {"ru": "...", "en": "..."},
-					"next": function(operators) { return "plot_4-12" }
+					"next": function(operators) {
+						operators.character_10_opened =1
+						return "plot_4-12" }
 				}
 			}
 		},
@@ -1378,13 +1481,16 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Выбора нет…", "en": "..." },
-					"next": function(operators) { return "plot_4-16" }
+					"next": function(operators) { 
+						operators.character_9_opened =1
+						return "plot_4-16" }
 				},
 				"2": {
 					"text": {"ru": "Отлично!", "en": "..."},
 					"next": function(operators) { 
 						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
 						operators.D++;
+						operators.character_9_opened =1
 						return "plot_4-16" }
 				}
 			}
@@ -1476,7 +1582,7 @@ var desks = {
 			}
 		},
 		"plot_4-24": {
-			"title": text.CHARACTER_0, "img": 0,
+			"title": text.CHARACTER_0, "img": 38,
 			"text": {
 				"ru": "Луна сегодня в благоприятной фазе. Зачаровать несколько лунных монет?",
 				"en": "- Hello there! \n - General Kenobi..."
@@ -1496,7 +1602,58 @@ var desks = {
 		"plot_4-25": {
 			"desk": "rand4",
 			"next": function(operators) {
-				return "plot_4-26"
+				return "plot_4-25-1"
+			}
+		},
+		"plot_4-25-1": {
+			"title": text.CHARACTER_5, "img": 5,
+			"text": {
+				"ru": "Нынче в моде розовые флоксы и голубые фиалки.",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Приобрести","en": "Do it!"},
+					"next": function(operators) {
+						operators.money_stat -= POWER_STAT_DELTA_1;
+						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
+						// изменяем операторы
+						return "plot_4-25-2"	
+					}
+				},
+				"2": {
+					"text": { "ru": "Мне это, пожалуй, не нужно...", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "plot_4-26"
+					}
+				}
+			}
+		},
+		"plot_4-25-2": {
+			"title": text.CHARACTER_0, "img": 59,
+			"text": {
+				"ru": "Не флоксы и не фиалки, а какие-то совершенно фантастические цветы оказались у вас в руках...",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Подарить кому-нибудь...","en": "Do it!"},
+					"next": function(operators) {
+						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
+						operators.Flo = 1;
+						// изменяем операторы
+						return "plot_4-26"	
+					}
+				},
+				"2": {
+					"text": { "ru": "Сделать вытяжки", "en": "dont"},
+					"next": function(operators) {
+						operators.power_stat += POWER_STAT_DELTA_1;
+						// изменяем операторы
+						return "plot_4-26"
+					}
+				}
 			}
 		},
 		"plot_4-26": {
@@ -1552,18 +1709,35 @@ var desks = {
 		"plot_4-29": {
 			"title": text.CHARACTER_12, "img": 12,
 			"text": {
-				"ru": "Здравствуйте! Я видал многое. Страну фей и эльфов и страну тех, кто предан Луне… Я рад, что теперь у нас есть толковый человек.",
+				"ru": "Вы не видели Алию - мою дочь? Девушку-солнце? Мы разминулись…",
 				"en": "- Hello there! \n - General Kenobi..."
 			},
 			"answers": {
 				"1": {
-					"text": { "ru": "Приятно познакомиться", "en": "..." },
+					"text": { "ru": "Кажется, нет…", "en": "..." },
 					"next": function(operators) { 
-						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
 						return "plot_4-30" }
 				},
 				"2": {
-					"text": {"ru": "Хм...", "en": "..."},
+					"text": {"ru": "Солнце?", "en": "..."},
+					"next": function(operators) { return "plot_4-29-1" }
+				}
+			}
+		},
+		"plot_4-29-1": {
+			"title": text.CHARACTER_12, "img": 12,
+			"text": {
+				"ru": "Да. О, вы все поймете, когда увидите ее.",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Надеюсь, вы найдете ее", "en": "..." },
+					"next": function(operators) { 
+						return "plot_4-30" }
+				},
+				"2": {
+					"text": {"ru": "Интересно…", "en": "..."},
 					"next": function(operators) { return "plot_4-30" }
 				}
 			}
@@ -1599,7 +1773,7 @@ var desks = {
 						return "plot_4-31-1" }
 				},
 				"2": {
-					"text": {"ru": "Эм… Эм!...", "en": "..."},
+					"text": {"ru": "Эм… Эм!…", "en": "..."},
 					"next": function(operators) { 
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
 						return "plot_4-32" }
@@ -1609,7 +1783,7 @@ var desks = {
 		"plot_4-31-1": {
 			"title": text.CHARACTER_13, "img": 13,
 			"text": {
-				"ru": "Спасибо вам большое, у вас очень доброе сердце… Меня зовут Алия. Будем знакомы, Мастер!",
+				"ru": "Спасибо вам большое! У вас добрые глаза… и сердце. Меня зовут Алия. Будем знакомы, Мастер!",
 				"en": "- Hello there! \n - General Kenobi..."
 			},
 			"answers": {
@@ -1637,6 +1811,7 @@ var desks = {
 					"next": function(operators) { 
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						operators.money_stat -= MONEY_STAT_DELTA_1;
+						operators.N += 1;
 						return "plot_4-33" }
 				},
 				"2": {
@@ -1806,14 +1981,15 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Продать", "en": "..." },
-					"next": function(operators) { 
+					"next": function(operators) {
+						achievement_1_opened = 1
 						operators.money_stat += MONEY_STAT_DELTA_1;
 						return "plot_4-46-3-1" }
 				},
 				"2": {
 					"text": {"ru": "Зачаровать", "en": "..."},
 					"next": function(operators) { 
-
+						achievement_1_opened = 1
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						return "plot_4-47" }
 				}
@@ -1891,7 +2067,7 @@ var desks = {
 			}
 		},
 		"plot_4-50-1": {
-			"title": text.CHARACTER_0, "img": 0,
+			"title": text.CHARACTER_0, "img": 25,
 			"text": {
 				"ru": "Яйцо лежало, загадочно переливаясь в свете огня. (Внимание: от ваших действий будет зависеть какой вид получится)",
 				"en": "- Hello there! \n - General Kenobi..."
@@ -1906,12 +2082,32 @@ var desks = {
 				},
 				"2": {
 					"text": {"ru": "Оставить на столе", "en": "..."},
-					"next": function(operators) { return "plot_4-50-1-2" }
+					"next": function(operators) { return "plot_4-50-1-1" }
+				}
+			}
+		},
+		"plot_4-50-1-1": {
+			"title": text.CHARACTER_0, "img": 60,
+			"text": {
+				"ru": "Яйцо лежало, загадочно переливаясь в свете огня. (Внимание: от ваших действий будет зависеть какой вид получится)",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"save_point": "dragon_egg",
+			"answers": {
+				"1": {
+					"text": { "ru": "Положить в огонь", "en": "..." },
+					"next": function(operators) { 
+						operators.Dr += 1;
+						return "plot_4-50-1-1-2" }
+				},
+				"2": {
+					"text": {"ru": "Оставить на столе", "en": "..."},
+					"next": function(operators) { return "plot_4-50-1-1-1" }
 				}
 			}
 		},
 		"plot_4-50-1-2": {
-			"title": text.CHARACTER_0, "img": 0,
+			"title": text.CHARACTER_0, "img": 68,
 			"text": {
 				"ru": "Яйцо лежало, загадочно переливаясь в свете огня. (Внимание: от ваших действий будет зависеть какой вид получится)",
 				"en": "- Hello there! \n - General Kenobi..."
@@ -1922,17 +2118,16 @@ var desks = {
 					"text": { "ru": "Положить в огонь", "en": "..." },
 					"next": function(operators) { 
 						operators.Dr += 1;
-						return "plot_4-50-1-3" }
+						return "plot_4-50-1-2-2" }
 				},
 				"2": {
 					"text": {"ru": "Оставить на столе", "en": "..."},
-					"next": function(operators) { return "plot_4-50-1-3" }
+					"next": function(operators) { return "plot_4-50-1-2-1" }
 				}
 			}
 		},
-		
-		"plot_4-50-1-3": {
-			"title": text.CHARACTER_0, "img": 0,
+		"plot_4-50-1-1-1": {
+			"title": text.CHARACTER_0, "img": 61,
 			"text": {
 				"ru": "Яйцо лежало, загадочно переливаясь в свете огня. (Внимание: от ваших действий будет зависеть какой вид получится)",
 				"en": "- Hello there! \n - General Kenobi..."
@@ -1943,11 +2138,303 @@ var desks = {
 					"text": { "ru": "Положить в огонь", "en": "..." },
 					"next": function(operators) { 
 						operators.Dr += 1;
-						return "plot_4-50-3" }
+						return "plot_4-50-1-1-1-2" }
 				},
 				"2": {
 					"text": {"ru": "Оставить на столе", "en": "..."},
-					"next": function(operators) { return "plot_4-50-3" }
+					"next": function(operators) { return "plot_4-50-1-1-1-1" }
+				}
+			}
+		},
+		"plot_4-50-1-1-2": {
+			"title": text.CHARACTER_0, "img": 64,
+			"text": {
+				"ru": "Яйцо лежало, загадочно переливаясь в свете огня. (Внимание: от ваших действий будет зависеть какой вид получится)",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"save_point": "dragon_egg",
+			"answers": {
+				"1": {
+					"text": { "ru": "Положить в огонь", "en": "..." },
+					"next": function(operators) { 
+						operators.Dr += 1;
+						return "plot_4-50-1-1-2-2" }
+				},
+				"2": {
+					"text": {"ru": "Оставить на столе", "en": "..."},
+					"next": function(operators) { return "plot_4-50-1-1-2-1" }
+				}
+			}
+		},
+		"plot_4-50-1-1-1-1": {
+			"title": text.CHARACTER_0, "img": 62,
+			"text": {
+				"ru": "Теперь нужно только ждать. Время до вылупления: <timer>. Пропустить за рекламу?",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Да", "en": "..." },
+					"next": function(operators) { return "skip_timer" }
+				},
+				"2": {
+					"text": {"ru": "Нет", "en": "..."},
+					"next": function(operators) { 
+						if (operators.Dr == 0) {
+							return "plot_4-50-41" 
+						} else if (operators.Dr == 1) {
+							return "plot_4-50-42"
+						} 
+						else if (operators.Dr == 2) {
+							return "plot_4-50-43"
+						} 
+						else if (operators.Dr == 3) {
+							return "plot_4-50-44"
+						} 
+					}
+				}
+			}
+		},
+		"plot_4-50-1-1-1-2": {
+			"title": text.CHARACTER_0, "img": 63,
+			"text": {
+				"ru": "Теперь нужно только ждать. Время до вылупления: <timer>. Пропустить за рекламу?",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Да", "en": "..." },
+					"next": function(operators) { return "skip_timer" }
+				},
+				"2": {
+					"text": {"ru": "Нет", "en": "..."},
+					"next": function(operators) { 
+						if (operators.Dr == 0) {
+							return "plot_4-50-41" 
+						} else if (operators.Dr == 1) {
+							return "plot_4-50-42"
+						} 
+						else if (operators.Dr == 2) {
+							return "plot_4-50-43"
+						} 
+						else if (operators.Dr == 3) {
+							return "plot_4-50-44"
+						} 
+					}
+				}
+			}
+		},
+		"plot_4-50-1-1-2-1": {
+			"title": text.CHARACTER_0, "img": 63,
+			"text": {
+				"ru": "Теперь нужно только ждать. Время до вылупления: <timer>. Пропустить за рекламу?",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Да", "en": "..." },
+					"next": function(operators) { return "skip_timer" }
+				},
+				"2": {
+					"text": {"ru": "Нет", "en": "..."},
+					"next": function(operators) { 
+						if (operators.Dr == 0) {
+							return "plot_4-50-41" 
+						} else if (operators.Dr == 1) {
+							return "plot_4-50-42"
+						} 
+						else if (operators.Dr == 2) {
+							return "plot_4-50-43"
+						} 
+						else if (operators.Dr == 3) {
+							return "plot_4-50-44"
+						} 
+					}
+				}
+			}
+		},
+		"plot_4-50-1-1-2-2": {
+			"title": text.CHARACTER_0, "img": 65,
+			"text": {
+				"ru": "Теперь нужно только ждать. Время до вылупления: <timer>. Пропустить за рекламу?",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Да", "en": "..." },
+					"next": function(operators) { return "skip_timer" }
+				},
+				"2": {
+					"text": {"ru": "Нет", "en": "..."},
+					"next": function(operators) { 
+						if (operators.Dr == 0) {
+							return "plot_4-50-41" 
+						} else if (operators.Dr == 1) {
+							return "plot_4-50-42"
+						} 
+						else if (operators.Dr == 2) {
+							return "plot_4-50-43"
+						} 
+						else if (operators.Dr == 3) {
+							return "plot_4-50-44"
+						} 
+					}
+				}
+			}
+		},
+		"plot_4-50-1-2-1": {
+			"title": text.CHARACTER_0, "img": 64,
+			"text": {
+				"ru": "Яйцо лежало, загадочно переливаясь в свете огня. (Внимание: от ваших действий будет зависеть какой вид получится)",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"save_point": "dragon_egg",
+			"answers": {
+				"1": {
+					"text": { "ru": "Положить в огонь", "en": "..." },
+					"next": function(operators) { 
+						operators.Dr += 1;
+						return "plot_4-50-1-2-1-2" }
+				},
+				"2": {
+					"text": {"ru": "Оставить на столе", "en": "..."},
+					"next": function(operators) { return "plot_4-50-1-2-1-1" }
+				}
+			}
+		},
+		"plot_4-50-1-2-1-1": {
+			"title": text.CHARACTER_0, "img": 63,
+			"text": {
+				"ru": "Теперь нужно только ждать. Время до вылупления: <timer>. Пропустить за рекламу?",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Да", "en": "..." },
+					"next": function(operators) { return "skip_timer" }
+				},
+				"2": {
+					"text": {"ru": "Нет", "en": "..."},
+					"next": function(operators) { 
+						if (operators.Dr == 0) {
+							return "plot_4-50-41" 
+						} else if (operators.Dr == 1) {
+							return "plot_4-50-42"
+						} 
+						else if (operators.Dr == 2) {
+							return "plot_4-50-43"
+						} 
+						else if (operators.Dr == 3) {
+							return "plot_4-50-44"
+						} 
+					}
+				}
+			}
+		},
+		"plot_4-50-1-2-1-2": {
+			"title": text.CHARACTER_0, "img": 65,
+			"text": {
+				"ru": "Теперь нужно только ждать. Время до вылупления: <timer>. Пропустить за рекламу?",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Да", "en": "..." },
+					"next": function(operators) { return "skip_timer" }
+				},
+				"2": {
+					"text": {"ru": "Нет", "en": "..."},
+					"next": function(operators) { 
+						if (operators.Dr == 0) {
+							return "plot_4-50-41" 
+						} else if (operators.Dr == 1) {
+							return "plot_4-50-42"
+						} 
+						else if (operators.Dr == 2) {
+							return "plot_4-50-43"
+						} 
+						else if (operators.Dr == 3) {
+							return "plot_4-50-44"
+						} 
+					}
+				}
+			}
+		},
+		"plot_4-50-1-2-2": {
+			"title": text.CHARACTER_0, "img": 66,
+			"text": {
+				"ru": "Яйцо лежало, загадочно переливаясь в свете огня. (Внимание: от ваших действий будет зависеть какой вид получится)",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"save_point": "dragon_egg",
+			"answers": {
+				"1": {
+					"text": { "ru": "Положить в огонь", "en": "..." },
+					"next": function(operators) { 
+						operators.Dr += 1;
+						return "plot_4-50-1-2-2-2" }
+				},
+				"2": {
+					"text": {"ru": "Оставить на столе", "en": "..."},
+					"next": function(operators) { return "plot_4-50-1-2-2-1" }
+				}
+			}
+		},
+		"plot_4-50-1-2-2-1": {
+			"title": text.CHARACTER_0, "img": 65,
+			"text": {
+				"ru": "Теперь нужно только ждать. Время до вылупления: <timer>. Пропустить за рекламу?",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Да", "en": "..." },
+					"next": function(operators) { return "skip_timer" }
+				},
+				"2": {
+					"text": {"ru": "Нет", "en": "..."},
+					"next": function(operators) { 
+						if (operators.Dr == 0) {
+							return "plot_4-50-41" 
+						} else if (operators.Dr == 1) {
+							return "plot_4-50-42"
+						} 
+						else if (operators.Dr == 2) {
+							return "plot_4-50-43"
+						} 
+						else if (operators.Dr == 3) {
+							return "plot_4-50-44"
+						} 
+					}
+				}
+			}
+		},
+		"plot_4-50-1-2-2-2": {
+			"title": text.CHARACTER_0, "img": 67,
+			"text": {
+				"ru": "Теперь нужно только ждать. Время до вылупления: <timer>. Пропустить за рекламу?",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Да", "en": "..." },
+					"next": function(operators) { return "skip_timer" }
+				},
+				"2": {
+					"text": {"ru": "Нет", "en": "..."},
+					"next": function(operators) { 
+						if (operators.Dr == 0) {
+							return "plot_4-50-41" 
+						} else if (operators.Dr == 1) {
+							return "plot_4-50-42"
+						} 
+						else if (operators.Dr == 2) {
+							return "plot_4-50-43"
+						} 
+						else if (operators.Dr == 3) {
+							return "plot_4-50-44"
+						} 
+					}
 				}
 			}
 		},
@@ -1968,25 +2455,68 @@ var desks = {
 				}
 			}
 		},
-		"plot_4-50-3": {
-			"title": text.CHARACTER_0, "img": 0,
+		"plot_4-50-41": {
+			"title": text.CHARACTER_0, "img": 52,
 			"text": {
-				"ru": "Теперь нужно только ждать. Время до вылупления: <timer>. Пропустить за рекламу?",
+				// здесь у нас подстановка: вместо <dragon_type> будет подставлено нужное значение. Нужно будет потом мне написать список всех подстановок и на что они заменяются
+				"ru": "Вот и настал момент истины. Глянцевая скорлупка треснула, и оттуда показалась крошечная мордочка дракона. (Поздравляем! Вид дракона: <dragon_type>)",
 				"en": "- Hello there! \n - General Kenobi..."
 			},
 			"answers": {
 				"1": {
-					"text": { "ru": "Да", "en": "..." },
-					"next": function(operators) { return "skip_timer" }
+					"text": { "ru": "Ну здравствуй, малыш!", "en": "..." },
+					"next": function(operators) { return "plot_5-0" }
 				},
 				"2": {
-					"text": {"ru": "Нет", "en": "..."},
-					"next": function(operators) { return "plot_4-50-4" }
+					"text": {"ru": "Хочу другого дракона!", "en": "..."},
+					"next": function(operators) { 
+						operators.Dr = 0;
+						return "plot_4-50-1" }
 				}
 			}
 		},
-		"plot_4-50-4": {
-			"title": text.CHARACTER_0, "img": 0,
+		"plot_4-50-42": {
+			"title": text.CHARACTER_0, "img": 54,
+			"text": {
+				// здесь у нас подстановка: вместо <dragon_type> будет подставлено нужное значение. Нужно будет потом мне написать список всех подстановок и на что они заменяются
+				"ru": "Вот и настал момент истины. Глянцевая скорлупка треснула, и оттуда показалась крошечная мордочка дракона. (Поздравляем! Вид дракона: <dragon_type>)",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Ну здравствуй, малыш!", "en": "..." },
+					"next": function(operators) { return "plot_5-0" }
+				},
+				"2": {
+					"text": {"ru": "Хочу другого дракона!", "en": "..."},
+					"next": function(operators) { 
+						operators.Dr = 0;
+						return "plot_4-50-1" }
+				}
+			}
+		},
+		"plot_4-50-43": {
+			"title": text.CHARACTER_0, "img": 53,
+			"text": {
+				// здесь у нас подстановка: вместо <dragon_type> будет подставлено нужное значение. Нужно будет потом мне написать список всех подстановок и на что они заменяются
+				"ru": "Вот и настал момент истины. Глянцевая скорлупка треснула, и оттуда показалась крошечная мордочка дракона. (Поздравляем! Вид дракона: <dragon_type>)",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Ну здравствуй, малыш!", "en": "..." },
+					"next": function(operators) { return "plot_5-0" }
+				},
+				"2": {
+					"text": {"ru": "Хочу другого дракона!", "en": "..."},
+					"next": function(operators) { 
+						operators.Dr = 0;
+						return "plot_4-50-1" }
+				}
+			}
+		},
+		"plot_4-50-44": {
+			"title": text.CHARACTER_0, "img": 55,
 			"text": {
 				// здесь у нас подстановка: вместо <dragon_type> будет подставлено нужное значение. Нужно будет потом мне написать список всех подстановок и на что они заменяются
 				"ru": "Вот и настал момент истины. Глянцевая скорлупка треснула, и оттуда показалась крошечная мордочка дракона. (Поздравляем! Вид дракона: <dragon_type>)",
@@ -2038,7 +2568,7 @@ var desks = {
 			},
 			"answers": {
 				"1": {
-					"text": { "ru": "Да неправда!", "en": "..." },
+					"text": { "ru": "Да, неправда!", "en": "..." },
 					"next": function(operators) { 
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
 						return "plot_5-4" }
@@ -2050,7 +2580,7 @@ var desks = {
 			}
 		},
 		"plot_5-4": {
-			"title": text.CHARACTER_0, "img": 0,
+			"title": text.CHARACTER_0, "img": 38,
 			"text": {
 				"ru": "Луна сегодня в благоприятной фазе. Зачаровать несколько лунных монет?",
 				"en": "- Hello there! \n - General Kenobi..."
@@ -2070,7 +2600,7 @@ var desks = {
 		"plot_5-5": {
 			"title": text.CHARACTER_11, "img": 11,
 			"text": {
-				"ru": "Это будет величайший шедевр. Вот только у меня совсем кончился <i class='red'>киноварь.</i> Поможете с этим?",
+				"ru": "Это будет величайший шедевр. Вот только у меня совсем кончилась <i class='red'>киноварь.</i> Поможете с этим?",
 				"en": "- Hello there! \n - General Kenobi..."
 			},
 			"answers": {
@@ -2112,7 +2642,7 @@ var desks = {
 			}
 		},
 		"plot_5-9": {
-			"title": text.CHARACTER_6, "img": 6,
+			"title": text.CHARACTER_5, "img": 5,
 			"text": {
 				"ru": "Вы видели странного мальчика?",
 				"en": "- Hello there! \n - General Kenobi..."
@@ -2142,7 +2672,7 @@ var desks = {
 			}
 		},
 		"plot_5-12": {
-			"title": text.CHARACTER_3, "img": 3,
+			"title": text.CHARACTER_18, "img": 18,
 			"text": {
 				"ru": "Может быть у вас есть какая-то работа для меня?",
 				"en": "- Hello there! \n - General Kenobi..."
@@ -2150,18 +2680,22 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Да", "en": "..." },
-					"next": function(operators) { return "plot_5-12-1" }
+					"next": function(operators) { 
+						operators.character_17_opened =1
+						return "plot_5-12-1" }
 				},
 				"2": {
 					"text": {"ru": "Нет, пока нет…", "en": "..."},
-					"next": function(operators) { return "plot_5-13" }
+					"next": function(operators) {
+						operators.character_17_opened =1
+					 	return "plot_5-13" }
 				}
 			}
 		},
 		"plot_5-12-1": {
-			"title": text.CHARACTER_3, "img": 3,
+			"title": text.CHARACTER_18, "img": 18,
 			"text": {
-				"ru": "Я готов",
+				"ru": "Я готов.",
 				"en": "- Hello there! \n - General Kenobi..."
 			},
 			"answers": {
@@ -2230,18 +2764,18 @@ var desks = {
 		"plot_5-17": {
 			"title": text.CHARACTER_3, "img": 3,
 			"text": {
-				"ru": "Вы проверили работу парнишки. На некоторых реактивах отчетливо виднелись следы магического пламени... Теперь их придется выбросить",
+				"ru": "Вы проверили работу парнишки. На некоторых реактивах отчетливо виднелись следы магического пламени... Теперь их придется выбросить.",
 				"en": "- Hello there! \n - General Kenobi..."
 			},
 			"answers": {
 				"1": {
-					"text": { "ru": "К насущным делам", "en": "..." },
+					"text": { "ru": "К насущным делам...", "en": "..." },
 					"next": function(operators) { 
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						return "plot_5-18" }
 				},
 				"2": {
-					"text": {"ru": "Эм… Нет?", "en": "..."},
+					"text": {"ru": "Странно...", "en": "..."},
 					"next": function(operators) { 
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						operators.Z -= 1;
@@ -2286,14 +2820,14 @@ var desks = {
 			}
 		},
 		"plot_5-22-1": {
-			"title": text.CHARACTER_3, "img": 3,
+			"title": text.CHARACTER_18, "img": 18,
 			"text": {
 				"ru": " Извините за произошедшее... Не прогоняйте меня. Мне больше некуда идти…",
 				"en": "- Hello there! \n - General Kenobi..."
 			},
 			"answers": {
 				"1": {
-					"text": { "ru": "Все хорошо, не переживай", "en": "..." },
+					"text": { "ru": "Все хорошо, не переживай.", "en": "..." },
 					"next": function(operators) { 
 						operators.U += 1;
 						return "plot_5-22-1_good" }
@@ -2305,7 +2839,7 @@ var desks = {
 			}
 		},
 		"plot_5-22-1_good": {
-			"title": text.CHARACTER_3, "img": 3,
+			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "Вы вновь проверили работу парнишки. На некоторых реактивах отчетливо виднелись следы магического пламени... Кажется, у него дар. И недюжинный…",
 				"en": "- Hello there! \n - General Kenobi..."
@@ -2326,7 +2860,7 @@ var desks = {
 			}
 		},
 		"plot_5-22-1_sad": {
-			"title": text.CHARACTER_3, "img": 3,
+			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "Мальчик ушел. Он знал, что вы прогоните его, и знал, что заслужил это. Возможно, это стало последней каплей в становлении его мнения о людях…",
 				"en": "- Hello there! \n - General Kenobi..."
@@ -2371,7 +2905,7 @@ var desks = {
 			}
 		},
 		"plot_5_boy_7": {
-			"title": text.CHARACTER_3, "img": 3,
+			"title": text.CHARACTER_18, "img": 18,
 			"text": {
 				"ru": "Простите! Во имя Великого Творца простите! Я... Я буду стараться бороться с этим... Подавлять, если хотите… ",
 				"en": "- Hello there! \n - General Kenobi..."
@@ -2470,7 +3004,7 @@ var desks = {
 					"next": function(operators) { return "plot_5-30" }
 				},
 				"2": {
-					"text": {"ru": " Попрошу!", "en": "..."},
+					"text": {"ru": "Попрошу!", "en": "..."},
 					"next": function(operators) { return "plot_5-30" }
 				}
 			}
@@ -2478,7 +3012,7 @@ var desks = {
 		"plot_5-30": {
 			"title": text.CHARACTER_14, "img": 14,
 			"text": {
-				"ru": "Ладно, мне некогда! Пока",
+				"ru": "Ладно, мне некогда! Пока.",
 				"en": "- Hello there! \n - General Kenobi..."
 			},
 			"answers": {
@@ -2513,7 +3047,7 @@ var desks = {
 						return "plot_5-vedma-1" }
 				},
 				"2": {
-					"text": {"ru": "Остановить", "en": "..."},
+					"text": {"ru": "Оставить", "en": "..."},
 					"next": function(operators) { 
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
 						return "plot_5-vedma-1" }
@@ -2567,7 +3101,7 @@ var desks = {
 			}
 		},
 		"plot_5-33": {
-			"title": text.CHARACTER_0, "img": 0,
+			"title": text.CHARACTER_0, "img": 29,
 			"text": {
 				"ru": "Вы наводили порядок на полках и нашли сказочную по красоте крупную жемчужину...",
 				"en": "- Hello there! \n - General Kenobi..."
@@ -2709,11 +3243,11 @@ var desks = {
 			},
 			"answers": {
 				"1": {
-					"text": { "ru": "Какой ужас!", "en": "..." },
+					"text": { "ru": "Что за вздор!", "en": "..." },
 					"next": function(operators) { return "plot_5-44" }
 				},
 				"2": {
-					"text": {"ru": "Наконец свершится!", "en": "..."},
+					"text": {"ru": "Что... Наконец, свершится?", "en": "..."},
 					"next": function(operators) { 
 						operators.S += 1;
 						return "plot_5-44" }
@@ -2826,7 +3360,7 @@ var desks = {
 		"plot_5-56": {
 			"title": text.CHARACTER_21, "img": 21,
 			"text": {
-				"ru": "Мне нужны ингредиенты с неоднозначной репутацией. Понимаете о чем я?",
+				"ru": "Мне нужны ингредиенты... с неоднозначной репутацией. Понимаете о чем я?",
 				"en": "- Hello there! \n - General Kenobi..."
 			},
 			"answers": {
@@ -2873,20 +3407,42 @@ var desks = {
 				}
 			}
 		},
-		// НАЧАЛО 3 главы 
+
+		// Фестиваль // НАЧАЛО 3 главы 
 		"plot_6-0": {
-			"title": text.CHARACTER_7, "img": 7,
+			"title": text.CHARACTER_0, "img": 57,
 			"text": {
-				"ru": "Он придёт. И тогда миру придёт конец!",
+				"ru": "На главной площади играет музыка. Доносятся смех и запахи угощения.",
 				"en": "- Hello there! \n - General Kenobi..."
 			},
 			"answers": {
 				"1": {
-					"text": { "ru": "Да вы все ненормальные!", "en": "..." },
-					"next": function(operators) { return "plot_5-48" }
+					"text": { "ru": "Веселиться", "en": "..." },
+					"next": function(operators) { return "plot_6-1" }
 				},
 				"2": {
-					"text": {"ru": "Художник говорил об этом…", "en": "..."},
+					"text": {"ru": "Поискать кого-нибудь", "en": "..."},
+					"next": function(operators) { 
+						operators.S += 1;
+						return "plot_6-1" }
+				}
+			}
+		},
+		"plot_6-1": {
+			"title": text.CHARACTER_0, "img": 57,
+			"text": {
+				"ru": "Музыкант с лютней играет прекрасную, но немного печальную мелодию.",
+				"en": "- Hello there! \n - General Kenobi..."
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Бросить монетку", "en": "..." },
+					"next": function(operators) {
+						operators.money_stat -= MONEY_STAT_DELTA_1;
+						return "plot_5-48" }
+				},
+				"2": {
+					"text": {"ru": "Пройти мимо", "en": "..."},
 					"next": function(operators) { 
 						operators.S += 1;
 						return "plot_5-48" }
@@ -2896,7 +3452,7 @@ var desks = {
 		"plot_5-47": {
 			"title": text.CHARACTER_7, "img": 7,
 			"text": {
-				"ru": "Он придёт. И тогда миру придёт конец!",
+				"ru": "Благодарю вас, милостивый господин. Хотите сыграю что-нибудь для вас?",
 				"en": "- Hello there! \n - General Kenobi..."
 			},
 			"answers": {
@@ -3053,18 +3609,19 @@ var desks = {
 		}
 	},
 	},
+
 	"rand4": { 
 		"type": "rand_norepeat",
 		"cards": {
 		"rand4-1_start": {
 			"title": text.CHARACTER_14, "img": 14,
 			"text": {
-				"ru": "О! Наконец-то в нашем городе Мастер появился! Это хорошо... да, хорошо... У меня дикая головная боль! А аптекарь лишь фигню говорит. Но вы-то поможете?",
+				"ru": "Иногда для твердости металла я использую золотую пыль или пепел трав. У вас найдется что-нибудь?",
 				"en": "If you want it, then you'll have to take it"
 			},
 			"answers": {
 				"1": {
-					"text": { "ru": "Да","en": "Do it!"},
+					"text": { "ru": "Да, где-то были...","en": "Do it!"},
 					"next": function(operators) {
 						// изменяем операторы
 						operators.power_stat -= POWER_STAT_DELTA_1;
@@ -3074,7 +3631,7 @@ var desks = {
 					}
 				},
 				"2": {
-					"text": { "ru": "Нет", "en": "dont"},
+					"text": { "ru": "Закончились", "en": "dont"},
 					"next": function(operators) {
 						// изменяем операторы
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
@@ -3094,6 +3651,7 @@ var desks = {
 					"text": { "ru": "Да","en": "Do it!"},
 					"next": function(operators) {
 						// изменяем операторы
+						operators.character_15_opened =1
 						operators.hp_stat += HEALTH_STAT_DELTA_1;
 						operators.money_stat -= MONEY_STAT_DELTA_1;
 						return "-"	
@@ -3103,7 +3661,7 @@ var desks = {
 					"text": { "ru": "Нет", "en": "dont"},
 					"next": function(operators) {
 						// изменяем операторы
-						
+						operators.character_15_opened =1
 						return "-"
 					}
 				}
@@ -3120,15 +3678,17 @@ var desks = {
 					"text": { "ru": "Да","en": "Do it!"},
 					"next": function(operators) {
 						// изменяем операторы
+						operators.character_15_opened =1
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
 						return "-"	
 					}
 				},
 				"2": {
-					"text": { "ru": "Нет, это бред", "en": "dont"},
+					"text": { "ru": "Нет, это вздор", "en": "dont"},
 					"next": function(operators) {
 						// изменяем операторы
+						operators.character_15_opened =1
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
 						return "-"
 					}
@@ -3146,6 +3706,7 @@ var desks = {
 					"text": { "ru": "Да, посмотрим","en": "Do it!"},
 					"next": function(operators) {
 						// изменяем операторы
+						operators.character_16_opened =1
 						operators.power_stat += POWER_STAT_DELTA_1;
 						operators.money_stat -= MONEY_STAT_DELTA_1;
 						return "-"	
@@ -3154,6 +3715,7 @@ var desks = {
 				"2": {
 					"text": { "ru": "Увы...", "en": "dont"},
 					"next": function(operators) {
+						operators.character_16_opened =1
 						// изменяем операторы
 						return "-"
 					}
@@ -3171,6 +3733,7 @@ var desks = {
 					"text": { "ru": "Это чистая правда","en": "Do it!"},
 					"next": function(operators) {
 						// изменяем операторы
+						operators.character_16_opened =1
 						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
 						return "-"	
 					}
@@ -3178,6 +3741,7 @@ var desks = {
 				"2": {
 					"text": { "ru": "Эй, я занят вообще-то!", "en": "dont"},
 					"next": function(operators) {
+						operators.character_16_opened =1
 						// изменяем операторы
 						return "-"
 					}
@@ -3187,7 +3751,7 @@ var desks = {
 		"rand4-6_start": {
 			"title": text.CHARACTER_3, "img": 3,
 			"text": {
-				"ru": "Дяденька, я принес <что-то>. Давайте меняться? ",
+				"ru": "Дяденька, я принес <span class='magenta'>цветные перья</span>! Давайте меняться? ",
 				"en": "If you want it, then you'll have to take it"
 			},
 			"answers": {
@@ -3353,7 +3917,7 @@ var desks = {
 					"text": { "ru": "Пусть!","en": "Do it!"},
 					"next": function(operators) {
 						// изменяем операторы
-						
+						operators.character_17_opened =1
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
 						return "-"	
 					}
@@ -3362,6 +3926,7 @@ var desks = {
 					"text": { "ru": "Осуждаю!", "en": "dont"},
 					"next": function(operators) {
 						// изменяем операторы
+						operators.character_17_opened =1
 						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
 						return "-"
 					}
@@ -3379,7 +3944,7 @@ var desks = {
 					"text": { "ru": "Да","en": "Do it!"},
 					"next": function(operators) {
 						// изменяем операторы
-						
+						operators.character_17_opened =1
 						operators.money_stat -= MONEY_STAT_DELTA_1;
 						return "-"	
 					}
@@ -3388,6 +3953,7 @@ var desks = {
 					"text": { "ru": "Нет", "en": "dont"},
 					"next": function(operators) {
 						// изменяем операторы
+						operators.character_17_opened =1
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
 						return "-"
 					}
@@ -3432,7 +3998,7 @@ var desks = {
 					"text": { "ru": "Да","en": "Do it!"},
 					"next": function(operators) {
 						// изменяем операторы
-						
+						operators.character_12_opened =1
 						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
 						return "-"	
 					}
@@ -3441,6 +4007,7 @@ var desks = {
 					"text": { "ru": "Нет", "en": "dont"},
 					"next": function(operators) {
 						// изменяем операторы
+						operators.character_12_opened =1
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
 						return "-"
 					}
@@ -3456,32 +4023,58 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Восток зовёт!","en": "Do it!"},
-					"next": function(operators) { return "-"	}
+					"next": function(operators) { 
+						operators.character_12_opened =1
+						return "-"	}
 				},
 				"2": {
 					"text": { "ru": "Лучше дома сидеть!", "en": "dont"},
 					"next": function(operators) {
 						// изменяем операторы
+						operators.character_12_opened =1
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
 						return "-"
 					}
 				}
 			}
 		},
-	},
-	},
-	"phoenix": { 
-		"cards":{
-		"1": {
-			"title": text.CHARACTER_0, "img": 0,
-				"text": {
-					"ru": "Феникс",
-					"en": "If you want it, then you'll have to take it"
-				},
+		"rand4-17_start": {
+			"title": text.CHARACTER_14, "img": 14,
+			"text": {
+				"ru": "Экий вздор! Рыбак говорит, что в рыбе нашёл золотую булавку! Верите ли?",
+				"en": "If you want it, then you'll have to take it"
+			},
 			"answers": {
 				"1": {
-					"text": { "ru": "...","en": "Do it!"},
-					"next": function(operators) { return "-"	}
+					"text": { "ru": "Сущий вздор!","en": "Do it!"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.reputation_stat += POWER_STAT_DELTA_1;
+						return "-"	
+					}
+				},
+				"2": {
+					"text": { "ru": "А вдруг и правда нашел?", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"
+					}
+				}
+			}
+		},
+		"rand4-18_start": {
+			"title": text.CHARACTER_14, "img": 14,
+			"text": {
+				"ru": "Металл уже не тот, что прежде… И молодёжь не та! Эх…",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Да полно вам!","en": "Do it!"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"	
+					}
 				},
 				"2": {
 					"text": { "ru": "...", "en": "dont"},
@@ -3491,8 +4084,344 @@ var desks = {
 					}
 				}
 			}
-		}
+		},
+		"rand4-19_start": {
+			"title": text.CHARACTER_6, "img": 6,
+			"text": {
+				"ru": "Не все так просто в этом мире. Говорят, светочи не живут долго, и уж точно не счастливо...",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Это о ком это вы?","en": "Do it!"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
+						return "rand4-19"	
+					}
+				},
+				"2": {
+					"text": { "ru": "Что за вздор?!", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
+						return "-"
+					}
+				}
+			}
+		},
+		"rand4-19": {
+			"title": text.CHARACTER_6, "img": 6,
+			"text": {
+				"ru": "Да все знают о ком это. И вы знаете! Все знают!",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Зря я спросил...","en": "Do it!"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"	
+					}
+				},
+				"2": {
+					"text": { "ru": "Знаете... подите прочь!", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
+						return "-"
+					}
+				}
+			}
+		},
+		"rand4-20_start": {
+			"title": text.CHARACTER_3, "img": 3,
+			"text": {
+				"ru": "Дяденька, я принес <span class='auripigment'>золотые фантики</span>! Давайте меняться? ",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Давай!","en": "Do it!"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.power_stat += POWER_STAT_DELTA_1;
+						operators.money_stat -= MONEY_STAT_DELTA_1;
+						return "-"	
+					}
+				},
+				"2": {
+					"text": { "ru": "Не хочу", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"
+					}
+				}
+			}
+		},
+		"rand4-21_start": {
+			"title": text.CHARACTER_3, "img": 3,
+			"text": {
+				"ru": "Там клад. Я знаю где…",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Где?","en": "Do it!"},
+					"next": function(operators) {
+						operators.power_stat -= POWER_STAT_DELTA_1;
+						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
+						// изменяем операторы
+						return "rand4-21"	
+					}
+				},
+				"2": {
+					"text": { "ru": "Вздор!", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"
+					}
+				}
+			}
+		},
+		"rand4-21": {
+			"title": text.CHARACTER_0, "img": 58,
+			"text": {
+				"ru": "Целый день вы копали замлю на пляже. Но, кажется, ничего так и не нашли...",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Возвращаться","en": "Do it!"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "rand4-21-1"	
+					}
+				},
+				"2": {
+					"text": { "ru": "Копать еще", "en": "dont"},
+					"next": function(operators) {
+						operators.power_stat -= POWER_STAT_DELTA_1;
+						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
+						// изменяем операторы
+						return "rand4-21-2"
+					}
+				}
+			}
+		},
+		"rand4-21-1": {
+			"title": text.CHARACTER_3, "img": 3,
+			"text": {
+				"ru": "Он должен был быть там... *плачет*",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Пожалеть","en": "Do it!"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"	
+					}
+				},
+				"2": {
+					"text": { "ru": "Заняться делами", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"
+					}
+				}
+			}
+		},
+		"rand4-21-2": {
+			"title": text.CHARACTER_0, "img": 58,
+			"text": {
+				"ru": "... и вы все-таки нашли его!",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Ура!","en": "Do it!"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "rand4-21-3"	
+					}
+				},
+				"2": {
+					"text": { "ru": "Возвращаться", "en": "dont"},
+					"next": function(operators) {
+						operators.power_stat -= POWER_STAT_DELTA_1;
+						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
+						// изменяем операторы
+						return "rand4-21-3"
+					}
+				}
+			}
+		},
+		"rand4-21-3": {
+			"title": text.CHARACTER_3, "img": 3,
+			"text": {
+				"ru": "Честные пираты делят сокровища пополам.",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Оставить себе половину","en": "Do it!"},
+					"next": function(operators) {
+						operators.money_stat += MONEY_STAT_DELTA_1;
+						// изменяем операторы
+						return "-"	
+					}
+				},
+				"2": {
+					"text": { "ru": "Передать матери другую половину", "en": "dont"},
+					"next": function(operators) {
+						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
+						// изменяем операторы
+						return "-"
+					}
+				}
+			}
+		},
+		"rand4-22_start": {
+			"title": text.CHARACTER_5, "img": 5,
+			"text": {
+				"ru": "Как жаль, что у нас не устраивают балов! За этим только в Королевскую столицу…",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Эх, столица…","en": "Do it!"},
+					"next": function(operators) {
+						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
+						// изменяем операторы
+						return "-"	
+					}
+				},
+				"2": {
+					"text": { "ru": "Здесь лучше!", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"
+					}
+				}
+			}
+		},
+		"rand4-23_start": {
+			"title": text.CHARACTER_4, "img": 4,
+			"text": {
+				"ru": "Чёрные кошки развелись тут и резвятся. Ох, не к добру… Это черти ведь…",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Да полно вам!","en": "Do it!"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"	
+					}
+				},
+				"2": {
+					"text": { "ru": "Это вздор!", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"
+					}
+				}
+			}
+		},
+		"rand4-24_start": {
+			"title": text.CHARACTER_17, "img": 17,
+			"text": {
+				"ru": "Нога болит, рука отнимается. Старость это наказание за грехи…",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Может быть, хотя… Вздор!","en": "Do it!"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"	
+					}
+				},
+				"2": {
+					"text": { "ru": "Дать лекарств", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"
+					}
+				}
+			}
+		},
+		"rand4-25_start": {
+			"title": text.CHARACTER_6, "img": 6,
+			"text": {
+				"ru": "Наш город - это дело каждого. Мы направим его к процветанию, если будем действовать сообща.",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Да!","en": "Do it!"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"	
+					}
+				},
+				"2": {
+					"text": { "ru": "'Моя хата с краю…'", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"
+					}
+				}
+			}
+		},
+
 	},
+	},
+	"phoenix": {
+		type: "rand_norepeat", 
+		"cards":{
+			"1": {
+				"title": text.CHARACTER_0, "img": 0,
+					"text": {
+						"ru": "Феникс",
+						"en": "If you want it, then you'll have to take it"
+					},
+				"answers": {
+					"1": {
+						"text": { "ru": "...","en": "Do it!"},
+						"next": function(operators) { return "-"	}
+					},
+					"2": {
+						"text": { "ru": "...", "en": "dont"},
+						"next": function(operators) {
+							// изменяем операторы
+							return "-"
+						}
+					}
+				}
+			},
+			"2": {
+				"title": text.CHARACTER_0, "img": 0,
+					"text": {
+						"ru": "Феникс",
+						"en": "If you want it, then you'll have to take it"
+					},
+				"answers": {
+					"1": {
+						"text": { "ru": "...","en": "Do it!"},
+						"next": function(operators) { return "-"	}
+					},
+					"2": {
+						"text": { "ru": "...", "en": "dont"},
+						"next": function(operators) {
+							// изменяем операторы
+							return "-"
+						}
+					}
+				}
+			}
+		},
 	},
 	"flower": { 
 		"cards":{
@@ -3591,8 +4520,9 @@ var desks = {
 	},
 	},
 	chapter_2: { 
+		type: 'rand_norepeat',
 		"cards":{
-		"rand_ch_2-1": {
+		"rand_ch_2-1_start": {
 			"title": text.CHARACTER_8, "img": 8,
 			"text": {
 				"ru": "Кстати, я умею фехтовать. И очень неплохо. Могу показать пару приёмов",
@@ -3616,15 +4546,15 @@ var desks = {
 				}
 			}
 		},
-		"ch_2-2": {
-			"title": text.CHARACTER_13, "img": 13,
+		"rand_ch_2-2_start": {
+			"title": text.CHARACTER_32, "img": 13,
 			"text": {
 				"ru": "Мудрецы говорят, что если долго носить маску, она в конечном итоге прирастёт.",
 				"en": "If you want it, then you'll have to take it"
 			},
 			"answers": {
 				"1": {
-					"text": { "ru": "Что за бред?!","en": "Do it!"},
+					"text": { "ru": "Что за вздор?!","en": "Do it!"},
 					"next": function(operators) { return "-"	}
 				},
 				"2": {
@@ -3637,11 +4567,31 @@ var desks = {
 				}
 			}
 		},
-		
-		"rand_ch_2-3": {
+		"rand_ch_2-3_start": {
 			"title": text.CHARACTER_13, "img": 13,
 			"text": {
-				"ru": "Это цветы ландыша. Они очень красиво смотрелись бы в мастерской.",
+				"ru": "Мой отец привез диковинку. Но никто не оценил...",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Что за диковинка?","en": "Do it!"},
+					"next": function(operators) { 
+						return "rand_ch_2-3"	}
+				},
+				"2": {
+					"text": { "ru": "Мне не до этого", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						return "-"
+					}
+				}
+			}
+		},
+		"rand_ch_2-3_start": {
+			"title": text.CHARACTER_13, "img": 69,
+			"text": {
+				"ru": "'...Это цветы восточного ландыша. Они очень красиво смотрелись бы в мастерской...'",
 				"en": "If you want it, then you'll have to take it"
 			},
 			"answers": {
@@ -3649,7 +4599,6 @@ var desks = {
 					"text": { "ru": "Так и сделать","en": "Do it!"},
 					"next": function(operators) { 
 						operators.money_stat -= MONEY_STAT_DELTA_1;
-						operators.hp_stat += HEALTH_STAT_DELTA_1;
 						return "-"	}
 				},
 				"2": {
@@ -3661,9 +4610,8 @@ var desks = {
 				}
 			}
 		},
-		
-		"rand_Pandor_box-1": {
-			"title": text.CHARACTER_0, "img": 0,
+		"rand_Pandor-box-1_start": {
+			"title": text.CHARACTER_22, "img": 22,
 			"text": {
 				"ru": "О, владеющий тайными знаниями! Не желаешь ли ты заглянуть в Ящик Пандоры?",
 				"en": "If you want it, then you'll have to take it"
@@ -3671,20 +4619,22 @@ var desks = {
 			"answers": {
 				"1": {
 					"text": { "ru": "Да","en": "Do it!"},
-					"next": function(operators) { 
+					"next": function(operators) {
+						operators.character_21_opened = 1 
 						operators.money_stat += MONEY_STAT_DELTA_1;
 						return "Pandor_box-1"	}
 				},
 				"2": {
 					"text": { "ru": "Нет", "en": "dont"},
 					"next": function(operators) {
+						operators.character_21_opened = 1
 						// изменяем операторы
 						return "-"
 					}
 				}
 			}
 		},
-		"Pandor_box-1": {
+		"Pandor-box-1": {
 			"title": text.CHARACTER_0, "img": 0,
 			"text": {
 				"ru": "В нем оказалась стопка монет!",
@@ -3705,8 +4655,8 @@ var desks = {
 			}
 		},
 
-		"rand_Pandor_box-2": {
-			"title": text.CHARACTER_0, "img": 0,
+		"rand_Pandor-box-2_start": {
+			"title": text.CHARACTER_22, "img": 22,
 			"text": {
 				"ru": "О, владеющий тайными знаниями! Не желаешь ли ты заглянуть в Ящик Пандоры?",
 				"en": "If you want it, then you'll have to take it"
@@ -3715,12 +4665,14 @@ var desks = {
 				"1": {
 					"text": { "ru": "Да","en": "Do it!"},
 					"next": function(operators) { 
+						operators.character_21_opened = 1 
 						operators.hp_stat -= HEALTH_STAT_DELTA_1;
 						return "Pandor_box-2"	}
 				},
 				"2": {
 					"text": { "ru": "Нет", "en": "dont"},
 					"next": function(operators) {
+						operators.character_21_opened = 1
 						// изменяем операторы
 						return "-"
 					}
@@ -3748,8 +4700,8 @@ var desks = {
 			}
 		},
 
-		"rand_Pandor_box-3": {
-			"title": text.CHARACTER_0, "img": 0,
+		"rand_Pandor_box-3_start": {
+			"title": text.CHARACTER_22, "img": 22,
 			"text": {
 				"ru": "О, владеющий тайными знаниями! Не желаешь ли ты заглянуть в Ящик Пандоры?",
 				"en": "If you want it, then you'll have to take it"
@@ -3758,12 +4710,14 @@ var desks = {
 				"1": {
 					"text": { "ru": "Да","en": "Do it!"},
 					"next": function(operators) { 
+						operators.character_21_opened = 1
 						operators.hp_stat += HEALTH_STAT_DELTA_1;
 						return "Pandor_box-3"	}
 				},
 				"2": {
 					"text": { "ru": "Нет", "en": "dont"},
 					"next": function(operators) {
+						operators.character_21_opened = 1
 						// изменяем операторы
 						return "-"
 					}
@@ -3792,8 +4746,8 @@ var desks = {
 			}
 		},
 
-		"rand_Pandor_box-4": {
-			"title": text.CHARACTER_0, "img": 0,
+		"rand_Pandor_box-4_start": {
+			"title": text.CHARACTER_22, "img": 22,
 			"text": {
 				"ru": "О, владеющий тайными знаниями! Не желаешь ли ты заглянуть в Ящик Пандоры?",
 				"en": "If you want it, then you'll have to take it"
@@ -3802,12 +4756,14 @@ var desks = {
 				"1": {
 					"text": { "ru": "Да","en": "Do it!"},
 					"next": function(operators) { 
+						operators.character_21_opened = 1
 						operators.power_stat += POWER_STAT_DELTA_1;
 						return "Pandor_box-4"	}
 				},
 				"2": {
 					"text": { "ru": "Нет", "en": "dont"},
 					"next": function(operators) {
+						operators.character_21_opened = 1
 						// изменяем операторы
 						return "-"
 					}
@@ -3835,8 +4791,8 @@ var desks = {
 			}
 		},
 
-		"rand_Pandor_box-5": {
-			"title": text.CHARACTER_0, "img": 0,
+		"rand_Pandor_box-5_start": {
+			"title": text.CHARACTER_22, "img": 22,
 			"text": {
 				"ru": "О, владеющий тайными знаниями! Не желаешь ли ты заглянуть в Ящик Пандоры?",
 				"en": "If you want it, then you'll have to take it"
@@ -3845,6 +4801,7 @@ var desks = {
 				"1": {
 					"text": { "ru": "Да","en": "Do it!"},
 					"next": function(operators) { 
+						operators.character_21_opened = 1
 						operators.hp_stat -= HEALTH_STAT_DELTA_1;
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						return "Pandor_box-5"	}
@@ -3852,6 +4809,7 @@ var desks = {
 				"2": {
 					"text": { "ru": "Нет", "en": "dont"},
 					"next": function(operators) {
+						operators.character_21_opened = 1
 						// изменяем операторы
 						return "-"
 					}
@@ -3879,8 +4837,8 @@ var desks = {
 			}
 		},
 
-		"rand_Pandor_box-6": {
-			"title": text.CHARACTER_0, "img": 0,
+		"rand_Pandor_box-6_start": {
+			"title": text.CHARACTER_22, "img": 22,
 			"text": {
 				"ru": "О, владеющий тайными знаниями! Не желаешь ли ты заглянуть в Ящик Пандоры?",
 				"en": "If you want it, then you'll have to take it"
@@ -3889,6 +4847,7 @@ var desks = {
 				"1": {
 					"text": { "ru": "Да","en": "Do it!"},
 					"next": function(operators) { 
+						operators.character_21_opened = 1
 						operators.hp_stat -= HEALTH_STAT_DELTA_1;
 						operators.power_stat -= POWER_STAT_DELTA_1;
 						return "Pandor_box-1"	}
@@ -3896,6 +4855,7 @@ var desks = {
 				"2": {
 					"text": { "ru": "Нет", "en": "dont"},
 					"next": function(operators) {
+						operators.character_21_opened = 1
 						// изменяем операторы
 						return "-"
 					}
@@ -3923,8 +4883,8 @@ var desks = {
 			}
 		},
 
-		"rand_Pandor_box-7": {
-			"title": text.CHARACTER_0, "img": 0,
+		"rand_Pandor_box-7_start": {
+			"title": text.CHARACTER_22, "img": 22,
 			"text": {
 				"ru": "О, владеющий тайными знаниями! Не желаешь ли ты заглянуть в Ящик Пандоры?",
 				"en": "If you want it, then you'll have to take it"
@@ -3933,11 +4893,13 @@ var desks = {
 				"1": {
 					"text": { "ru": "Да","en": "Do it!"},
 					"next": function(operators) { 
+						operators.character_21_opened = 1
 						return "Pandor_box-7;add_lunar_money"}
 				},
 				"2": {
 					"text": { "ru": "Нет", "en": "dont"},
 					"next": function(operators) {
+						operators.character_21_opened = 1
 						// изменяем операторы
 						return "-"
 					}
@@ -3967,7 +4929,7 @@ var desks = {
 		},
 
 
-		"rand_ch_2-4": {
+		"rand_ch_2-4_start": {
 			"title": text.CHARACTER_23, "img": 23,
 			"text": {
 				"ru": "Слышь! Гони золото! А то порешу!",
@@ -3991,7 +4953,7 @@ var desks = {
 				}
 			}
 		},
-		"rand_ch_2-5": {
+		"rand_ch_2-5_start": {
 			"title": text.CHARACTER_6, "img": 6,
 			"text": {
 				"ru": "Скоро будет необыкновенное событие - долгожданный праздник. Фестиваль! Рекомендую-рекомендую…",
@@ -4014,7 +4976,7 @@ var desks = {
 				}
 			}
 		},
-		"rand_ch_2-6": {
+		"rand_ch_2-6_start": {
 			"title": text.CHARACTER_5, "img": 5,
 			"text": {
 				"ru": "Мой мальчик болен… И это не терпит отлагательств. Я бы предпочла показать его вам, а не аптекарю… Можно?",
@@ -4038,7 +5000,7 @@ var desks = {
 				}
 			}
 		},
-		"rand_ch_2-7": {
+		"rand_ch_2-7_start": {
 			"title": text.CHARACTER_15, "img": 15,
 			"text": {
 				"ru": "Глядите-ка! Видано ли такую рыбину поймать? Возьмете?",
@@ -4059,8 +5021,8 @@ var desks = {
 				}
 			}
 		},
-		"rand_ch_2-8": {
-			"title": text.CHARACTER_12, "img": 12,
+		"rand_ch_2-8_start": {
+			"title": text.CHARACTER_24, "img": 24,
 			"text": {
 				"ru": "Наш король - просто напыщенный индюк! И вокруг себя собрал таких же. Где же рыцарство, где благородство?! ",
 				"en": "If you want it, then you'll have to take it"
@@ -4082,7 +5044,7 @@ var desks = {
 				}
 			}
 		},
-		"rand_ch_2-9": {
+		"rand_ch_2-9_start": {
 			"title": text.CHARACTER_12, "img": 12,
 			"text": {
 				"ru": "Давно уже легенды ходят о новом особенном сплаве… Знающие люди говорят, оно того стоит. Может возьметесь?",
@@ -4103,8 +5065,177 @@ var desks = {
 					}
 				}
 			}
-		}
-		
+		},
+		"rand_ch_2-10_start": {
+			"title": text.CHARACTER_32, "img": 13,
+			"text": {
+				"ru": "Мне бы хотелось однажды отправиться с отцом в путешествие. Самой увидеть чудеса…",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Пусть мечта сбудется","en": "Do it!"},
+					"next": function(operators) { return "-"	}
+				},
+				"2": {
+					"text": { "ru": "Угу…", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
+						return "-"
+					}
+				}
+			}
+		},
+		"rand_ch_2-11_start": {
+			"title": text.CHARACTER_32, "img": 13,
+			"text": {
+				"ru": "У вас, кажется, доброе сердце. И чистая душа. Не замарайте её… Как иные здесь.",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Не замараю…","en": "Do it!"},
+					"next": function(operators) { return "-"	}
+				},
+				"2": {
+					"text": { "ru": "Вздор! Тут все хорошие!", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
+						return "-"
+					}
+				}
+			}
+		},
+		"rand_ch_2-12_start": {
+			"title": text.CHARACTER_32, "img": 13,
+			"text": {
+				"ru": "Мне нравится зеленый. Мне нравятся леса, птицы… А вам?",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Мне тоже","en": "Do it!"},
+					"next": function(operators) { return "-"	}
+				},
+				"2": {
+					"text": { "ru": "А я люблю больше море…", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
+						return "-"
+					}
+				}
+			}
+		},
+		"rand_ch_2-13_start": {
+			"title": text.CHARACTER_8, "img": 8,
+			"text": {
+				"ru": "Мой прадед командовал войском боевых слонов. Почему мне никто не верит?!",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Потому что это… неправда?","en": "Do it!"},
+					"next": function(operators) { return "-"	}
+				},
+				"2": {
+					"text": { "ru": "Ничего себе!", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
+						return "-"
+					}
+				}
+			}
+		},
+		"rand_ch_2-14_start": {
+			"title": text.CHARACTER_8, "img": 8,
+			"text": {
+				"ru": "Мои артефакты - самые лучшие. Напоминаю просто, что у меня есть чудесный магазинчик…",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Я помню","en": "Do it!"},
+					"next": function(operators) { return "-"	}
+				},
+				"2": {
+					"text": { "ru": "У меня тоже!", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
+						return "-"
+					}
+				}
+			}
+		},
+		"rand_ch_2-15_start": {
+			"title": text.CHARACTER_24, "img": 24,
+			"text": {
+				"ru": "Я сокрушил немало драконов на своём веку. Дамы просто падали, завидев меня.",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Вот это да!","en": "Do it!"},
+					"next": function(operators) { return "-"	}
+				},
+				"2": {
+					"text": { "ru": "Какой наглый вздор!", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
+						return "-"
+					}
+				}
+			}
+		},
+		"rand_ch_2-16_start": {
+			"title": text.CHARACTER_6, "img": 6,
+			"text": {
+				"ru": "Я люблю улыбки на лицах детей. Дети! Что-то разве может быть лучше этих ангелов?",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Ничего!","en": "Do it!"},
+					"next": function(operators) { 
+						operators.reputation_stat += REPUTATION_STAT_DELTA_1;
+						return "-"	}
+				},
+				"2": {
+					"text": { "ru": "Ну, как скажете…", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
+						return "-"
+					}
+				}
+			}
+		},
+		"rand_ch_2-17_start": {
+			"title": text.CHARACTER_15, "img": 15,
+			"text": {
+				"ru": "Вы слышите этот жалобный крик чаек? Это души погибших в море…",
+				"en": "If you want it, then you'll have to take it"
+			},
+			"answers": {
+				"1": {
+					"text": { "ru": "Не верю","en": "Do it!"},
+					"next": function(operators) { return "-"	}
+				},
+				"2": {
+					"text": { "ru": "Пусть покоятся с миром", "en": "dont"},
+					"next": function(operators) {
+						// изменяем операторы
+						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
+						return "-"
+					}
+				}
+			}
+		},
 	},
 	},
 	dragon_0: { 
@@ -4581,7 +5712,7 @@ var desks = {
 	eternity: { 
 		"cards":{
 		"eternity_start": {
-			"title": text.CHARACTER_0, "img": 0,
+			"title": text.CHARACTER_0, "img": 26,
 				"text": {
 					"ru": "Мрак и тьма. Холод небытия. И кто-то сзади будто не сводит глаз…",
 					"en": "If you want it, then you'll have to take it"
@@ -4603,7 +5734,7 @@ var desks = {
 			}
 		},
 		"eternity_2": {
-			"title": text.CHARACTER_0, "img": 0,
+			"title": text.CHARACTER_2, "img": 2,
 				"text": {
 					"ru": "…",
 					"en": "If you want it, then you'll have to take it"
@@ -4625,7 +5756,7 @@ var desks = {
 			}
 		},
 		"eternity_3": {
-			"title": text.CHARACTER_0, "img": 0,
+			"title": text.CHARACTER_0, "img": 26,
 				"text": {
 					"ru": "Существо не ответило. Его уродливые костлявые руки потянулись вам навстречу.",
 					"en": "If you want it, then you'll have to take it"
@@ -4647,7 +5778,7 @@ var desks = {
 			}
 		},
 		"eternity_4": {
-			"title": text.CHARACTER_0, "img": 0,
+			"title": text.CHARACTER_33, "img": 34,
 				"text": {
 					"ru": "Погоня привлекла внимание местной фауны. И она согласна помочь вам. За умеренную плату, конечно.",
 					"en": "If you want it, then you'll have to take it"
@@ -4865,7 +5996,392 @@ var desks = {
 				}
 			}
 		}
-	}
+	},
+	power_high: {
+		type: "script",
+		cards: {
+			"ph_1": {
+				title: {ru: "мощь в избытке", en: ""},
+				text: {ru: "мощь в избытке", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_power) {
+								operators.Art_extra_power = 0;
+								return "ph_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_power) {
+								operators.Art_extra_power = 0;
+								operators.power_stat = 60;
+								graph_core.update_stats();
+								return "ph_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					}
+				}
+			},
+			"ph_2": {
+				title: {ru: "случилось чудо", en: ""},
+				text: {ru: "артефакт вам помог", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					}
+				}
+			}
+		}
+	},
+	health_low: {
+		type: "script",
+		cards: {
+			"hl_1": {
+				title: {ru: "здоровье в упадке", en: ""},
+				text: {ru: "здоровье в упадке", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_hp) {
+								operators.Art_extra_hp = 0;
+								return "hl_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_hp) {
+								operators.Art_extra_hp = 0;
+								operators.hp_stat = 60;
+								graph_core.update_stats();
+								return "hl_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					}
+				}
+			},
+			"hl_2": {
+				title: {ru: "случилось чудо", en: ""},
+				text: {ru: "артефакт вам помог", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					}
+				}
+			}
+		}
+	},
+	health_high: {
+		type: "script",
+		cards: {
+			"hh_1": {
+				title: {ru: "здоровье в избытке", en: ""},
+				text: {ru: "здоровье в избытке", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_hp) {
+								operators.Art_extra_hp = 0;
+								return "hh_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_hp) {
+								operators.Art_extra_hp = 0;
+								operators.hp_stat = 60;
+								graph_core.update_stats();
+								return "hh_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					}
+				}
+			},
+			"hh_2": {
+				title: {ru: "случилось чудо", en: ""},
+				text: {ru: "артефакт вам помог", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					}
+				}
+			}
+		}
+	},
+	reputation_low: {
+		type: "script",
+		cards: {
+			"rl_1": {
+				title: {ru: "репутация в упадке", en: ""},
+				text: {ru: "репутация в упадке", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_reputation) {
+								operators.Art_extra_reputation = 0;
+								return "rl_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_reputation) {
+								operators.Art_extra_reputation = 0;
+								operators.reputation_stat = 60;
+								graph_core.update_stats();
+								return "rl_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					}
+				}
+			},
+			"rl_2": {
+				title: {ru: "случилось чудо", en: ""},
+				text: {ru: "артефакт вам помог", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					}
+				}
+			}
+		}
+	},
+	reputation_high: {
+		type: "script",
+		cards: {
+			"rh_1": {
+				title: {ru: "репутация в избытке", en: ""},
+				text: {ru: "репутация в избытке", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_reputation) {
+								operators.Art_extra_reputation = 0;
+								return "rh_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_reputation) {
+								operators.Art_extra_reputation = 0;
+								operators.reputation_stat = 60;
+								graph_core.update_stats();
+								return "rh_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					}
+				}
+			},
+			"rh_2": {
+				title: {ru: "случилось чудо", en: ""},
+				text: {ru: "артефакт вам помог", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					}
+				}
+			}
+		}
+	},
+	money_low: {
+		type: "script",
+		cards: {
+			"ml_1": {
+				title: {ru: "деньги в упадке", en: ""},
+				text: {ru: "деньги в упадке", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_money) {
+								operators.Art_extra_money = 0;
+								return "ml_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_money) {
+								operators.Art_extra_money = 0;
+								operators.money_stat = 60;
+								graph_core.update_stats();
+								return "ml_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					}
+				}
+			},
+			"ml_2": {
+				title: {ru: "случилось чудо", en: ""},
+				text: {ru: "артефакт вам помог", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					}
+				}
+			}
+		}
+	},
+	money_high: {
+		type: "script",
+		cards: {
+			"mh_1": {
+				title: {ru: "деньги в избытке", en: ""},
+				text: {ru: "деньги в избытке", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_money) {
+								operators.Art_extra_money = 0;
+								return "mh_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							if (operators.Art_extra_money) {
+								operators.Art_extra_money = 0;
+								operators.money_stat = 60;
+								graph_core.update_stats();
+								return "mh_2"
+							} else {
+								return "eternity_start"
+							}
+						}
+					}
+				}
+			},
+			"mh_2": {
+				title: {ru: "случилось чудо", en: ""},
+				text: {ru: "артефакт вам помог", en: ""},
+				img: 1,
+				answers: {
+					"1": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					},
+					"2": {
+						text: {ru: "", en: ""},
+						next: function(operators) {
+							return "-"
+						}
+					}
+				}
+			}
+		}
+	},
 }
 
 
@@ -5150,104 +6666,104 @@ var shop_items = {
 
 var characters = {
 	"0": {
-		title: text.CHARACTER_0,
-		description: {ru: "", en: ""},
-		img_src: "./images/cards/00.jpg"
-	},
-	"1": {
 		title: text.CHARACTER_1,
-		description: {ru: "проводница", en: ""},
+		description: {ru: "Доброжелательная  трансцендентная сущность по ту сторону грани миров", en: ""},
 		img_src: "./images/cards/01.jpg"
 	},
-	"2": {
+	"1": {
 		title: text.CHARACTER_2,
-		description: {ru: "", en: ""},
+		description: {ru: "То, что смотрит из мрака, если долго всматриваться", en: ""},
 		img_src: "./images/cards/02.jpg"
 	},
-	"3": {
+	"2": {
 		title: text.CHARACTER_3,
-		description: {ru: "", en: ""},
+		description: {ru: "Найдет что угодно и где угодно", en: ""},
 		img_src: "./images/cards/03.jpg"
 	},
-	"4": {
+	"3": {
 		title: text.CHARACTER_4,
-		description: {ru: "", en: ""},
+		description: {ru: "Благочестивый гражданин почтенного возраста", en: ""},
 		img_src: "./images/cards/04.jpg"
 	},
-	"5": {
+	"4": {
 		title: text.CHARACTER_5,
-		description: {ru: "", en: ""},
+		description: {ru: "Образцовая мать и жена, наивная любительница цветов", en: ""},
 		img_src: "./images/cards/05.jpg"
 	},
-	"6": {
+	"5": {
 		title: text.CHARACTER_6,
-		description: {ru: "", en: ""},
+		description: {ru: "Глава города знает все и про всех, даже если неправда", en: ""},
 		img_src: "./images/cards/06.jpg"
 	},
-	"7": {
+	"6": {
 		title: text.CHARACTER_7,
-		description: {ru: "", en: ""},
+		description: {ru: "Грязный и измученный болезнями... Он не так прост", en: ""},
 		img_src: "./images/cards/07.jpg"
 	},
-	"8": {
+	"7": {
 		title: text.CHARACTER_8,
 		description: {ru: "", en: ""},
 		img_src: "./images/cards/08.jpg"
 	},
+	"8": {
+		title: text.CHARACTER_8,
+		description: {ru: "Торговец из лунной страны на Востоке.", en: ""},
+		img_src: "./images/cards/08.jpg"
+	},
 	"9": {
 		title: text.CHARACTER_9,
-		description: {ru: "", en: ""},
+		description: {ru: "Тот, кто научил вас всему", en: ""},
 		img_src: "./images/cards/09.jpg"
 	},
 	"10": {
 		title: text.CHARACTER_10,
-		description: {ru: "", en: ""},
-		img_src: "./images/cards/00.jpg"
+		description: {ru: "Посланник короля", en: ""},
+		img_src: "./images/cards/10.jpg"
 	},
 	"11": {
 		title: text.CHARACTER_11,
-		description: {ru: "", en: ""},
-		img_src: "./images/cards/00.jpg"
+		description: {ru: "Его запомнят как освободившего Демиурга", en: ""},
+		img_src: "./images/cards/11.jpg"
 	},
 	"12": {
 		title: text.CHARACTER_12,
-		description: {ru: "", en: ""},
-		img_src: "./images/cards/00.jpg"
+		description: {ru: "Путешественник, привезший с Востока немало редкостей", en: ""},
+		img_src: "./images/cards/12.jpg"
 	},
 	"13": {
 		title: text.CHARACTER_13,
-		description: {ru: "", en: ""},
-		img_src: "./images/cards/00.jpg"
+		description: {ru: "Девушка-солнце", en: ""},
+		img_src: "./images/cards/13.jpg"
 	},
 	"14": {
 		title: text.CHARACTER_14,
-		description: {ru: "", en: ""},
-		img_src: "./images/cards/00.jpg"
+		description: {ru: "Повелитель металла и славный малый", en: ""},
+		img_src: "./images/cards/14.jpg"
 	},
 	"15": {
 		title: text.CHARACTER_15,
-		description: {ru: "", en: ""},
-		img_src: "./images/cards/00.jpg"
+		description: {ru: "Меланхоличный труженик моря", en: ""},
+		img_src: "./images/cards/15.jpg"
 	},
 	"16": {
 		title: text.CHARACTER_16,
-		description: {ru: "", en: ""},
-		img_src: "./images/cards/00.jpg"
+		description: {ru: "Невинная душа, которая верит во все чудесное", en: ""},
+		img_src: "./images/cards/16.jpg"
 	},
 	"17": {
 		title: text.CHARACTER_17,
-		description: {ru: "", en: ""},
-		img_src: "./images/cards/00.jpg"
+		description: {ru: "Никто не любит ее ворчания", en: ""},
+		img_src: "./images/cards/17.jpg"
 	},
 	"18": {
 		title: text.CHARACTER_18,
-		description: {ru: "", en: ""},
-		img_src: "./images/cards/00.jpg"
+		description: {ru: "Молодой талант с чрнокнижными наклонностями", en: ""},
+		img_src: "./images/cards/18.jpg"
 	},
 	"19": {
 		title: text.CHARACTER_19,
-		description: {ru: "", en: ""},
-		img_src: "./images/cards/00.jpg"
+		description: {ru: "Мало кто знает, что они и правда существуют", en: ""},
+		img_src: "./images/cards/19.jpg"
 	},
 	"20": {
 		title: text.CHARACTER_20,
@@ -5424,8 +6940,8 @@ var special_offers = [
 {
 	title: {ru: "", en: ""},
 	description: {ru: "", en: ""},
-	img_src: ""
-	ico_src:
+	img_src: "",
+	ico_src: ""
 
 }
 ]

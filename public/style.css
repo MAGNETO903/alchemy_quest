@@ -46,6 +46,10 @@ body {
 	
 }
 
+#game_debug {
+	z-index: 2;
+}
+
 #game_options, #game_shop, #game_special_offers {
 	display: block;
 }
@@ -80,6 +84,10 @@ span {
 
 .green {
 	color: #00ff00;
+}
+
+.magenta {
+	color: #c232f1;
 }
 
 #gs_card_block, #gso_cb_desc {
