@@ -374,6 +374,12 @@ var tech_core = {
                 //game_core.data = data
                 game_core.data = tech_core.validate_progress(JSON.parse(localStorage.getItem(STORAGE_NAME)))
                 console.log('[tech_core] прогресс загружен из локального хранилища')
+
+                graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card])
+                graph_core.update_stats();
+                graph_core.update_balance();
+                graph_core.update_shop();
+
             }
 
             // здесь мы должны выгрузить прогресс из облака а затем сравнить и сказать игроку так и так дескать
@@ -923,6 +929,7 @@ var tech_core = {
             game_core.data.money -= shop_items[tech_core.item_id].cost;
             shop_items[tech_core.item_id].effect();
             graph_core.close_all_popups();
+            graph_core.update_balance();
         } else {
             // не хватает монет
             graph_core.animation_not_enough_money();
@@ -1081,8 +1088,8 @@ var graph_core = {
         }
     },
     "update_card": function(card) {
-        //console.log(card)
-       graph_core.update_stats();
+        console.log(card)
+        graph_core.update_stats();
         //console.log(graph_core.lang)
         graph_core.html_blocks["game_viewport"].children['card_block'].children['card_title'].options.text = card.title[graph_core.lang];
 
@@ -1319,6 +1326,15 @@ var game_core = {
                 "used_desks": {
                     "rand4": [],
                     "chapter_2": [],
+                    "dragon_0": [],
+                    "dragon_1": [],
+                    "dragon_2": [],
+                    "dragon_3": [],
+                    "pegas": [],
+                    "padawan": [],
+                    "rand7": [],
+                    "garden": [],
+                    "rand8": [],
                 },
                 "started_scenarios": [], // точки выхода
             }
@@ -1333,6 +1349,15 @@ var game_core = {
         "used_desks": {
             "rand4": [],
             "chapter_2": [],
+            "dragon_0": [],
+            "dragon_1": [],
+            "dragon_2": [],
+            "dragon_3": [],
+            "pegas": [],
+            "padawan": [],
+            "rand7": [],
+            "garden": [],
+            "rand8": [],
         },
         "operators": operators,
         "real_next_card": "",
@@ -1431,9 +1456,10 @@ var game_core = {
         var next_card_id;
         var desk = game_core.data.cur_desk;
         var next_card_func;
-        console.log(choice_num)
-        console.log(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
-        console.log(game_core.data)
+
+        console.log('текущая карта:', desks[game_core.data.cur_desk].cards[game_core.data.cur_card])
+        console.log('выбран вариант:', choice_num);
+        
         if (choice_num == 'none') {
             next_card_id = desks[game_core.data.cur_desk].cards[game_core.data.cur_card].next(game_core.data.operators);
             next_card_func = desks[game_core.data.cur_desk].cards[game_core.data.cur_card].next
@@ -1442,7 +1468,8 @@ var game_core = {
             next_card_func = desks[game_core.data.cur_desk].cards[game_core.data.cur_card].answers[choice_num].next
         }
         
-       
+
+        
         //console.log(next_card_func(game_core.data.operators));
 
 
@@ -1452,7 +1479,8 @@ var game_core = {
         if (game_core.data.operators.power_stat < 0 && game_core.data.operators.critical == 0) {
             game_core.data.started_scenarios.push({
                 desk: desk,
-                next_card_func: next_card_func
+                choice_num: choice_num,
+                next_card_func: game_core.data.cur_card
             });
 
             game_core.data.cur_desk = 'power_low';
@@ -1465,7 +1493,8 @@ var game_core = {
         } else if (game_core.data.operators.power_stat > 100 && game_core.data.operators.critical == 0) {
             game_core.data.started_scenarios.push({
                 desk: desk,
-                next_card_func: next_card_func
+                choice_num: choice_num,
+                next_card_func: game_core.data.cur_card
             });
 
             game_core.data.cur_desk = 'power_high';
@@ -1478,7 +1507,8 @@ var game_core = {
         } else if (game_core.data.operators.hp_stat < 0 && game_core.data.operators.critical == 0) {
             game_core.data.started_scenarios.push({
                 desk: desk,
-                next_card_func: next_card_func
+                choice_num: choice_num,
+                next_card_func: game_core.data.cur_card
             });
 
             game_core.data.cur_desk = 'health_low';
@@ -1490,7 +1520,8 @@ var game_core = {
         } else if (game_core.data.operators.hp_stat > 100 && game_core.data.operators.critical == 0) {
             game_core.data.started_scenarios.push({
                 desk: desk,
-                next_card_func: next_card_func
+                choice_num: choice_num,
+                next_card_func: game_core.data.cur_card
             });
 
             game_core.data.cur_desk = 'health_high';
@@ -1502,7 +1533,8 @@ var game_core = {
         } else if (game_core.data.operators.reputation_stat < 0 && game_core.data.operators.critical == 0) {
             game_core.data.started_scenarios.push({
                 desk: desk,
-                next_card_func: next_card_func
+                choice_num: choice_num,
+                next_card_func: game_core.data.cur_card
             });
 
             game_core.data.cur_desk = 'reputation_low';
@@ -1514,7 +1546,8 @@ var game_core = {
         } else if (game_core.data.operators.reputation_stat > 100 && game_core.data.operators.critical == 0) {
             game_core.data.started_scenarios.push({
                 desk: desk,
-                next_card_func: next_card_func
+                choice_num: choice_num,
+                next_card_func: game_core.data.cur_card
             });
 
             game_core.data.cur_desk = 'reputation_high';
@@ -1526,7 +1559,8 @@ var game_core = {
         } else if (game_core.data.operators.money_stat < 0 && game_core.data.operators.critical == 0) {
             game_core.data.started_scenarios.push({
                 desk: desk,
-                next_card_func: next_card_func
+                choice_num: choice_num,
+                next_card_func: game_core.data.cur_card
             });
 
             game_core.data.cur_desk = 'money_low';
@@ -1538,7 +1572,8 @@ var game_core = {
         } else if (game_core.data.operators.money_stat > 100 && game_core.data.operators.critical == 0) {
             game_core.data.started_scenarios.push({
                 desk: desk,
-                next_card_func: next_card_func
+                choice_num: choice_num,
+                next_card_func: game_core.data.cur_card
             });
 
             game_core.data.cur_desk = 'money_high';
@@ -1571,91 +1606,40 @@ var game_core = {
         // ...
         // 
 
-        console.log(next_card_id)
+        //console.log('ведёт на ', next_card_id);
 
         // ПРОДОЛЖЕНИЕ СЮЖЕТА
 
         // Возврат к предыдущей ветке
-        if (next_card_id == '-') {
+        while (next_card_id == '-') {
+            console.log('возврат на предыдущую ветку');
             game_core.data.operators.critical = 0;
-            next_card_id = game_core.data.started_scenarios[game_core.data.started_scenarios.length-1].next_card_func(game_core.data.operators);
+
+            var card_desk = game_core.data.started_scenarios[game_core.data.started_scenarios.length-1].desk
+            var card_id = game_core.data.started_scenarios[game_core.data.started_scenarios.length-1].next_card_func;
+            var card_choice = game_core.data.started_scenarios[game_core.data.started_scenarios.length-1].choice_num;
+            
+
+            console.log(card_desk, card_id, card_choice)
+            // 1 вариант
+            if (card_choice == 'none') {
+                next_card_id = desks[card_desk].cards[card_id].next(game_core.data.operators);
+            
+            } else {
+                next_card_id = desks[card_desk].cards[card_id].answers[card_choice].next(game_core.data.operators);
+            }
+
             desk = game_core.data.started_scenarios[game_core.data.started_scenarios.length-1].desk;
             game_core.data.started_scenarios.pop();
 
-            console.log(desk, next_card_id)
+            console.log('ведёт на ', next_card_id);
         }
 
-        console.log(desk);
-
-
-        // Проверка не является ли это новой точкой входа
-        if (desks[desk].cards[next_card_id].desk != undefined) {
-            console.log('[game_core] - новая точка входа в колоду')
-            // есть ли на неё условие?
-            if (desks[desk].cards[next_card_id].check_condition != undefined) {
-
-                if (desks[desk].cards[next_card_id].check_condition(game_core.data.operators) == false) {
-                    // пропуск
-                    console.log('[game_core] - условие не выполнено')
-                    game_core.data.cur_desk = desk;
-                    game_core.data.cur_card = next_card_id;
-                    return game_core.next_card();
-                }
-            } else {
-                console.log('[game_core] - без условия')
-            }
-
-            console.log(desks[desk].cards[next_card_id])
-
-            game_core.data.started_scenarios.push({
-                desk: desk,
-                next_card_func: desks[desk].cards[next_card_id].next
-            });
-            var rand_cards = []; // точки входа
-
-            desk = desks[desk].cards[next_card_id].desk;
-
-            // в колоде несколько точек входа: выбираем любую и запоминаем
-            if (desks[desk].type == 'rand_norepeat') {
-                console.log('[game_core] - в колоде несколько точек входа (колода: ' + desk + ")");
-                for (var i in desks[desk].cards) {       
-                    if (i.split('_')[i.split('_').length-1] == 'start' && game_core.data.used_desks[desk].includes(i) == false) {
-                        rand_cards.push(i);
-                    }
-                }
-                
-                console.log(rand_cards);
-
-                game_core.data.cur_card = get_random_elements(rand_cards, 1, game_core.data.used_desks[desk])[0]
-                game_core.data.used_desks[desk].push(game_core.data.cur_card)
-                game_core.data.cur_desk = desk;
-
-            // в колоде только одна точка входа
-            } else if (desks[desk].type == 'rand_repeat') {
-                for (var i in desks[desk].cards) {       
-                    if (i.split('_')[1] == 'start') {
-                        rand_cards.push(i);
-                    }
-                }
-                game_core.data.cur_card = get_random_elements(rand_cards, 1, game_core.data.used_desks[desk])[0]
-                game_core.data.used_desks[desk].push(game_core.data.cur_card)
-                game_core.data.cur_desk = desk;
-            } else if (desks[desk].type == 'script') {
-                console.log('[game_core] - в колоде 1 точка входа')
-                game_core.data.cur_desk = desk;
-                game_core.data.cur_card = next_card_id;
-            }
-        } else {
-            // не является
-            game_core.data.cur_desk = desk;
-            game_core.data.cur_card = next_card_id;
-        }
-
-            
-        console.log(game_core.data.cur_desk, game_core.data.cur_card)
+        console.log('ведёт на', desk, ":", next_card_id);
+        
 
         // контрольная точка
-        var next_card_obj = desks[game_core.data.cur_desk].cards[game_core.data.cur_card]
+        var next_card_obj = desks[desk].cards[next_card_id]
 
         if (next_card_obj.save_point) {
             var save_point = next_card_obj.save_point;
@@ -1682,6 +1666,85 @@ var game_core = {
             }
             game_core.data.history[save_point].cur_desk = game_core.data.cur_desk;
         }
+
+
+        // Проверка не является ли это новой точкой входа
+        if (desks[desk].cards[next_card_id].desk != undefined) {
+            console.log('[game_core] - новая точка входа в колоду')
+            // есть ли на неё условие?
+            if (desks[desk].cards[next_card_id].check_condition != undefined) {
+
+                if (desks[desk].cards[next_card_id].check_condition(game_core.data.operators) == false) {
+                    // пропуск
+                    console.log('[game_core] - условие не выполнено')
+                    game_core.data.cur_desk = desk;
+                    game_core.data.cur_card = next_card_id;
+                    return game_core.next_card();
+                }
+            } else {
+                console.log('[game_core] - без условия')
+            }
+
+            console.log(desks[desk].cards[next_card_id])
+
+            // контрольная точка
+            
+
+            game_core.data.started_scenarios.push({
+                desk: desk,
+                choice_num: 'none',
+                next_card_func: next_card_id
+            });
+            var rand_cards = []; // точки входа
+
+            desk = desks[desk].cards[next_card_id].desk;
+
+            // в колоде несколько точек входа: выбираем любую и запоминаем
+            if (desks[desk].type == 'rand_norepeat') {
+                console.log('[game_core] - в колоде несколько точек входа (колода: ' + desk + ")");
+                for (var i in desks[desk].cards) {       
+                    if (i.split('_')[i.split('_').length-1] == 'start' && game_core.data.used_desks[desk].includes(i) == false) {
+                        rand_cards.push(i);
+                    }
+                }
+                
+                console.log(rand_cards);
+
+                game_core.data.cur_card = get_random_elements(rand_cards, 1, game_core.data.used_desks[desk])[0]
+                game_core.data.used_desks[desk].push(game_core.data.cur_card)
+                game_core.data.cur_desk = desk;
+
+            // в колоде только одна точка входа
+            } else if (desks[desk].type == 'rand_repeat') {
+                for (var i in desks[desk].cards) {       
+                    if (i.split('_')[i.split('_').length-1] == 'start') {
+                        rand_cards.push(i);
+                    }
+                }
+                console.log(rand_cards);
+                game_core.data.cur_card = get_random_elements(rand_cards, 1, [])[0]
+                game_core.data.cur_desk = desk;
+            } else if (desks[desk].type == 'script') {
+                console.log('[game_core] - в колоде 1 точка входа')
+                for (var i in desks[desk].cards) {       
+                    if (i.split('_')[i.split('_').length-1] == 'start') {
+                        rand_cards.push(i);
+                    }
+                }
+                console.log(rand_cards);
+                game_core.data.cur_card = get_random_elements(rand_cards, 1, [])[0]
+                game_core.data.cur_desk = desk;
+            }
+        } else {
+            // не является
+            game_core.data.cur_desk = desk;
+            game_core.data.cur_card = next_card_id;
+        }
+
+        console.log('переход на', game_core.data.cur_desk, game_core.data.cur_card)    
+        
+
+        
         
         graph_core.update_card(desks[game_core.data.cur_desk].cards[game_core.data.cur_card]);
 

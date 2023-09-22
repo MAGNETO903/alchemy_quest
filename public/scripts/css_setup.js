@@ -2344,8 +2344,32 @@ graph_core.html_blocks["game_debug"] = new my_html_block("game_debug", 'global_p
     "pos_x": 0.0,
     "pos_y": 0.0,
     "is_prop": false,
-    "background": "rgba(255, 0, 0, 0.3)"
+    "background": "rgba(255, 255, 255, 0.3)"
 });
+
+graph_core.html_blocks["game_debug"].add_block('gd_save_btn', {
+    "ratio_x": 0.4,
+    "ratio_y": 0.4,
+    "pos_x": 0.5,
+    "pos_y": 0.05,
+    "is_prop": false,
+    text: "сохранить",
+    "text_align": "center",
+    "background": "orange",
+    onclick: "tech_core.save_progress();"
+})
+
+graph_core.html_blocks["game_debug"].add_block('gd_load_btn', {
+    "ratio_x": 0.4,
+    "ratio_y": 0.4,
+    "pos_x": 0.5,
+    "pos_y": 0.95,
+    "is_prop": false,
+    text: "загрузить",
+    "text_align": "center",
+    "background": "orange",
+    onclick: "SHOULD_LOAD_PROGRESS = 1; tech_core.load_progress(); SHOULD_LOAD_PROGRESS = 0;"
+})
 
 const position = { x: 0, y: 0 }
 
@@ -2360,7 +2384,9 @@ function dragMoveListener (event) {
 
   // update the posiion attributes
   target.setAttribute('data-x', x)
-  target.setAttribute('data-y', y)
+  target.setAttribute('data-y', y);
+
+  graph_core.html_blocks["game_debug"].recalculate();
 }
 
 // this function is used later in the resizing and gesture demos
@@ -2379,6 +2405,11 @@ interact('#game_debug')
         // update the element's style
         target.style.width = event.rect.width + 'px'
         target.style.height = event.rect.height + 'px'
+
+        graph_core.html_blocks["game_debug"].options.ratio_x = event.rect.width/graph_core.winW
+         graph_core.html_blocks["game_debug"].options.ratio_y = event.rect.height/graph_core.winH
+
+        graph_core.html_blocks["game_debug"].recalculate();
 
         // translate when resizing from top or left edges
         x += event.deltaRect.left
