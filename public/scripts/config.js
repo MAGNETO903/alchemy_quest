@@ -1,6 +1,6 @@
 // В этом разделе основные переменные
 const PLATFORM_TYPE = 'yandex'
-
+// test
 
 //const SERVER_URL = 'https://alchemy-quest.adaptable.app/';
 //const SERVER_URL = 'https://alchemy-quest.onrender.com/'
