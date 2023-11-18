@@ -48,6 +48,7 @@ body {
 
 #game_debug {
 	z-index: 2;
+	display: none;
 }
 
 #game_options, #game_shop, #game_special_offers {

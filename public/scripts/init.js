@@ -1335,6 +1335,10 @@ var game_core = {
                     "rand7": [],
                     "garden": [],
                     "rand8": [],
+                    "rand10": [],
+                    "rand11": [],
+                    "rand12": [],
+                    "rand13": [],
                 },
                 "started_scenarios": [], // точки выхода
             }
@@ -1343,7 +1347,7 @@ var game_core = {
         //"cur_card": "plot1-1",
         "cur_card": START_POS,
         "started_scenarios": [], // точки выхода
-        "money": 1000,
+        "money": 5000,
         "cur_desk": "plot",
         "cur_chapter": 1,
         "used_desks": {
@@ -1358,6 +1362,10 @@ var game_core = {
             "rand7": [],
             "garden": [],
             "rand8": [],
+            "rand10": [],
+            "rand11": [],
+            "rand12": [],
+            "rand13": [],
         },
         "operators": operators,
         "real_next_card": "",
