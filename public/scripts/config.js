@@ -688,12 +688,13 @@ var shop_codes = [
 	'Art_phoenix',
 	'Art_knife',	
 	'Art_stormglass',
-	'Art_cosmos',
+	'Art_crystal',
 	'Art_flower',
 	'Art_ball',
-	'Art_reins',
-	'Art_crystal',
-	'Art_book'
+	'Art_cosmos',
+	'Art_starlight',
+	'Art_book',
+	'Art_reins'
 ]
 
 
@@ -727,6 +728,7 @@ var operators = {
 	U_sum: 0,
 	U: 0,
 	Pearl: 0,
+	notgotofest: 0,
 
 	// Фестиваль
 	Fonarik: 0,
@@ -780,6 +782,7 @@ var operators = {
 	Art_book: 0,
 	Art_phoenix: 0,
 	Art_knife: 0,
+	Art_starlight: 0,
 
 	// Доп операторы
 	// доступность товаров
@@ -796,6 +799,7 @@ var operators = {
 	Art_book_available: 0,
 	Art_phoenix_available: 0,
 	Art_knife_available: 0,
+	Art_starlight_available: 0,
 
 	// критическое значение статов
 	critical: 0,
@@ -934,6 +938,8 @@ var desks = {
 					"1": {
 						"text": { "ru": "...", "en": "..." },
 						"next": function(operators) {
+							operators.Art_starlight_available = 1;
+							operators.Art_book_available = 1;
 							// изменяем операторы
 							return "plot_1-3"
 						}
@@ -942,6 +948,8 @@ var desks = {
 						"text": {"ru": "...","en": "..."},
 						"next": function(operators) {
 							// изменяем операторы
+							operators.Art_starlight_available = 1;
+							operators.Art_book_available = 1;
 							return "plot_1-3"
 						}
 					}
@@ -1081,7 +1089,7 @@ var desks = {
 			"plot_2-3-1": {
 				"title": text.CHARACTER_1,
 				"text": {
-					"ru": " Они могут понижаться и повышаться. Не позволяй им достигать минимума или максимума.",
+					"ru": "Они могут понижаться и повышаться. Не позволяй им достигать минимума или максимума.",
 					"en": "- Hello there! \n - General Kenobi..."
 				},
 				"img": 1,
@@ -1279,12 +1287,11 @@ var desks = {
 				}
 			},
 			"plot_3-1": {
-				"title": text.CHARACTER_4,
+				"title": text.CHARACTER_4, "img": 4,
 				"text": {
 					"ru": "А... Добрый день, уважаемый. А я все думаю, кто это здесь поселился! В нашем-то городке таких нечасто встретишь... Алхимиков. Пойду расскажу остальным…",
 					"en": "- Hello there! \n - General Kenobi..."
 				},
-				"img": 4,
 				"answers": {
 					"1": {
 						"text": { "ru": " Ладно…", "en": "..." },
@@ -1435,16 +1442,41 @@ var desks = {
 					"ru": "Город Сант-Марим расположился на берегу спокойного моря. Пожалуй, это то место, которое вы и искали… ",
 					"en": "- Hello there! \n - General Kenobi..."
 				},
-				"save_point": "chapter_1",
+				
 				
 				"answers": {
 					"1": {
 						"text": { "ru": "...", "en": "..." },
-						"next": function(operators) { return "plot_4-0" }
+						"next": function(operators) { return "plot_4-0-star" }
 					},
 					"2": {
 						"text": {"ru": "...", "en": "..."},
-						"next": function(operators) { return "plot_4-0" }
+						"next": function(operators) { return "plot_4-0-star" }
+					}
+				}
+			},
+			"plot_4-0-star": {
+				"title": {"ru": "Новый этап", "en": "..."},
+				"text": {
+					"ru": "Небесная ось делает оборот. В небе воссияло созвездие Единорога. (контрольная точка)",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				"img": 172,
+				"save_point": "chapter_1",
+				"answers": {
+					"1": {
+						"text": { "ru": "...", "en": "..." },
+						"next": function(operators) {
+							// изменяем операторы
+							return "plot_4-0"
+						}
+					},
+					"2": {
+						"text": {"ru": "...", "en": "..."},
+						"next": function(operators) {
+							// изменяем операторы
+							return "plot_4-0"
+						}
 					}
 				}
 			},
@@ -1563,7 +1595,7 @@ var desks = {
 				},
 				"answers": {
 					"1": {
-						"text": { "Звучит заманчиво": "Да", "en": "..." },
+						"text": {"ru": "Звучит заманчиво", "en": "..." },
 						"next": function(operators) {
 							operators.Art_phoenix_available = 1;
 							operators.character_7_opened = 1;
@@ -1587,7 +1619,7 @@ var desks = {
 				},
 				"answers": {
 					"1": {
-						"text": { "Очень хорошо": "Да", "en": "..." },
+						"text": { "ru": "Очень хорошо", "en": "..." },
 						"next": function(operators) {
 							operators.character_7_opened =1 
 							operators.D++;
@@ -2841,6 +2873,31 @@ var desks = {
 					}
 				}
 			},
+			"plot_4-0-star": {
+				"title": {"ru": "Новый этап", "en": "..."},
+				"text": {
+					"ru": "Небесная ось делает оборот. В небе воссияло созвездие Единорога. (контрольная точка)",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				"img": 172,
+				"save_point": "chapter_1",
+				"answers": {
+					"1": {
+						"text": { "ru": "...", "en": "..." },
+						"next": function(operators) {
+							// изменяем операторы
+							return "plot_4-0"
+						}
+					},
+					"2": {
+						"text": {"ru": "...", "en": "..."},
+						"next": function(operators) {
+							// изменяем операторы
+							return "plot_4-0"
+						}
+					}
+				}
+			},
 			"plot_5-1": {
 				"desk": "phoenix",
 				"check_condition": function(operators) {
@@ -3738,7 +3795,67 @@ var desks = {
 			"plot_5-55-3": {
 				"desk": "dragon_3",
 				"next": function(operators) {
+					if (operators.notgotofest == 1) {
+						return "plot_5-56-alter"
+					}
 					return "plot_5-56"
+				}
+			},
+			"plot_5-56-alter": {
+				"title": text.CHARACTER_32, "img": 13,
+				"text": {
+					"ru": "Я слышала, вы хотите пропустить Фестиваль... Но почему? Мы так старались. Я так старалась... Идемте.",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				"answers": {
+					"1": {
+						"text": { "ru": "Просто это не мое", "en": "..." },
+						"next": function(operators) { 
+							return "plot_5-56-alter-1" }
+					},
+					"2": {
+						"text": {"ru": "Только ради вас", "en": "..."},
+						"next": function(operators) {
+							return "plot_5-56-alter-2" }
+					}
+				}
+			},
+			"plot_5-56-alter-1": {
+				"title": text.CHARACTER_32, "img": 13,
+				"text": {
+					"ru": "Очень жаль...",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				"answers": {
+					"1": {
+						"text": { "ru": "Повеселитесь без меня", "en": "..." },
+						"next": function(operators) { 
+							return "plot_5-56" }
+					},
+					"2": {
+						"text": {"ru": "Мне нужно работать", "en": "..."},
+						"next": function(operators) {
+							return "plot_5-56" }
+					}
+				}
+			},
+			"plot_5-56-alter-2": {
+				"title": text.CHARACTER_0, "img": 0,
+				"text": {
+					"ru": "Она выбежала из мастерской, смущенная вашими словами. Но разве вы что-то особенное сказали?",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				"answers": {
+					"1": {
+						"text": { "ru": "К делам", "en": "..." },
+						"next": function(operators) { 
+							return "plot_5-56" }
+					},
+					"2": {
+						"text": {"ru": "Понятно...", "en": "..."},
+						"next": function(operators) {
+							return "plot_5-56" }
+					}
 				}
 			},
 			"plot_5-56": {
@@ -3926,17 +4043,339 @@ var desks = {
 				
 				"answers": {
 					"1": {
-						"text": { "ru": "...", "en": "..." },
+						"text": { "ru": "Идти на фестиваль", "en": "..." },
 						"next": function(operators) { return "plot_6-0" }
 					},
 					"2": {
-						"text": {"ru": "...", "en": "..."},
+						"text": {"ru": "Остаться дома", "en": "..."},
 						"next": function(operators) { 
-							
-							return "plot_6-0" }
+							operators.reputation_stat =- REPUTATION_STAT_DELTA_1
+							return "plot_6-0-alter" }
 					}
 				}
 			},
+			// Если не идем на Фестиваль
+			"plot_6-0-alter": {
+				"title": text.CHARACTER_0, "img": 0,
+				"text": {
+					"ru": "Посетителей нет - они на фестивале. А вы можете спокойно провести вечер в свое удовольствие.",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "Наготовить зелий впрок", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "Выспаться как следует", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+			"plot_6-1-alter": {
+				"title": text.CHARACTER_0, "img": 144,
+				"text": {
+					"ru": "Здравствуй, Айвен.",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "Я тебя не знаю", "en": "..." },
+						"next": function(operators) { return "plot_6-2-alter" }
+					},
+					"2": {
+						"text": {"ru": "Как ты здесь оказалась?", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-3-alter" }
+					}
+				}
+			},
+			"plot_6-2-alter": {
+				"title": text.CHARACTER_1, "img": 101,
+				"text": {
+					"ru": "Правда? А теперь? Я думала тебе понравится мой новый облик...",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "Нет, истинный лучше", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "Он понравился...", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+			"plot_6-3-alter": {
+				"title": text.CHARACTER_0, "img": 144,
+				"text": {
+					"ru": "Я совсем ненадолго. Предупредить... Ты скоро встретишься с ним. И встретишься с ними.",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "'Он' - это кто?", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "'Они' - это кто?", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+			"plot_6-3-alter": {
+				"title": text.CHARACTER_0, "img": 144,
+				"text": {
+					"ru": "Плененный Демиург, он же - Чародей. ",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "'Он' - это кто?", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "'Они' - это кто?", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+			"plot_6-3-alter": {
+				"title": text.CHARACTER_0, "img": 144,
+				"text": {
+					"ru": "Они - ониры, или ожившие кошмары. Целую вечность они служили, но больше не хотят. Они ненавидят Харона.",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "Почему ненавидят?", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "Кто такой Харон?", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+			"plot_6-3-alter": {
+				"title": text.CHARACTER_0, "img": 144,
+				"text": {
+					"ru": "Тот, кто переправляет души мертвых через реку Стикс. Чародей ему должен... А Харон не прощает долги.",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "Хорошо...", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "Причем тут я?", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+			"plot_6-3-alter": {
+				"title": text.CHARACTER_0, "img": 144,
+				"text": {
+					"ru": "Кристалл. Он связывает тебя, Харона и Чародея. Я боюсь, что... именно через тебя Харон попытается добраться до Чародея.",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "Я не хочу", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "Проклятье...", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+			"plot_6-3-alter": {
+				"title": text.CHARACTER_0, "img": 144,
+				"text": {
+					"ru": "Мое время на исходе... Будь осторожен. И еще. Айвен, я давно хотела сказать тебе, что...",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "Я не хочу", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "Проклятье...", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+			"plot_6-3-alter": {
+				"title": text.CHARACTER_0, "img": 0,
+				"text": {
+					"ru": "Вы так и не узнали, что она хотела сказать. В наступившей тишине вы снова остались одни. Как, впрочем, и всегда.",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "Готовить лекарства", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "Побродить по городу", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+			"plot_6-3-alter": {
+				"title": text.CHARACTER_0, "img": 0,
+				"text": {
+					"ru": "Вы так и не узнали, что она хотела сказать. В наступившей тишине вы снова остались одни. Как, впрочем, и всегда.",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "Готовить лекарства", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "Побродить по городу", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+			"plot_6-3-alter": {
+				"title": text.CHARACTER_0, "img": 58,
+				"text": {
+					"ru": "Свежий воздух помог привести мысли в порядок. Вы заметили, что звезды сияют особенно ярко.",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "Походить еще", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "Вернуться домой", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+			"plot_6-3-alter": {
+				"title": text.CHARACTER_0, "img": 99,
+				"text": {
+					"ru": "Ноги сами вывели вас к морю. Шум накатывающих волн успокаивал тревогу в душе, когда вы заметили фигуру в отдалении.",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "Незаметно подойти", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "Идти домой", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+			"plot_6-3-alter": {
+				"title": text.CHARACTER_0, "img": 105,
+				"text": {
+					"ru": "Песок такой холодный. И вода тоже. Кажется, поднялись глубинные течения...",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "Почему ты здесь?", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "Праздник закончился?", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+			"plot_6-3-alter": {
+				"title": text.CHARACTER_0, "img": 105,
+				"text": {
+					"ru": "Я не знаю... Я ушла, потому что ничего меня там не держало. Но зато я встретила прекрасного человека, не так ли?",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "Проводить ее домой", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "Пригласить к себе", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+			"plot_6-3-alter": {
+				"title": text.CHARACTER_0, "img": 105,
+				"text": {
+					"ru": "Она согласилась... и не зря. Вы оба поняли это, проходя мимо темной подворотни.",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				//"save_point": "plot6",
+				"answers": {
+					"1": {
+						"text": { "ru": "Идти домой", "en": "..." },
+						"next": function(operators) { return "plot_6-1-alter" }
+					},
+					"2": {
+						"text": {"ru": "Пригласить к себе", "en": "..."},
+						"next": function(operators) { 
+							
+							return "plot_6-1-alter" }
+					}
+				}
+			},
+
 
 			// Фестиваль // НАЧАЛО 3 главы 
 			"plot_6-0": {
@@ -4084,10 +4523,36 @@ var desks = {
 				"answers": {
 					"1": {
 						"text": { "ru": "Да! Хорошо!", "en": "..." },
-						"next": function(operators) { return "plot_6-7-" + operators.Dr }
+						"next": function(operators) { 
+							if (operators.notgotofest == 1) {
+								return "plot_6-6-alter"
+							}
+							return "plot_6-7-" + operators.Dr }
 					},
 					"2": {
 						"text": {"ru": "Уйти подальше", "en": "..."},
+						"next": function(operators) { 
+							if (operators.notgotofest == 1) {
+								return "plot_6-6-alter"
+							}
+							
+							return "plot_6-7-" + operators.Dr }
+					}
+				}
+			},
+			"plot_6-6-alter": {
+				"title": text.CHARACTER_32, "img": 42,
+				"text": {
+					"ru": "Я так рада, что вы здесь. Все-таки пришел...",
+					"en": "- Hello there! \n - General Kenobi..."
+				},
+				"answers": {
+					"1": {
+						"text": { "ru": "Отличный праздник!", "en": "..." },
+						"next": function(operators) { return "plot_6-7-" + operators.Dr }
+					},
+					"2": {
+						"text": {"ru": "Я не мог не прийти", "en": "..."},
 						"next": function(operators) { 
 							
 							return "plot_6-7-" + operators.Dr }
@@ -4936,13 +5401,13 @@ var desks = {
 					"1": {
 						"text": { "ru": "Идти домой", "en": "..." },
 						"next": function(operators) {
-							operators.Alia_home = 1 
+							operators.Alia_home = 1; 
 							return "plot_6-45" }
 					},
 					"2": {
 						"text": {"ru": "Домооой!", "en": "..."},
 						"next": function(operators) { 
-							
+							operators.Alia_home = 1;
 							return "plot_6-45" }
 					}
 				}
@@ -10794,12 +11259,14 @@ var desks = {
 						"text": { "ru": "Это ужасно!", "en": "..." },
 						"next": function(operators) {
 							operators.hp_stat -= HEALTH_STAT_DELTA_3;
+							operators.Art_book_available = 1;
 							return "plot_8-52" }
 					},
 					"2": {
 						"text": {"ru": "Ахаха", "en": "..."},
 						"next": function(operators) {
 							operators.hp_stat -= HEALTH_STAT_DELTA_3;
+							operators.Art_book_available = 1;
 							return "plot_8-52" }
 					}
 				}
@@ -20420,6 +20887,7 @@ var desks = {
 					"text": { "ru": "У меня много дел!", "en": "dont"},
 					"next": function(operators) {
 						// изменяем операторы
+						operators.notgotofest = 1;
 						operators.reputation_stat -= REPUTATION_STAT_DELTA_1;
 						return "-"
 					}
@@ -25583,7 +26051,7 @@ var shop_items = {
 		bought: false,
 		effect: function() {
 			operators.Art_knife = 1;
-			game_core.data.operators[shop_codes[11]] += 1;
+			game_core.data.operators[shop_codes[5]] += 1;
 			graph_core.update_stats();
 			graph_core.update_shop();
 		}
@@ -25598,7 +26066,7 @@ var shop_items = {
 			en: "description"
 		},
 		long_description: {
-			ru: "Некогда в него была заключена сущность, которую было слишком опасно держать на свободе.",
+			ru: "Некогда в него была заключена сущность, которую было слишком опасно держать на свободе (карты будут добвалены в колоду).",
 			en: "long description"
 		},
 		shards: 1,
@@ -25607,64 +26075,50 @@ var shop_items = {
 		available:true,
 		bought: false,
 		effect: function() {
+			operators.Art_stormglass = 1;
+			game_core.data.operators[shop_codes[6]] += 1;
+			graph_core.update_stats();
+			graph_core.update_shop();
 			
 		}
 	},
 	"8": {
 		title: {
-			ru: "предмет",
-			en: "item"
+			ru: "Огненные кристаллы",
+			en: "Fire crystals"
 		},
 		description: {
-			ru: "описание",
+			ru: "Своего рода магический ключ",
 			en: "description"
 		},
 		long_description: {
-			ru: "длинное описание",
+			ru: "Сущесвтует поверье, что они способны раскрыть тайны, хранящиеся в зашифрованных магических картах.",
 			en: "long description"
 		},
 		shards: 1,
-		icon_src: "images/for_shop/item_8.png",
+		icon_src: "images/for_shop/item_2.png",
 		cost: 100,
 		available:true,
 		bought: false,
 		effect: function() {
+			operators.Art_crystal = 1;
+			game_core.data.operators[shop_codes[7]] += 1;
+			graph_core.update_stats();
+			graph_core.update_shop();
 			
 		}
 	},
 	"9": {
 		title: {
-			ru: "предмет",
+			ru: "Бобы",
 			en: "item"
 		},
 		description: {
-			ru: "описание",
+			ru: "Какие-то бобы, мерцающие на свету",
 			en: "description"
 		},
 		long_description: {
-			ru: "длинное описание",
-			en: "long description"
-		},
-		shards: 1,
-		icon_src: "images/for_shop/item_9.png",
-		cost: 100,
-		available:true,
-		bought: false,
-		effect: function() {
-			
-		}
-	},
-	"10": {
-		title: {
-			ru: "предмет",
-			en: "item"
-		},
-		description: {
-			ru: "описание",
-			en: "description"
-		},
-		long_description: {
-			ru: "длинное описание",
+			ru: "Никто и никогда не видел, как выглядят семена диких чароцветов. Может быть, это они? (карты будут добвалены в колоду)",
 			en: "long description"
 		},
 		shards: 1,
@@ -25673,50 +26127,114 @@ var shop_items = {
 		available:true,
 		bought: false,
 		effect: function() {
+			operators.Art_flower = 1;
+			game_core.data.operators[shop_codes[8]] += 1;
+			graph_core.update_stats();
+			graph_core.update_shop();
+			
+		}
+	},
+	"10": {
+		title: {
+			ru: "Шар предсказаний",
+			en: "Magic ball"
+		},
+		description: {
+			ru: "Узри свое будущее",
+			en: "description"
+		},
+		long_description: {
+			ru: "Есть те, кто верят в них, и те - кто нет. Не стоит наделять бездушный кусок камня великой силой. Наверное. (карты будут добвалены в колоду)",
+			en: "long description"
+		},
+		shards: 1,
+		icon_src: "images/for_shop/item_9.png",
+		cost: 100,
+		available:true,
+		bought: false,
+		effect: function() {
+			operators.Art_ball = 1;
+			game_core.data.operators[shop_codes[9]] += 1;
+			graph_core.update_stats();
+			graph_core.update_shop();
 			
 		}
 	},
 	"11": {
 		title: {
-			ru: "предмет",
-			en: "item"
+			ru: "Яйцо",
+			en: "The egg"
 		},
 		description: {
-			ru: "описание",
+			ru: "Странное яйцо неизвестного создания",
 			en: "description"
 		},
 		long_description: {
-			ru: "длинное описание",
+			ru: "Лунный торговец не знает, кто из него вылупится, но заверяет, что это точно не дракон (карты будут добвалены в колоду).",
 			en: "long description"
 		},
 		shards: 1,
-		icon_src: "images/for_shop/item_1.png",
+		icon_src: "images/for_shop/item_3.png",
 		cost: 100,
 		available:true,
 		bought: false,
 		effect: function() {
+			operators.Art_cosmos = 1;
+			game_core.data.operators[shop_codes[10]] += 1;
+			graph_core.update_stats();
+			graph_core.update_shop();
 			
 		}
 	},
 	"12": {
 		title: {
-			ru: "предмет",
+			ru: "Свет звезд",
 			en: "item"
 		},
 		description: {
-			ru: "описание",
+			ru: "Больше, чем просто лекарство",
 			en: "description"
 		},
 		long_description: {
-			ru: "длинное описание",
+			ru: "Его созерцать можно целую вечность, однако не стоит забывать, что это сильное магическое средство.",
 			en: "long description"
 		},
 		shards: 1,
-		icon_src: "images/for_shop/item_1.png",
+		icon_src: "images/for_shop/item_12.png",
 		cost: 100,
 		available:true,
 		bought: false,
 		effect: function() {
+			operators.Art_starlight = 1;
+			game_core.data.operators[shop_codes[11]] += 1;
+			graph_core.update_stats();
+			graph_core.update_shop();
+			
+		}
+	},
+	"13": {
+		title: {
+			ru: "Книга заклинаний",
+			en: "Spell book"
+		},
+		description: {
+			ru: "Для познания магического искусства",
+			en: "description"
+		},
+		long_description: {
+			ru: "Книга со знанием, доступном лишь избранным... и тем, кто разбирается в рунах и иероглифах Египта.",
+			en: "long description"
+		},
+		shards: 1,
+		icon_src: "images/for_shop/item_13.png",
+		cost: 100,
+		available:true,
+		bought: false,
+		effect: function() {
+			operators.Art_book = 1;
+			game_core.data.operators[shop_codes[12]] += 1;
+			graph_core.update_stats();
+			graph_core.update_shop();
 			
 		}
 	}

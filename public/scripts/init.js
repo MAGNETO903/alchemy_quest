@@ -1219,7 +1219,7 @@ var graph_core = {
 
         var counter = 4;
 
-        for (var i=4; i < 12; i++) {
+        for (var i=4; i < 13; i++) {
             if (game_core.data.operators[shop_codes[i] + '_available']) {
                 $('#'+'gs_cb_item_'+(i+1)).css('display', 'block');
                 if (game_core.data.operators[shop_codes[i]] >= shop_items[i+1].shards) {

@@ -924,7 +924,7 @@ graph_core.all_html_blocks["gs_card_block_outer"].add_block('gs_card_block', {
 
 
 
-for (var i=0; i < 12; i++) {
+for (var i=0; i < Object.keys(shop_items).length; i++) {
 
     graph_core.all_html_blocks['gs_card_block'].add_block('gs_cb_item_'+(i+1), {
         "ratio_x": 700/763,
