@@ -2,6 +2,8 @@ import { story } from './story.js';
 
 const storyText = document.getElementById('story-text');
 const choicesDiv = document.getElementById('choices');
+let energy = 100;
+let oxygen = 100;
 
 function updateScene(sceneId) {
     const scene = story[sceneId];
@@ -11,17 +13,35 @@ function updateScene(sceneId) {
         return;
     }
 
-    // Отображаем текст сцены с эффектом мерцания для некоторых слов
-    storyText.innerHTML = scene.text.replace(/\*(.*?)\*/g, '<span class="flicker">$1</span>');
+    // Проверка ресурсов перед отображением сцены
+    if (energy <= 0 || oxygen <= 0) {
+        renderScene(story["ending2"]); // Прямой рендеринг концовки без рекурсии
+        return;
+    }
 
-    // Очищаем кнопки
+    renderScene(scene);
+}
+
+function renderScene(scene) {
+    // Обновляем текст с учётом ресурсов
+    storyText.innerHTML = `${scene.text.replace(/\*(.*?)\*/g, '<span class="flicker">$1</span>')}<br><br>Энергия: ${energy}%. Кислород: ${oxygen}%.`;
     choicesDiv.innerHTML = "";
 
     // Добавляем кнопки для выборов
     scene.choices.forEach(choice => {
         const button = document.createElement('button');
         button.innerText = choice.text;
-        button.onclick = () => updateScene(choice.next);
+        button.onclick = () => {
+            // Уменьшаем ресурсы
+            if (choice.next.includes("ending")) {
+                energy -= 10;
+                oxygen -= 5;
+            } else {
+                energy -= 5;
+                oxygen -= 2;
+            }
+            updateScene(choice.next);
+        };
         choicesDiv.appendChild(button);
     });
 
@@ -29,7 +49,11 @@ function updateScene(sceneId) {
     if (scene.choices.length === 0) {
         const restartButton = document.createElement('button');
         restartButton.innerText = "Начать заново";
-        restartButton.onclick = () => updateScene('start');
+        restartButton.onclick = () => {
+            energy = 100;
+            oxygen = 100;
+            updateScene('start');
+        };
         choicesDiv.appendChild(restartButton);
     }
 }
