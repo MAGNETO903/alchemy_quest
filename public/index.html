@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Последний маяк</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,7 +12,14 @@
         <h1>Последний маяк</h1>
         <div id="story-text"></div>
         <div id="choices"></div>
+        <div id="status-indicator">Энергия: 100% | Кислород: 100%</div>
     </div>
+    <audio id="background-audio" loop>
+        <source src="https://www.soundjay.com/buttons/beep-01a.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="click-sound">
+        <source src="https://www.soundjay.com/buttons/beep-07.mp3" type="audio/mpeg">
+    </audio>
     <script type="module" src="game.js"></script>
 </body>
 </html>

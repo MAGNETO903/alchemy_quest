@@ -2,8 +2,31 @@ import { story } from './story.js';
 
 const storyText = document.getElementById('story-text');
 const choicesDiv = document.getElementById('choices');
+const statusIndicator = document.getElementById('status-indicator');
+const backgroundAudio = document.getElementById('background-audio');
+const clickSound = document.getElementById('click-sound');
 let energy = 100;
 let oxygen = 100;
+
+backgroundAudio.volume = 0.3;
+backgroundAudio.play().catch(() => console.log("Автозапуск звука заблокирован браузером"));
+
+function createParticles() {
+    const particlesContainer = document.createElement('div');
+    particlesContainer.className = 'particles';
+    document.body.appendChild(particlesContainer);
+
+    for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.animationDuration = `${Math.random() * 10 + 5}s`;
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+        particlesContainer.appendChild(particle);
+    }
+}
+
+createParticles();
 
 function updateScene(sceneId) {
     const scene = story[sceneId];
@@ -13,9 +36,8 @@ function updateScene(sceneId) {
         return;
     }
 
-    // Проверка ресурсов перед отображением сцены
     if (energy <= 0 || oxygen <= 0) {
-        renderScene(story["ending2"]); // Прямой рендеринг концовки без рекурсии
+        renderScene(story["ending2"]);
         return;
     }
 
@@ -23,16 +45,69 @@ function updateScene(sceneId) {
 }
 
 function renderScene(scene) {
-    // Обновляем текст с учётом ресурсов
-    storyText.innerHTML = `${scene.text.replace(/\*(.*?)\*/g, '<span class="flicker">$1</span>')}<br><br>Энергия: ${energy}%. Кислород: ${oxygen}%.`;
+    storyText.innerHTML = "";
+    choicesDiv.innerHTML = ""; // Очищаем кнопки до завершения печати
+    const lines = scene.text.split('\n');
+    let currentLineIndex = 0;
+    let currentCharIndex = 0;
+    let spans = [];
+
+    // Подготавливаем все строки с их классами
+    lines.forEach((line, index) => {
+        const span = document.createElement('span');
+        let className = 'description';
+        if (line.includes("'Луна':")) {
+            className = 'dialogue-luna';
+        } else if (line.includes("'Эхо':") || line.includes("'МЫ — ЭХО'")) {
+            className = 'dialogue-echo';
+        } else if (line.includes("'Орион':")) {
+            className = 'dialogue-orion';
+        } else if (line.includes('Энергия') || line.includes('Кислород')) {
+            className = 'system';
+        }
+        span.className = className;
+        span.textContent = ""; // Изначально пустой
+        spans.push({ span, text: line });
+        storyText.appendChild(span);
+        if (index < lines.length - 1) {
+            storyText.appendChild(document.createElement('br'));
+        }
+    });
+
+    function typeText() {
+        if (currentLineIndex >= lines.length) {
+            storyText.scrollTop = storyText.scrollHeight;
+            showChoices(scene);
+            return;
+        }
+
+        const { span, text } = spans[currentLineIndex];
+        if (currentCharIndex < text.length) {
+            span.textContent = text.substring(0, currentCharIndex + 1);
+            currentCharIndex++;
+            setTimeout(typeText, 30); // Скорость набора (30 мс на символ)
+        } else {
+            currentLineIndex++;
+            currentCharIndex = 0;
+            setTimeout(typeText, 100); // Пауза между строками
+        }
+
+        storyText.scrollTop = storyText.scrollHeight;
+    }
+
+    typeText();
+    statusIndicator.innerText = `Энергия: ${energy}% | Кислород: ${oxygen}%`;
+}
+
+function showChoices(scene) {
     choicesDiv.innerHTML = "";
 
-    // Добавляем кнопки для выборов
     scene.choices.forEach(choice => {
         const button = document.createElement('button');
         button.innerText = choice.text;
         button.onclick = () => {
-            // Уменьшаем ресурсы
+            clickSound.currentTime = 0;
+            clickSound.play();
             if (choice.next.includes("ending")) {
                 energy -= 10;
                 oxygen -= 5;
@@ -45,11 +120,12 @@ function renderScene(scene) {
         choicesDiv.appendChild(button);
     });
 
-    // Если выборов нет, это конец
     if (scene.choices.length === 0) {
         const restartButton = document.createElement('button');
         restartButton.innerText = "Начать заново";
         restartButton.onclick = () => {
+            clickSound.currentTime = 0;
+            clickSound.play();
             energy = 100;
             oxygen = 100;
             updateScene('start');
@@ -58,5 +134,4 @@ function renderScene(scene) {
     }
 }
 
-// Запускаем игру
 updateScene('start');
