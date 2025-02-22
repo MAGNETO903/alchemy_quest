@@ -122,53 +122,50 @@ h1 {
     text-shadow: 0 0 10px rgba(0, 255, 204, 0.7);
     white-space: pre-wrap;
     box-sizing: border-box;
+    color: #00ffcc; /* Базовый цвет текста */
 }
 
 /* Стилизация прокрутки */
 #story-text::-webkit-scrollbar {
-    width: 8px; /* Ширина ползунка */
+    width: 8px;
 }
 
 #story-text::-webkit-scrollbar-track {
-    background: rgba(0, 255, 204, 0.1); /* Фон трека */
+    background: rgba(0, 255, 204, 0.1);
     border-radius: 10px;
 }
 
 #story-text::-webkit-scrollbar-thumb {
-    background: rgba(0, 255, 204, 0.7); /* Цвет ползунка */
+    background: rgba(0, 255, 204, 0.7);
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 255, 204, 0.5); /* Свечение */
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
 }
 
 #story-text::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 255, 204, 1); /* Цвет при наведении */
+    background: rgba(0, 255, 204, 1);
     box-shadow: 0 0 15px rgba(0, 255, 204, 0.8);
 }
 
-/* Для Firefox */
 #story-text {
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 255, 204, 0.7) rgba(0, 255, 204, 0.1);
 }
 
-.description {
-    color: #00ffcc;
-}
-
+/* Цвета только для реплик */
 .dialogue-luna {
-    color: #00b7ff;
+    color: #00b7ff; /* Синий для Луны */
     margin-left: 20px;
     display: block;
 }
 
 .dialogue-echo {
-    color: #cc00ff;
+    color: #cc00ff; /* Фиолетовый для Эха */
     margin-left: 20px;
     display: block;
 }
 
 .dialogue-orion {
-    color: #ff6600;
+    color: #ff6600; /* Оранжевый для Ориона */
     margin-left: 20px;
     display: block;
 }

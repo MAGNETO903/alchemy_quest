@@ -46,16 +46,18 @@ function updateScene(sceneId) {
 
 function renderScene(scene) {
     storyText.innerHTML = "";
-    choicesDiv.innerHTML = ""; // Очищаем кнопки до завершения печати
+    choicesDiv.innerHTML = "";
     const lines = scene.text.split('\n');
     let currentLineIndex = 0;
     let currentCharIndex = 0;
     let spans = [];
 
-    // Подготавливаем все строки с их классами
+    // Обработка строк: убираем звёздочки и назначаем классы только репликам
     lines.forEach((line, index) => {
         const span = document.createElement('span');
-        let className = 'description';
+        let className = ''; // По умолчанию без класса (базовый цвет #00ffcc)
+        let text = line.replace(/\*(.*?)\*/g, '$1'); // Убираем звёздочки
+
         if (line.includes("'Луна':")) {
             className = 'dialogue-luna';
         } else if (line.includes("'Эхо':") || line.includes("'МЫ — ЭХО'")) {
@@ -65,9 +67,10 @@ function renderScene(scene) {
         } else if (line.includes('Энергия') || line.includes('Кислород')) {
             className = 'system';
         }
+
         span.className = className;
-        span.textContent = ""; // Изначально пустой
-        spans.push({ span, text: line });
+        span.textContent = "";
+        spans.push({ span, text });
         storyText.appendChild(span);
         if (index < lines.length - 1) {
             storyText.appendChild(document.createElement('br'));
@@ -85,11 +88,11 @@ function renderScene(scene) {
         if (currentCharIndex < text.length) {
             span.textContent = text.substring(0, currentCharIndex + 1);
             currentCharIndex++;
-            setTimeout(typeText, 30); // Скорость набора (30 мс на символ)
+            setTimeout(typeText, 30);
         } else {
             currentLineIndex++;
             currentCharIndex = 0;
-            setTimeout(typeText, 100); // Пауза между строками
+            setTimeout(typeText, 100);
         }
 
         storyText.scrollTop = storyText.scrollHeight;
