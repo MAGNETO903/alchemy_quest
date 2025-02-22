@@ -52,18 +52,23 @@ function renderScene(scene) {
     let currentCharIndex = 0;
     let spans = [];
 
-    // Обработка строк: убираем звёздочки и назначаем классы только репликам
     lines.forEach((line, index) => {
         const span = document.createElement('span');
-        let className = ''; // По умолчанию без класса (базовый цвет #00ffcc)
-        let text = line.replace(/\*(.*?)\*/g, '$1'); // Убираем звёздочки
+        let className = '';
+        let text = line.replace(/\*(.*?)\*/g, '$1');
 
-        if (line.includes("'Луна':")) {
+        if (line.startsWith("'Луна':")) {
             className = 'dialogue-luna';
-        } else if (line.includes("'Эхо':") || line.includes("'МЫ — ЭХО'")) {
+            text = text.substring(7); // Убираем имя персонажа из текста для отображения
+        } else if (line.startsWith("'Эхо':")) {
             className = 'dialogue-echo';
-        } else if (line.includes("'Орион':")) {
+            text = text.substring(6); // Убираем имя персонажа из текста для отображения
+        } else if (line.startsWith("'МЫ — ЭХО'")) {
+            className = 'dialogue-echo';
+            text = text.substring(10); // Убираем имя персонажа из текста для отображения
+        } else if (line.startsWith("'Орион':")) {
             className = 'dialogue-orion';
+            text = text.substring(8); // Убираем имя персонажа из текста для отображения
         } else if (line.includes('Энергия') || line.includes('Кислород')) {
             className = 'system';
         }
