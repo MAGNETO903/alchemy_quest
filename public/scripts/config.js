@@ -665,10 +665,6 @@ var html_block_texts = {
 		ru: "Если у вас есть промокод, то поскорее им воспользуйтесь :)",
 		en: "If you've got a promocode, don't wait to use it :)"
 	},
-	gso_p_p_sb_text: {
-		ru: "Отправить",
-		en: "Send"
-	},
 	gch_title: {
 		ru: "персонажи",
 		en: "characters"
@@ -6433,7 +6429,7 @@ var desks = {
 				}
 			},
 			"plot_7-28": {
-				"title": text.CHARACTER_40, "img": 0,
+				"title": text.CHARACTER_40, "img": 178,
 				"text": {
 					"ru": "Я умираю. Мои руки испещрены ранами. Помоги мне.",
 					"en": "- Hello there! \n - General Kenobi..."
@@ -26239,6 +26235,125 @@ var shop_items = {
 		}
 	}
 }
+
+var special_shop_items = {
+	"1": {
+		title: {
+			ru: "Отключение рекламы",
+			en: "Ad-Free Experience"
+		},
+		description: {
+			ru: "Отключите все рекламные объявления в игре.",
+			en: "Disable all ads in the game."
+		},
+		long_description: {
+			ru: "Забудьте об отвлекающих рекламных объявлениях и погружайтесь в игру без прерываний.",
+			en: "Forget about the distracting ads and immerse yourself in the game without interruptions."
+		},
+		icon_src: "images/for_shop/ad_free.png",
+		cost: 200, // Price for disabling ads
+		available: true,
+		bought: false,
+		effect: function() {
+			game_core.settings.adsDisabled = true; // Example of disabling ads in the game
+			graph_core.update_stats();
+			graph_core.update_shop();
+		}
+	},
+	"2": {
+		title: {
+			ru: "100 монет",
+			en: "100 Coins"
+		},
+		description: {
+			ru: "Получите 100 монет.",
+			en: "Receive 100 coins."
+		},
+		long_description: {
+			ru: "Используйте монеты для покупки улучшений и бонусов.",
+			en: "Use coins to purchase upgrades and bonuses."
+		},
+		icon_src: "images/for_shop/100_coins.png",
+		cost: 50, // Price for 100 coins
+		available: true,
+		bought: false,
+		effect: function() {
+			game_core.data.coins += 100; // Add 100 coins to the player's account
+			graph_core.update_stats();
+			graph_core.update_shop();
+		}
+	},
+	"3": {
+		title: {
+			ru: "500 монет",
+			en: "500 Coins"
+		},
+		description: {
+			ru: "Получите 500 монет.",
+			en: "Receive 500 coins."
+		},
+		long_description: {
+			ru: "Используйте монеты для покупки улучшений и бонусов.",
+			en: "Use coins to purchase upgrades and bonuses."
+		},
+		icon_src: "images/for_shop/500_coins.png",
+		cost: 200, // Price for 500 coins
+		available: true,
+		bought: false,
+		effect: function() {
+			game_core.data.coins += 500; // Add 500 coins to the player's account
+			graph_core.update_stats();
+			graph_core.update_shop();
+		}
+	},
+	"4": {
+		title: {
+			ru: "1000 монет",
+			en: "1000 Coins"
+		},
+		description: {
+			ru: "Получите 1000 монет.",
+			en: "Receive 1000 coins."
+		},
+		long_description: {
+			ru: "Используйте монеты для покупки улучшений и бонусов.",
+			en: "Use coins to purchase upgrades and bonuses."
+		},
+		icon_src: "images/for_shop/1000_coins.png",
+		cost: 350, // Price for 1000 coins
+		available: true,
+		bought: false,
+		effect: function() {
+			game_core.data.coins += 1000; // Add 1000 coins to the player's account
+			graph_core.update_stats();
+			graph_core.update_shop();
+		}
+	},
+	"5": {
+		title: {
+			ru: "5000 монет",
+			en: "5000 Coins"
+		},
+		description: {
+			ru: "Получите 5000 монет.",
+			en: "Receive 5000 coins."
+		},
+		long_description: {
+			ru: "Используйте монеты для покупки улучшений и бонусов.",
+			en: "Use coins to purchase upgrades and bonuses."
+		},
+		icon_src: "images/for_shop/5000_coins.png",
+		cost: 800, // Price for 5000 coins
+		available: true,
+		bought: false,
+		effect: function() {
+			game_core.data.coins += 5000; // Add 5000 coins to the player's account
+			graph_core.update_stats();
+			graph_core.update_shop();
+		}
+	}
+};
+
 
 var characters = {
 	"0": {

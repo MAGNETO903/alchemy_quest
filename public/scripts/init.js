@@ -949,7 +949,7 @@ var graph_core = {
         "frames": 20,
         "cur_frame": 1
     },
-    popup_ids: ['go_bug_report_popup_back', 'gso_promocode_popup_back', 'gso_popup_back', 'gso_popup3_back', 'gs_popup_back'],
+    popup_ids: ['go_bug_report_popup_back', 'gso_promocode_popup_back', 'gso_popup_back', 'gso_popup3_back', 'gs_popup_back', 'go_popup_back', 'go_gso_popup_back'],
     big_blocks_ids: [],
     "start_animation": function(name) {
         graph_core.animation.playing = true;
@@ -969,7 +969,7 @@ var graph_core = {
         
         
         for (var i in html_block_texts) {
-            graph_core.all_html_blocks[i].options.text = html_block_texts[i][lang];
+            //graph_core.all_html_blocks[i].options.text = html_block_texts[i][lang];
         }
 
         graph_core.resize_screen();
@@ -1042,9 +1042,14 @@ var graph_core = {
             socket.emit('open_shop_popup');
         }
     },
-     "open_shop_popup2": function(item_id) {
-        $('#gs_popup2_back').css('display', 'block');
-        //graph_core.update_shop_popup(item_id);
+     "open_shop_popup2": function(item_id='free') {
+        graph_core.update_special_shop_popup(item_id);
+        if (item_id == 'free') {
+            $('#go_gso_popup_back').css('display', 'block');
+        } else {
+            $('#gso_popup_back').css('display', 'block');
+        }
+        
         if (tech_core.streaming) {
             socket.emit('open_shop_popup2');
         }
@@ -1054,15 +1059,43 @@ var graph_core = {
         
 
 
+
         popup_block.children['gs_popup_title'].options.text = shop_items[item_id].title[graph_core.lang];
         popup_block.children['gs_popup_desk'].options.text = shop_items[item_id].long_description[graph_core.lang];
         popup_block.children['gs_popup_slot'].children['gs_p_s_img'].options.background = `url(${shop_items[item_id].icon_src})`
         popup_block.children['gs_popup_item_title'].options.text = shop_items[item_id].title[graph_core.lang];
-        popup_block.children['gs_popup_buy_btn'].children["gs_p_bb_text"].options.text = "{coin} " + shop_items[item_id].cost;
+        popup_block.children['gs_popup_buy_btn'].options.text = "{coin} " + shop_items[item_id].cost;
 
         popup_block.recalculate(graph_core.html_blocks['game_shop'].children['gs_popup_back'])
     },
     "close_shop_popup": function() {
+        $('#gs_popup_back').css('display', 'none');
+        if (tech_core.streaming) {
+            socket.emit('close_shop_popup');
+        }
+    },
+    "update_special_shop_popup": function(item_id) {
+        var popup_block = graph_core.all_html_blocks['gso_popup'];
+        
+
+        if (item_id != 'free') {
+            graph_core.all_html_blocks['gso_popup_title'].options.text = special_shop_items[item_id].title[graph_core.lang];
+            graph_core.all_html_blocks['gso_popup_desk'].options.text = special_shop_items[item_id].long_description[graph_core.lang];
+            graph_core.all_html_blocks['gso_p_s_img'].options.background = `url(${special_shop_items[item_id].icon_src})`
+            graph_core.all_html_blocks['gso_popup_item_title'].options.text = special_shop_items[item_id].title[graph_core.lang];
+            graph_core.all_html_blocks['gso_p_bb_text'].options.text = "{yan} " + special_shop_items[item_id].cost;
+            popup_block.recalculate(graph_core.html_blocks['game_special_offers'].children['gso_popup_back'])
+        } else {
+            graph_core.all_html_blocks['go_gso_popup_title'].options.text = html_block_texts.gs_popup2_title[graph_core.lang];
+            graph_core.all_html_blocks['go_gso_popup_desk'].options.text = html_block_texts.gs_popup2_desk[graph_core.lang];
+            graph_core.all_html_blocks['go_gso_p_s_img'].options.background = "url('./images/for_shop/donat_square.jpg')"
+            graph_core.all_html_blocks['go_gso_popup_item_title'].options.text = html_block_texts.gs_popup2_item_title[graph_core.lang]
+            graph_core.all_html_blocks['go_gso_p_bb_text'].options.text = html_block_texts.gs_popup2_buy_btn[graph_core.lang]
+            graph_core.all_html_blocks['go_gso_popup_back'].recalculate()
+        }
+        
+    },
+    "close_special_shop_popup": function() {
         $('#gs_popup_back').css('display', 'none');
         if (tech_core.streaming) {
             socket.emit('close_shop_popup');
@@ -1123,30 +1156,66 @@ var graph_core = {
         //graph_core.html_blocks["game_viewport"].recalculate();
     },
     "update_stats": function(operators = game_core.data.operators) {
-        // СКОЛЬКИБАЛЬНАЯ ШКАЛА
-        var scale = MAX_STAT_VALUE;
-        var max_h = get_size('#sb_progressbar_1').y;
-        
-        graph_core.all_html_blocks["sb_anti_progressbar_1"].options.ratio_y =  (1 - game_core.data.operators.power_stat / scale) * 0.8;
-        graph_core.all_html_blocks["sb_anti_progressbar_2"].options.ratio_y =  (1 - game_core.data.operators.hp_stat / scale) * 0.8;
-        graph_core.all_html_blocks["sb_anti_progressbar_3"].options.ratio_y =  (1 - game_core.data.operators.reputation_stat / scale) * 0.8;
-        graph_core.all_html_blocks["sb_anti_progressbar_4"].options.ratio_y =  (1 - game_core.data.operators.money_stat / scale) * 0.8;
-        
-        // если купили товар
-        for (var i=0; i < 4; i++) {
-            if (game_core.data.operators[shop_codes[i]]) {
-                graph_core.all_html_blocks['sb_img_'+(i+1)].options.background = `url('./images/stats/0${(i+1)}_blue.png')`;
-                
-                graph_core.all_html_blocks['sb_progressbar_'+(i+1)].options.background = 'linear-gradient(#c2ebeb, #53DCC1)'
-            } else  {
-                graph_core.all_html_blocks['sb_img_'+(i+1)].options.background = `url('./images/stats/0${(i+1)}.png')`;
-                graph_core.all_html_blocks['sb_progressbar_'+(i+1)].options.background = 'linear-gradient(#DEE700, #FF2E51)'
-            
-            }
-        }
-        graph_core.all_html_blocks['top_block'].recalculate();
+    var scale = MAX_STAT_VALUE;
 
-    },
+    // Функция для добавления эффекта мигания
+    function flashBar(statId, newValue, oldValue) {
+        let bar = graph_core.all_html_blocks["sb_progressbar_" + statId];
+
+        if (!bar) return;
+        if (newValue == oldValue) return;
+
+        let className = newValue < oldValue ? 'flash-green' : 'flash-red';
+
+        // Добавляем класс анимации
+        let element = document.getElementById('sb_progressbar_' + statId);
+        if (element) {
+            element.classList.remove('flash-green', 'flash-red'); // Удаляем старый класс
+            void element.offsetWidth; // Трюк для перезапуска анимации
+            element.classList.add(className);
+
+            // Через 500 мс удаляем класс, чтобы можно было повторно запустить анимацию
+            setTimeout(() => {
+                element.classList.remove(className);
+            }, 500);
+        }
+    }
+
+    // Считываем старые значения перед обновлением
+    let oldStats = {
+        power_stat: game_core.data.operators.power_stat,
+        hp_stat: game_core.data.operators.hp_stat,
+        reputation_stat: game_core.data.operators.reputation_stat,
+        money_stat: game_core.data.operators.money_stat
+    };
+
+   
+    // Запускаем эффект мигания
+    flashBar(1, (1 - operators.power_stat / scale) * 0.8, graph_core.all_html_blocks["sb_anti_progressbar_1"].options.ratio_y);
+    flashBar(2, (1 - operators.hp_stat / scale) * 0.8, graph_core.all_html_blocks["sb_anti_progressbar_2"].options.ratio_y);
+    flashBar(3, (1 - operators.reputation_stat / scale) * 0.8, graph_core.all_html_blocks["sb_anti_progressbar_3"].options.ratio_y);
+    flashBar(4, (1 - operators.money_stat / scale) * 0.8, graph_core.all_html_blocks["sb_anti_progressbar_4"].options.ratio_y);
+
+     // Обновляем шкалы
+    graph_core.all_html_blocks["sb_anti_progressbar_1"].options.ratio_y = (1 - operators.power_stat / scale) * 0.8;
+    graph_core.all_html_blocks["sb_anti_progressbar_2"].options.ratio_y = (1 - operators.hp_stat / scale) * 0.8;
+    graph_core.all_html_blocks["sb_anti_progressbar_3"].options.ratio_y = (1 - operators.reputation_stat / scale) * 0.8;
+    graph_core.all_html_blocks["sb_anti_progressbar_4"].options.ratio_y = (1 - operators.money_stat / scale) * 0.8;
+
+
+    // Если купили товар, меняем цвет фона и иконку
+    for (var i = 0; i < 4; i++) {
+        if (operators[shop_codes[i]]) {
+            graph_core.all_html_blocks['sb_img_' + (i + 1)].options.background = `url('./images/stats/0${(i + 1)}_blue.png')`;
+            graph_core.all_html_blocks['sb_progressbar_' + (i + 1)].options.background = 'linear-gradient(#c2ebeb, #53DCC1)';
+        } else {
+            graph_core.all_html_blocks['sb_img_' + (i + 1)].options.background = `url('./images/stats/0${(i + 1)}.png')`;
+            graph_core.all_html_blocks['sb_progressbar_' + (i + 1)].options.background = 'linear-gradient(#DEE700, #FF2E51)';
+        }
+    }
+
+    graph_core.all_html_blocks['top_block'].recalculate();
+},
     "update_balance": function() {
        
         graph_core.all_html_blocks['gs_sb_bb_text'].options.text = String(game_core.data.money);

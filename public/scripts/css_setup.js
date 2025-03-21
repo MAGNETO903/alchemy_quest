@@ -152,6 +152,12 @@ var set_best_size = function(selector, ratio, size_x, size_y) {
     set_size(selector, width, width / ratio)
 }
 
+var get_best_size = function(ratio, size_x, size_y) {
+    var width = Math.min(size_x, size_y * ratio)
+
+    return {x: width, y: ratio}
+}
+
 var set_size_by_x = function(selector, ratio, size_x) {
     var width = size_x
 
@@ -319,7 +325,15 @@ graph_core.html_blocks["game_viewport"].add_block('ans_block_1', {
     "text_padding_h": 0.7,
     "text_align": "center",
     "onclick": "game_core.next_card(1);",
-    "strict_font_size":20/855
+    "strict_font_size":20/855,
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавность для обычного состояния
+    },
+    "hover_style": {
+        "transform": "scale(1.1)",
+        "transition": "0.3s ease",
+        "filter": "brightness(1.2)"
+    }
 })
 
 graph_core.html_blocks["game_viewport"].add_block('ans_block_2', {
@@ -342,7 +356,15 @@ graph_core.html_blocks["game_viewport"].add_block('ans_block_2', {
     "text_padding_h": 0.7,
     "text_align": "center",
     "onclick": "game_core.next_card(2);",
-    "strict_font_size":20/855
+    "strict_font_size":20/855,
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавность для обычного состояния
+    },
+    "hover_style": {
+        "transform": "scale(1.1)",
+        "transition": "0.3s ease",
+        "filter": "brightness(1.2)"
+    }
 })
 
 
@@ -367,7 +389,14 @@ graph_core.html_blocks["game_viewport"].children['options_block'].add_block('opt
     "is_prop": true,
     "pos_x": 0.2,
     "pos_y": 0.9,
-    "onclick": "graph_core.open_options();"
+    "onclick": "graph_core.open_options();",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавность для обычного состояния
+    },
+    "hover_style": {
+        "transform": "scale(1.3) rotate(180deg)",
+        "filter": "brightness(1.2)"
+    }
 })
 
 graph_core.html_blocks["game_viewport"].add_block('lm_block', {
@@ -390,7 +419,14 @@ graph_core.html_blocks["game_viewport"].children['lm_block'].add_block('lm_btn',
     "is_prop": true,
     "pos_x": 0.9,
     "pos_y": 0.97,
-    "onclick": "graph_core.open_shop();"
+    "onclick": "graph_core.open_shop();",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавность для обычного состояния
+    },
+    "hover_style": {
+        "transform": "scale(1.3)",
+        "filter": "brightness(1.2)"
+    }
 })
 
 graph_core.html_blocks["game_viewport"].add_block('date_block', {
@@ -539,7 +575,14 @@ graph_core.html_blocks['game_options'].children['go_card_block'].children['go_cb
     "is_prop": true,
     "background": "url('./images/for_settings/music_on.png')",
     "pos_x": 95/400,
-    "pos_y": 125/170
+    "pos_y": 125/170,
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
 })
 
 graph_core.html_blocks['game_options'].children['go_card_block'].children['go_cb_item_1'].add_block('go_cb_sound_btn', {
@@ -549,12 +592,19 @@ graph_core.html_blocks['game_options'].children['go_card_block'].children['go_cb
     "is_prop": true,
     "background": "url('./images/for_settings/sound_on.png')",
     "pos_x": 305/400,
-    "pos_y": 125/170
+    "pos_y": 125/170,
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
 })
 
 graph_core.html_blocks['game_options'].children['go_card_block'].children['go_cb_item_2'].add_block('go_cb_i2_text_1', {
-    "ratio_x": 135/400,
-    "ratio_y": 100/180,
+    "ratio_x": 180/400,
+    "ratio_y": 130/180,
     "ratio": 125/30,
     "is_prop": true,
    
@@ -565,8 +615,8 @@ graph_core.html_blocks['game_options'].children['go_card_block'].children['go_cb
 })
 
 graph_core.html_blocks['game_options'].children['go_card_block'].children['go_cb_item_2'].add_block('go_cb_i2_text_2', {
-    "ratio_x": 135/400,
-    "ratio_y": 100/180,
+    "ratio_x": 180/400,
+    "ratio_y": 130/180,
     "ratio": 125/30,
     "is_prop": true,
    
@@ -589,7 +639,14 @@ graph_core.html_blocks['game_options'].children['go_card_block'].children['go_cb
     "text_align": 'center',
     "text_padding_h": 0.7,
     "text_color": STANDARD_TEXT_COLOR,
-    onclick: "graph_core.open_popup('#go_bug_report_popup_back')"
+    onclick: "graph_core.open_popup('#go_bug_report_popup_back')",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
 })
 
 var names = ['Достижения', 'Персонажи', "Концовки"]
@@ -620,7 +677,14 @@ for (var i=0; i < 3; i++) {
         "background": "url('./images/for_settings/"+img_name[i]+"')",
         "pos_x": 0.5*i+(1-i)*0.07,
         "pos_y": 0.8,
-        onclick: "graph_core.open_big_block('"+big_blocks_ids1[i]+"')"
+        onclick: "graph_core.open_big_block('"+big_blocks_ids1[i]+"')",
+        "style": {
+            "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+        },
+        "hover_style": {
+            "transform": "scale(1.1)", // Увеличение и полный оборот
+            "filter": "brightness(1.2)"
+        }
 
     })
 }
@@ -650,7 +714,14 @@ graph_core.html_blocks['game_options'].children['go_card_block'].children['go_cb
     "text_align": 'center',
     "text_padding_h": 0.7,
     "text_color": STANDARD_TEXT_COLOR,
-    onclick: "tech_core.login_to_cloud()"
+    onclick: "tech_core.login_to_cloud()",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
 })
 
 graph_core.html_blocks['game_options'].children['go_card_block'].children['go_cb_item_2'].add_block('go_cb_i2_btn_2_ok', {
@@ -677,7 +748,14 @@ graph_core.html_blocks["game_options"].children['go_back_block'].add_block('go_b
     "is_prop": true,
     "pos_x": 0.2,
     "pos_y": 0.9,
-    "onclick": "graph_core.open_game_viewport();"
+    "onclick": "graph_core.open_game_viewport();",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.3)", // Увеличение и полный оборот
+        "filter": "brightness(1.3)"
+    }
 })
 
 // содержимое нижнего блока
@@ -714,17 +792,21 @@ graph_core.html_blocks['game_options'].add_block('go_bug_report_popup_back', {
     "color": 'rgba(0,0,0,0.7)',
     "pos_x": 0.5,
     "pos_y": 0.5,
+    "style": {
+        "z-index": 2
+    }
 })
 
 graph_core.html_blocks['game_options'].children['go_bug_report_popup_back'].add_block('go_br_popup', {
-    "ratio_x": 426/514,
-    "ratio_y": 506/863,
+    "ratio_x": 500/514,
+    "ratio_y": 600/863,
     "ratio": 764/908,
     //"color": '#f48aff',
     "background": "url('./images/for_shop/for_shop_3.png')",
     "is_prop": true,
     "pos_x": 0.5,
     "pos_y": 0.5,
+    
 })
 
 graph_core.html_blocks['game_options'].children['go_bug_report_popup_back'].children['go_br_popup'].add_block('go_br_popup_close_btn', {
@@ -736,7 +818,15 @@ graph_core.html_blocks['game_options'].children['go_bug_report_popup_back'].chil
     "is_prop": true,
     "pos_x": 0.97,
     "pos_y": 0.11,
-    onclick: "graph_core.close_popup('#go_bug_report_popup_back');"
+    onclick: "graph_core.close_popup('#go_bug_report_popup_back');",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1) rotate(180deg)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
+
 })
 
 graph_core.html_blocks['game_options'].children['go_bug_report_popup_back'].children['go_br_popup'].add_block('go_br_popup_title', {
@@ -777,7 +867,14 @@ graph_core.html_blocks['game_options'].children['go_bug_report_popup_back'].chil
 
     "is_prop": true,
     "pos_x": 0.5,
-    "pos_y": 0.68,    
+    "pos_y": 0.68, 
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }   
 })
 
 
@@ -791,29 +888,23 @@ graph_core.html_blocks['game_options'].children['go_bug_report_popup_back'].chil
     "is_prop": true,
     "pos_x": 0.5,
     "pos_y": 0.92, 
+    "text": "отправить",
     /*
     "text": "Купить",
     "text_color": "#cd883a",
     "text_align": "center",   
     */
-    "onclick": "tech_core.send_report(); graph_core.close_report_popup();"
+    "text_color": STANDARD_TEXT_COLOR,
+    "onclick": "tech_core.send_report(); graph_core.close_report_popup();",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
 })
 
-graph_core.html_blocks['game_options'].children['go_bug_report_popup_back'].children['go_br_popup'].children['go_br_popup_send_btn'].add_block("go_br_p_sb_text", {
-    "ratio_x": 0.6,
-    "ratio_y": 1,
-    //"ratio": 372/82,
-    //"color": '#f48aff',
-    //"background": "url('./images/for_shop/button_off.png')",
-    //"is_prop": true,
-    "pos_x": 0.5,
-    "pos_y": 0.5, 
-    "text": "отправить",
-    "text_color": "#cd883a",
-    "text_align": "center",
-    "text_padding_h": 0.85,
-    
-})
 
 
 
@@ -837,7 +928,8 @@ graph_core.html_blocks["game_shop"].add_block('gs_title_block', {
     "ratio": 554/85,
     "pos_x": 0.5,
     "pos_y": 0.02,
-    "text_padding_h": 0.75,
+    "text_padding_h": 0.9,
+    //"text_pos_y": 0.9,
     "is_prop": true,
     "background": "url('./images/title.png')",
 
@@ -888,7 +980,7 @@ graph_core.html_blocks["game_shop"].children['gs_second_block'].children['gs_sb_
     "ratio_x": 70/189,
     "ratio_y": 70/100,
     "ratio": 1/1,
-    "pos_y": 0.5,
+    "pos_y": 0.8,
     "pos_x": 0.15,
     "is_prop": true,
     "background": "url('./images/coin_little.png')",
@@ -927,8 +1019,8 @@ graph_core.all_html_blocks["gs_card_block_outer"].add_block('gs_card_block', {
 for (var i=0; i < Object.keys(shop_items).length; i++) {
 
     graph_core.all_html_blocks['gs_card_block'].add_block('gs_cb_item_'+(i+1), {
-        "ratio_x": 700/763,
-        "ratio_y": 295/1085,
+        "ratio_x": 800/763,
+        "ratio_y": 400/1085,
         "ratio": 697/290,
         //"color": '#f48aff',
         "background": "url('./images/for_shop/block.png')",
@@ -991,7 +1083,14 @@ for (var i=0; i < Object.keys(shop_items).length; i++) {
         "text_color": "#ffcf13",
         "text_padding_w": 0.75,
         "text_padding_h": 0.8,
-        "onclick": "graph_core.open_shop_popup("+(i+1)+");"
+        "onclick": "graph_core.open_shop_popup("+(i+1)+");",
+        "style": {
+            "transition": "transform 0.3s ease, filter 0.3s ease" // Плавность для обычного состояния
+        },
+        "hover_style": {
+            "transform": "scale(1.1)",
+            "filter": "brightness(1.2)"
+        }
     })
 }
 
@@ -1017,7 +1116,14 @@ graph_core.html_blocks["game_shop"].children['gs_back_block'].add_block('gs_bb_b
     "is_prop": true,
     "pos_x": 0.2,
     "pos_y": 0.9,
-    "onclick": "graph_core.open_game_viewport();"
+    "onclick": "graph_core.open_game_viewport();",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавность для обычного состояния
+    },
+    "hover_style": {
+        "transform": "scale(1.3)",
+        "filter": "brightness(1.2)"
+    }
 })
 
 graph_core.html_blocks["game_shop"].add_block('gs_special_offer_block', {
@@ -1034,7 +1140,14 @@ graph_core.html_blocks["game_shop"].add_block('gs_special_offer_block', {
     "text_padding_w": 0.75,
     "text_padding_h": 0.85,
     "text_align": "center",
-    "onclick": "graph_core.open_special_offers()"
+    "onclick": "graph_core.open_special_offers()",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавность для обычного состояния
+    },
+    "hover_style": {
+        "transform": "scale(1.1)",
+        "filter": "brightness(1.2)"
+    }
 })
 
 graph_core.html_blocks["game_shop"].add_block('gs_reset_shop_btn', {
@@ -1047,7 +1160,14 @@ graph_core.html_blocks["game_shop"].add_block('gs_reset_shop_btn', {
     "pos_y": 0.92,
     "pos_y_mode": "attach_top",
     "pos_y_attach_id": "gs_special_offer_block",
-    "margin_y": -2
+    "margin_y": -2,
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавность для обычного состояния
+    },
+    "hover_style": {
+        "transform": "scale(1.1)",
+        "filter": "brightness(1.2)"
+    }
 })
 
 graph_core.html_blocks["game_shop"].add_block('gs_watch_ad_btn', {
@@ -1061,7 +1181,14 @@ graph_core.html_blocks["game_shop"].add_block('gs_watch_ad_btn', {
     "pos_y_mode": "attach_top",
     "pos_y_attach_id": "gs_reset_shop_btn",
     "margin_y": 0.1,
-    "onclick": "graph_core.open_shop_popup2();"
+    "onclick": "graph_core.open_shop_popup2();",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавность для обычного состояния
+    },
+    "hover_style": {
+        "transform": "scale(1.3)",
+        "filter": "brightness(1.3)"
+    }
 })
 
 
@@ -1080,8 +1207,8 @@ graph_core.html_blocks['game_shop'].add_block('gs_popup_back', {
 })
 
 graph_core.html_blocks['game_shop'].children['gs_popup_back'].add_block('gs_popup', {
-    "ratio_x": 426/514,
-    "ratio_y": 506/863,
+    "ratio_x": 500/514,
+    "ratio_y": 600/863,
     "ratio": 764/908,
     //"color": '#f48aff',
     "background": "url('./images/for_shop/for_shop_3.png')",
@@ -1099,12 +1226,19 @@ graph_core.html_blocks['game_shop'].children['gs_popup_back'].children['gs_popup
     "is_prop": true,
     "pos_x": 0.97,
     "pos_y": 0.11,
-    onclick: "graph_core.close_shop_popup();"
+    onclick: "graph_core.close_shop_popup();",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1) rotate(180deg)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
 })
 
 graph_core.html_blocks['game_shop'].children['gs_popup_back'].children['gs_popup'].add_block('gs_popup_title', {
     "ratio_x": 350/426,
-    "ratio_y": 40/506,
+    "ratio_y": 60/506,
     "ratio": 1/1,
     //"color": '#f48aff',
     //"is_prop": true,
@@ -1118,7 +1252,7 @@ graph_core.html_blocks['game_shop'].children['gs_popup_back'].children['gs_popup
 
 graph_core.html_blocks['game_shop'].children['gs_popup_back'].children['gs_popup'].add_block('gs_popup_desk', {
     "ratio_x": 360/426,
-    "ratio_y": 100/506,
+    "ratio_y": 150/506,
     //"ratio": 1/1,
     //"color": '#f48aff',
     //"is_prop": true,
@@ -1152,14 +1286,15 @@ graph_core.html_blocks['game_shop'].children['gs_popup_back'].children['gs_popup
 })
 
 graph_core.html_blocks['game_shop'].children['gs_popup_back'].children['gs_popup'].add_block('gs_popup_item_title', {
-    "ratio_x": 170/426,
-    "ratio_y": 30/506,
+    "ratio_x": 190/426,
+    "ratio_y": 80/506,
     "ratio": 170/30,
     //"color": '#f48aff',
     //"background": "url('./images/for_shop/for_buying.png')",
     "is_prop": true,
     "pos_x": 0.5,
     "pos_y": 0.83, 
+    "text_padding_h": 1,
     "text": "Волшебная клюква",
     "text_color": "#cd883a",
     "text_align": "center",   
@@ -1174,6 +1309,17 @@ graph_core.html_blocks['game_shop'].children['gs_popup_back'].children['gs_popup
     "is_prop": true,
     "pos_x": 0.5,
     "pos_y": 0.92, 
+    "text": "{coin} 10",
+    "text_color": "#cd883a",
+    "text_align": "center",
+    "onclick": "tech_core.buy_item();",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
     /*
     "text": "Купить",
     "text_color": "#cd883a",
@@ -1181,21 +1327,7 @@ graph_core.html_blocks['game_shop'].children['gs_popup_back'].children['gs_popup
     */
 })
 
-graph_core.html_blocks['game_shop'].children['gs_popup_back'].children['gs_popup'].children['gs_popup_buy_btn'].add_block("gs_p_bb_text", {
-    "ratio_x": 0.6,
-    "ratio_y": 1,
-    //"ratio": 372/82,
-    //"color": '#f48aff',
-    //"background": "url('./images/for_shop/button_off.png')",
-    //"is_prop": true,
-    "pos_x": 0.5,
-    "pos_y": 0.5, 
-    "text": "{coin} 10",
-    "text_color": "#cd883a",
-    "text_align": "center",
-    "text_padding_h": 0.85,
-    "onclick": "tech_core.buy_item();"
-})
+
 
 
 
@@ -1213,8 +1345,8 @@ graph_core.html_blocks['game_shop'].add_block('gs_popup2_back', {
 })
 
 graph_core.html_blocks['game_shop'].children['gs_popup2_back'].add_block('gs_popup2', {
-    "ratio_x": 426/514,
-    "ratio_y": 506/863,
+    "ratio_x": 500/514,
+    "ratio_y": 600/863,
     "ratio": 764/908,
     //"color": '#f48aff',
     "background": "url('./images/for_shop/for_shop_3.png')",
@@ -1232,12 +1364,19 @@ graph_core.html_blocks['game_shop'].children['gs_popup2_back'].children['gs_popu
     "is_prop": true,
     "pos_x": 0.97,
     "pos_y": 0.11,
-    onclick: "graph_core.close_shop_popup2();"
+    onclick: "graph_core.close_shop_popup2();",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1) rotate(180deg)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
 })
 
 graph_core.html_blocks['game_shop'].children['gs_popup2_back'].children['gs_popup2'].add_block('gs_popup2_title', {
     "ratio_x": 350/426,
-    "ratio_y": 40/506,
+    "ratio_y": 60/506,
     "ratio": 1/1,
     //"color": '#f48aff',
     //"is_prop": true,
@@ -1255,6 +1394,8 @@ graph_core.html_blocks['game_shop'].children['gs_popup2_back'].children['gs_popu
     //"ratio": 1/1,
     //"color": '#f48aff',
     //"is_prop": true,
+    "text_padding_h": 1,
+    "text_padding_w": 1,
     "pos_x": 0.5,
     "pos_y": 0.3,
     "text": "Посмотрите рекламу и получите бесплатные бонусные монеты!",
@@ -1274,8 +1415,8 @@ graph_core.html_blocks['game_shop'].children['gs_popup2_back'].children['gs_popu
 })
 
 graph_core.html_blocks['game_shop'].children['gs_popup2_back'].children['gs_popup2'].add_block('gs_popup2_item_title', {
-    "ratio_x": 170/426,
-    "ratio_y": 30/506,
+    "ratio_x": 250/426,
+    "ratio_y": 80/506,
     "ratio": 170/30,
     //"color": '#f48aff',
     //"background": "url('./images/for_shop/for_buying.png')",
@@ -1301,7 +1442,14 @@ graph_core.html_blocks['game_shop'].children['gs_popup2_back'].children['gs_popu
     "text_color": "#cd883a",
     "text_align": "center",   
     "text_padding_h": 0.8,
-    onclick: "game_core.get_free_money()"
+    onclick: "game_core.get_free_money()",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
 })
 
 
@@ -1478,6 +1626,107 @@ graph_core.html_blocks["game_special_offers"].children['gso_second_block'].child
     "text_color": "#e8cd66",
 })
 
+graph_core.html_blocks["game_special_offers"].add_block('gso_card_block_outer', {
+    "ratio_x": 860/935,
+    "ratio_y": 1000/1540,
+    "ratio": 764/1083,
+    "pos_x": 0.5,
+    "pos_y": 0.45,
+    "is_prop": true,
+    "background": "url('./images/for_shop/card.png')",
+})
+
+graph_core.all_html_blocks["gso_card_block_outer"].add_block('gso_card_block', {
+    "ratio_x": 0.95,
+    "ratio_y": 0.9,
+    "pos_x": 0.5,
+    "pos_y": 0.5,
+})
+
+
+for (var i=0; i < Object.keys(special_shop_items).length; i++) {
+
+    graph_core.all_html_blocks['gso_card_block'].add_block('gso_cb_item_'+(i+1), {
+        "ratio_x": 800/763,
+        "ratio_y": 400/1085,
+        "ratio": 697/290,
+        //"color": '#f48aff',
+        "background": "url('./images/for_shop/block.png')",
+        "is_prop": true,
+        "pos_x": 0.5,
+        "pos_y": 0.06 + i*0.435,
+        "table_cell_num": i,
+        "table_margin_y": 1.15
+    })
+
+    graph_core.all_html_blocks['gso_card_block'].children['gso_cb_item_'+(i+1)].add_block('gso_cb_i'+(i+1)+'_pic', {
+        "ratio_x": 200/700,
+        "ratio_y": 200/295,
+        "ratio": 1/1,
+        //"color": '#f48aff',
+        "background": "url('"+special_shop_items[i+1].icon_src+"')",
+        "is_prop": true,
+        "pos_x": 0.03,
+        "pos_y": 0.5
+    })
+
+    graph_core.all_html_blocks['gso_card_block'].children['gso_cb_item_'+(i+1)].add_block('gso_cb_i'+(i+1)+'_title', {
+        "ratio_x": 500/700,
+        "ratio_y": 75/295,
+        "ratio": 500/75,
+        //"color": '#f48aff',
+        //"background": "url('./images/for_shop/unicorn_1.png')",
+        "is_prop": true,
+        "pos_x": 0.9,
+        "pos_y": 0.05,
+        "text": special_shop_items[i+1].title[graph_core.lang],
+        "text_color": "#ffcf13",
+        "text_align": "center",
+        "font_size": 0.3,
+    })
+
+    graph_core.all_html_blocks['gso_card_block'].children['gso_cb_item_'+(i+1)].add_block('gso_cb_i'+(i+1)+'_desk', {
+        "ratio_x": 400/700,
+        "ratio_y": 100/295,
+        "ratio": 400/100,
+        //"color": '#f48aff',
+        //"background": "url('./images/for_shop/unicorn_1.png')",
+        "is_prop": true,
+        "pos_x": 0.85,
+        "pos_y": 0.45,
+        "text_align": "right",
+        "text":  special_shop_items[i+1].description[graph_core.lang],
+        "text_color": "#fa8f1d",
+    })
+
+    graph_core.all_html_blocks['gso_card_block'].children['gso_cb_item_'+(i+1)].add_block('gso_cb_i'+(i+1)+'_buy_btn', {
+        "ratio_x": 360/700,
+        "ratio_y": 80/295,
+        "ratio": 372/82,
+        //"color": '#f48aff',
+        "background": "url('./images/for_shop/button_off.png')",
+        "is_prop": true,
+        "pos_x": 0.85,
+        "pos_y": 0.95,
+        "text_align": "center",
+        "text": "Купить",
+        "text_color": "#ffcf13",
+        "text_padding_w": 0.75,
+        "text_padding_h": 0.8,
+        "onclick": "graph_core.open_shop_popup2("+(i+1)+");",
+        "style": {
+            "transition": "transform 0.3s ease, filter 0.3s ease" // Плавность для обычного состояния
+        },
+        "hover_style": {
+            "transform": "scale(1.1)",
+            "filter": "brightness(1.2)"
+        }
+    })
+}
+
+
+/*
+
 graph_core.html_blocks["game_special_offers"].add_block('gso_cb_img', {
     "ratio_x": 370/535,
     "ratio_y": 260/890,
@@ -1529,28 +1778,6 @@ graph_core.html_blocks["game_special_offers"].children['gso_card_block'].add_blo
 })
 
 
-graph_core.html_blocks["game_special_offers"].add_block('gso_back_block', {
-    "ratio_x": 110/535,
-    "ratio_y": 210/890,
-    "ratio": 206/370,
-    "color": '#f48aff',
-    "background": "url('./images/clock.png')",
-    "is_prop": true,
-    "pos_x": 0,
-    "pos_y": 1
-})
-
-graph_core.all_html_blocks['gso_back_block'].add_block('gso_bb_back_button', {
-    "ratio_x": 1,
-    "ratio_y": 0.25,
-    "ratio": 63/105,
-    "color": '#f48aff',
-    "background": "url('./images/for_shop/back.png')",
-    "is_prop": true,
-    "pos_x": 0.2,
-    "pos_y": 0.9,
-    "onclick": "graph_core.open_big_block('#game_shop');"
-})
 
 graph_core.html_blocks['game_special_offers'].add_block('gsi_cb_buy_btn', {
     "ratio_x": 250/494,
@@ -1567,21 +1794,6 @@ graph_core.html_blocks['game_special_offers'].add_block('gsi_cb_buy_btn', {
     "text_padding_w": 0.75,
     "text_padding_h": 0.7,
     "onclick": "graph_core.open_special_shop_popup("+i+");"
-})
-
-graph_core.html_blocks['game_special_offers'].add_block('gso_promocode_btn', {
-    "ratio_x": 220/500,
-    "ratio_y": 60/830,
-    "ratio": 314/99,
-    "is_prop": true,
-    background: "url('./images/for_settings/long_red.png')",
-    "pos_x": 0.95,
-    "pos_y": 0.98,
-    "text": "Ввести промокод",
-    "text_align": 'center',
-    "text_padding_h": 0.9,
-    "text_color": STANDARD_TEXT_COLOR,
-    onclick: "graph_core.open_popup('#gso_promocode_popup_back');"
 })
 
 // кнопки переключения 
@@ -1609,6 +1821,66 @@ graph_core.all_html_blocks['game_special_offers'].add_block('gso_right_button', 
     "onclick": "graph_core.open_big_block('#game_shop');"
 })
 
+*/
+
+
+graph_core.html_blocks["game_special_offers"].add_block('gso_back_block', {
+    "ratio_x": 110/535,
+    "ratio_y": 210/890,
+    "ratio": 206/370,
+    "color": '#f48aff',
+    "background": "url('./images/clock.png')",
+    "is_prop": true,
+    "pos_x": 0,
+    "pos_y": 1
+})
+
+graph_core.all_html_blocks['gso_back_block'].add_block('gso_bb_back_button', {
+    "ratio_x": 1,
+    "ratio_y": 0.25,
+    "ratio": 63/105,
+    "color": '#f48aff',
+    "background": "url('./images/for_shop/back.png')",
+    "is_prop": true,
+    "pos_x": 0.2,
+    "pos_y": 0.9,
+    "onclick": "graph_core.open_big_block('#game_shop');",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.3) ", // Увеличение и полный оборот
+        "filter": "brightness(1.3)"
+    }
+})
+
+
+
+graph_core.html_blocks['game_special_offers'].add_block('gso_promocode_btn', {
+    "ratio_x": 220/500,
+    "ratio_y": 60/830,
+    "ratio": 314/99,
+    "is_prop": true,
+    background: "url('./images/for_settings/long_red.png')",
+    "pos_x": 0.95,
+    "pos_y": 0.98,
+    "text": "Ввести промокод",
+    "text_align": 'center',
+    "text_padding_h": 0.9,
+    "text_color": STANDARD_TEXT_COLOR,
+    onclick: "graph_core.open_popup('#gso_promocode_popup_back');",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
+})
+
+
+
+
 // ВСПЛЫВАЮЩИЙ БЛОК ДЛЯ ВВОДА ПРОМОКОДА
 graph_core.html_blocks['game_special_offers'].add_block('gso_promocode_popup_back', {
     "ratio_x": 1,
@@ -1619,8 +1891,8 @@ graph_core.html_blocks['game_special_offers'].add_block('gso_promocode_popup_bac
 })
 
 graph_core.all_html_blocks['gso_promocode_popup_back'].add_block('gso_p_popup', {
-    "ratio_x": 426/514,
-    "ratio_y": 506/863,
+    "ratio_x": 1,
+    "ratio_y": 600/863,
     "ratio": 764/908,
     //"color": '#f48aff',
     "background": "url('./images/for_shop/for_shop_3.png')",
@@ -1638,12 +1910,20 @@ graph_core.all_html_blocks['gso_p_popup'].add_block('gso_p_popup_close_btn', {
     "is_prop": true,
     "pos_x": 0.97,
     "pos_y": 0.11,
-    onclick: "graph_core.close_popup('#gso_promocode_popup_back');"
+    onclick: "graph_core.close_popup('#gso_promocode_popup_back');",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease", // Плавный переход
+        "z-index": 2
+    },
+    "hover_style": {
+        "transform": "scale(1.1) rotate(180deg)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
 })
 
 graph_core.all_html_blocks['gso_p_popup'].add_block('gso_p_popup_title', {
-    "ratio_x": 350/426,
-    "ratio_y": 40/506,
+    "ratio_x": 420/426,
+    "ratio_y": 60/506,
     "ratio": 1/1,
     //"color": '#f48aff',
     //"is_prop": true,
@@ -1676,7 +1956,9 @@ graph_core.all_html_blocks['gso_p_popup'].add_block('gso_p_popup_textarea', {
     //"color": '#f48aff',
     //"background": "url('./images/for_shop/for_buying.png')",
     "background": "linear-gradient(#2c1d2e, #3d0b26)",
-
+    style: {
+        "color": STANDARD_TEXT_COLOR
+    },
     "is_prop": true,
     "pos_x": 0.5,
     "pos_y": 0.68,    
@@ -1693,29 +1975,22 @@ graph_core.all_html_blocks['gso_p_popup'].add_block('gso_p_popup_send_btn', {
     "is_prop": true,
     "pos_x": 0.5,
     "pos_y": 0.92, 
-    /*
-    "text": "Купить",
-    "text_color": "#cd883a",
+    
+    "text": "Отправить",
+    "text_color": STANDARD_TEXT_COLOR,
     "text_align": "center",   
-    */
-    "onclick": "tech_core.send_promocode(); graph_core.close_popup('#gso_promocode_popup_back')"
+    
+    "onclick": "tech_core.send_promocode(); graph_core.close_popup('#gso_promocode_popup_back')",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
 })
 
-graph_core.all_html_blocks['gso_p_popup_send_btn'].add_block("gso_p_p_sb_text", {
-    "ratio_x": 0.6,
-    "ratio_y": 1,
-    //"ratio": 372/82,
-    //"color": '#f48aff',
-    //"background": "url('./images/for_shop/button_off.png')",
-    //"is_prop": true,
-    "pos_x": 0.5,
-    "pos_y": 0.5, 
-    "text": "отправить",
-    "text_color": "#cd883a",
-    "text_align": "center",
-    "text_padding_h": 0.85,
-    
-})
+
 
 
 // ВСПЛЫВАЮЩИЙ БЛОК - РЕКАЦИЯ НА ВВОД ПРОМОКОДА
@@ -1806,11 +2081,14 @@ graph_core.html_blocks['game_special_offers'].add_block('gso_popup_back', {
     "color": 'rgba(0,0,0,0.7)',
     "pos_x": 0.5,
     "pos_y": 0.5,
+    "style": {
+        "z-index": 2
+    }
 })
 
 graph_core.all_html_blocks['gso_popup_back'].add_block('gso_popup', {
-    "ratio_x": 426/514,
-    "ratio_y": 506/863,
+    "ratio_x": 500/514,
+    "ratio_y": 600/863,
     "ratio": 764/908,
     //"color": '#f48aff',
     "background": "url('./images/for_shop/for_shop_3.png')",
@@ -1828,12 +2106,19 @@ graph_core.all_html_blocks['gso_popup'].add_block('gso_popup_close_btn', {
     "is_prop": true,
     "pos_x": 0.97,
     "pos_y": 0.11,
-    "onclick": "graph_core.close_all_popups();"
+    "onclick": "graph_core.close_all_popups();",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1) rotate(180deg)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
 })
 
 graph_core.all_html_blocks['gso_popup'].add_block('gso_popup_title', {
     "ratio_x": 350/426,
-    "ratio_y": 40/506,
+    "ratio_y": 60/506,
     "ratio": 1/1,
     //"color": '#f48aff',
     //"is_prop": true,
@@ -1846,8 +2131,8 @@ graph_core.all_html_blocks['gso_popup'].add_block('gso_popup_title', {
 
 
 graph_core.all_html_blocks['gso_popup'].add_block('gso_popup_desk', {
-    "ratio_x": 360/426,
-    "ratio_y": 100/506,
+    "ratio_x": 340/426,
+    "ratio_y": 130/506,
     //"ratio": 1/1,
     //"color": '#f48aff',
     //"is_prop": true,
@@ -1881,8 +2166,8 @@ graph_core.all_html_blocks['gso_popup_slot'].add_block('gso_p_s_img', {
 })
 
 graph_core.all_html_blocks['gso_popup'].add_block('gso_popup_item_title', {
-    "ratio_x": 170/426,
-    "ratio_y": 30/506,
+    "ratio_x": 190/426,
+    "ratio_y": 80/506,
     "ratio": 170/30,
     //"color": '#f48aff',
     //"background": "url('./images/for_shop/for_buying.png')",
@@ -1891,7 +2176,7 @@ graph_core.all_html_blocks['gso_popup'].add_block('gso_popup_item_title', {
     "pos_y": 0.83, 
     "text": "Волшебная клюква",
     "text_color": "#cd883a",
-    "text_align": "center",   
+    "text_align": "center",                         
 })
 
 graph_core.all_html_blocks['gso_popup'].add_block('gso_popup_buy_btn', {
@@ -1908,7 +2193,14 @@ graph_core.all_html_blocks['gso_popup'].add_block('gso_popup_buy_btn', {
     "text_color": "#cd883a",
     "text_align": "center",   
     */
-    onclick: "tech_core.make_purchase(1);"
+    onclick: "tech_core.make_purchase(1);",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
 })
 
 graph_core.all_html_blocks['gso_popup_buy_btn'].add_block("gso_p_bb_text", {
@@ -1926,6 +2218,158 @@ graph_core.all_html_blocks['gso_popup_buy_btn'].add_block("gso_p_bb_text", {
     "text_padding_h": 0.85,
     
 })
+
+
+
+
+
+graph_core.html_blocks['game_shop'].add_block('go_gso_popup_back', {
+    "ratio_x": 1,
+    "ratio_y": 1,
+    "color": 'rgba(0,0,0,0.7)',
+    "pos_x": 0.5,
+    "pos_y": 0.5,
+    "style": {
+        "z-index": 2
+    }
+})
+
+graph_core.all_html_blocks['go_gso_popup_back'].add_block('go_gso_popup', {
+    "ratio_x": 500/514,
+    "ratio_y": 600/863,
+    "ratio": 764/908,
+    //"color": '#f48aff',
+    "background": "url('./images/for_shop/for_shop_3.png')",
+    "is_prop": true,
+    "pos_x": 0.5,
+    "pos_y": 0.5,
+})
+
+graph_core.all_html_blocks['go_gso_popup'].add_block('go_gso_popup_close_btn', {
+    "ratio_x": 30/426,
+    "ratio_y": 30/506,
+    "ratio": 1/1,
+    //"color": '#f48aff',
+    "background": "url('./images/exit.png')",
+    "is_prop": true,
+    "pos_x": 0.97,
+    "pos_y": 0.11,
+    "onclick": "graph_core.close_all_popups();",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1) rotate(180deg)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
+})
+
+graph_core.all_html_blocks['go_gso_popup'].add_block('go_gso_popup_title', {
+    "ratio_x": 350/426,
+    "ratio_y": 60/506,
+    "ratio": 1/1,
+    //"color": '#f48aff',
+    //"is_prop": true,
+    "pos_x": 0.5,
+    "pos_y": 0.15,
+    "text": "Волшебная клюква",
+    "text_color": "#ecc868",
+    "text_align": "center",
+})
+
+
+graph_core.all_html_blocks['go_gso_popup'].add_block('go_gso_popup_desk', {
+    "ratio_x": 340/426,
+    "ratio_y": 130/506,
+    //"ratio": 1/1,
+    //"color": '#f48aff',
+    //"is_prop": true,
+    "pos_x": 0.5,
+    "pos_y": 0.3,
+    "text": "Произрастает в отдалённых областях Зачарованного Леса. Дарует исцеление в случае телесных недугов &#214;",
+    "text_color": "#cd883a",
+    "text_align": "center",
+})
+
+graph_core.all_html_blocks['go_gso_popup'].add_block('go_gso_popup_slot', {
+    "ratio_x": 160/426,
+    "ratio_y": 160/506,
+    "ratio": 290/288,
+    //"color": '#f48aff',
+    "background": "url('./images/for_shop/for_buying.png')",
+    "is_prop": true,
+    "pos_x": 0.5,
+    "pos_y": 0.68,    
+})
+
+graph_core.all_html_blocks['go_gso_popup_slot'].add_block('go_gso_p_s_img', {
+    "ratio_x": 1,
+    "ratio_y": 1,
+    "ratio": 1/1,
+    //"color": '#f48aff',
+    "background": "url('./images/for_shop/unicorn_1.png')",
+    "is_prop": true,
+    "pos_x": 0.5,
+    "pos_y": 0.5,    
+})
+
+graph_core.all_html_blocks['go_gso_popup'].add_block('go_gso_popup_item_title', {
+    "ratio_x": 190/426,
+    "ratio_y": 80/506,
+    "ratio": 170/30,
+    //"color": '#f48aff',
+    //"background": "url('./images/for_shop/for_buying.png')",
+    "is_prop": true,
+    "pos_x": 0.5,
+    "pos_y": 0.83, 
+    "text": "Волшебная клюква",
+    "text_color": "#cd883a",
+    "text_align": "center",                         
+})
+
+graph_core.all_html_blocks['go_gso_popup'].add_block('go_gso_popup_buy_btn', {
+    "ratio_x": 200/426,
+    "ratio_y": 40/506,
+    "ratio": 372/82,
+    //"color": '#f48aff',
+    "background": "url('./images/for_shop/button_off.png')",
+    "is_prop": true,
+    "pos_x": 0.5,
+    "pos_y": 0.92, 
+    /*
+    "text": "Купить",
+    "text_color": "#cd883a",
+    "text_align": "center",   
+    */
+    onclick: "tech_core.make_purchase(1);",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
+})
+
+graph_core.all_html_blocks['go_gso_popup_buy_btn'].add_block("go_gso_p_bb_text", {
+    "ratio_x": 0.6,
+    "ratio_y": 1,
+    //"ratio": 372/82,
+    //"color": '#f48aff',
+    //"background": "url('./images/for_shop/button_off.png')",
+    //"is_prop": true,
+    "pos_x": 0.5,
+    "pos_y": 0.5, 
+    "text": "{yan} 1",
+    "text_color": "#cd883a",
+    "text_align": "center",
+    "text_padding_h": 0.85,
+    
+})
+
+
+
+
 
 
 
@@ -1957,7 +2401,8 @@ graph_core.html_blocks["game_achievements"].add_block('ga_back_block', {
     "background": "url('./images/clock.png')",
     "is_prop": true,
     "pos_x": 0,
-    "pos_y": 1
+    "pos_y": 1,
+   
 })
 
 graph_core.html_blocks["game_achievements"].children['ga_back_block'].add_block('ga_bb_back_button', {
@@ -1969,7 +2414,14 @@ graph_core.html_blocks["game_achievements"].children['ga_back_block'].add_block(
     "is_prop": true,
     "pos_x": 0.2,
     "pos_y": 0.9,
-    "onclick": "graph_core.open_big_block('#game_options');"
+    "onclick": "graph_core.open_big_block('#game_options');",
+     "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.3)", // Увеличение и полный оборот
+        "filter": "brightness(1.3)"
+    }
 })
 
 // сам список ачивок
@@ -2091,7 +2543,7 @@ graph_core.all_html_blocks['ga_bottom_block'].add_block('ga_bb_title', {
 
 graph_core.all_html_blocks['ga_bottom_block'].add_block('ga_bb_text', {
     "ratio_x": 0.9,
-    "ratio_y": 0.7,
+    "ratio_y": 0.8,
     "ratio": 2,
     "pos_x": 0.5,
     "pos_y": 0.95,
@@ -2215,7 +2667,14 @@ graph_core.html_blocks["game_characters"].children['gch_back_block'].add_block('
     "is_prop": true,
     "pos_x": 0.2,
     "pos_y": 0.9,
-    "onclick": "graph_core.open_big_block('#game_options');"
+    "onclick": "graph_core.open_big_block('#game_options');",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.3)", // Увеличение и полный оборот
+        "filter": "brightness(1.3)"
+    }
 })
 
 
@@ -2333,7 +2792,14 @@ graph_core.html_blocks["game_endings"].children['ge_back_block'].add_block('ge_b
     "is_prop": true,
     "pos_x": 0.2,
     "pos_y": 0.9,
-    "onclick": "graph_core.open_big_block('#game_options');"
+    "onclick": "graph_core.open_big_block('#game_options');",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.3)", // Увеличение и полный оборот
+        "filter": "brightness(1.3)"
+    }
 })
 
 
@@ -2491,10 +2957,6 @@ var setup_game_viewport = function(winW, winH, profile) {
     if (profile == 2) {
         // настройки: делаем нижний блок выше
         //graph_core.all_html_blocks['go_bottom_block'].options.y_ratio = 1000/1540 * 0.4
-         graph_core.all_html_blocks['go_bottom_block'].options.ratio = 1.5
-         $('#go_bb_title').css('display', 'none');
-         graph_core.all_html_blocks['go_bb_text'].options.ratio_y = 0.95;
-         graph_core.all_html_blocks['go_bb_text'].options.ratio_x = 0.95;
 
          // блок достижений
          graph_core.all_html_blocks['ga_bottom_block'].options.ratio = 1.5
@@ -2523,16 +2985,767 @@ var setup_game_viewport = function(winW, winH, profile) {
          // блок достижений
          graph_core.all_html_blocks['ga_bottom_block'].options.ratio = 3
          $('#ga_bb_title').css('display', 'block');
-         graph_core.all_html_blocks['ga_bb_text'].options.ratio_y = 0.7;
-         graph_core.all_html_blocks['ga_bb_text'].options.ratio_x = 0.9;
-
+         
 
         // возвращаем на середину кнопки для переключения товаров их раздела особых предложений
-        graph_core.all_html_blocks['gso_left_button'].options.pos_y = 0.5;
-        graph_core.all_html_blocks['gso_right_button'].options.pos_y = 0.5;
+        //graph_core.all_html_blocks['gso_left_button'].options.pos_y = 0.5;
+        //graph_core.all_html_blocks['gso_right_button'].options.pos_y = 0.5;
 
         // кнопка купить
-        graph_core.all_html_blocks['gsi_cb_buy_btn'].options.pos_y = 0.86
+        //graph_core.all_html_blocks['gsi_cb_buy_btn'].options.pos_y = 0.86
+
+
+
+
+
+
+
+
+
+
+        // ЗДЕСЬ БУДЕМ ЖЁСТКО ПЕРЕКРАИВАТЬ ИНТЕРФЕЙС
+
+        graph_core.all_html_blocks['ans_block_1'].options = {
+            "ratio_x": 240/535,
+            "ratio_y": 85/890,
+            "ratio": 401/161,
+            "is_prop": true,
+            "background": "url('./images/right_btn_new.png')",
+            "color": '#f48aff',
+            "pos_x_mode": "attach_left_left",
+            "pos_x_attach_id": "card_block",
+            "margin_x": -1.1,
+            "margin_y": 0.1,
+            "pos_x": 0.1,
+            "pos_y": 0.7,
+            "text_color": "#e8cd66",
+            "text_padding_w": 0.75,
+            "text_padding_h": 0.7,
+            "text_align": "center",
+            "onclick": "game_core.next_card(1);",
+            "strict_font_size": 20/855,
+            "hover_style": {
+                "transform": "scale(1.1)",
+                "transition": "0.3s ease",
+                "filter": "brightness(1.2)"
+            }
+        };
+
+
+        graph_core.all_html_blocks['ans_block_2'].options = {
+            "ratio_x": 240/535,
+            "ratio_y": 85/890,
+            "ratio": 401/161,
+            "is_prop": true,
+            "background": "url('./images/left_btn_new.png')",
+            
+            "pos_x_mode": "attach_right",
+            "pos_x_attach_id": "card_block",
+            "margin_x": 1.1,
+            "margin_y": 0.1,
+            "pos_x": 1.5,
+            "pos_y": 0.7,
+            //"text": "Прости, но я не знаю что со мной",
+            "text_color": "#e8cd66",
+            "text_padding_w": 0.75,
+            "text_padding_h": 0.7,
+            "text_align": "center",
+            "onclick": "game_core.next_card(2);",
+            "strict_font_size":20/855
+            }
+
+        graph_core.all_html_blocks['card_description'].options = {
+            "ratio_x": 320/380,
+            "ratio_y": 150/512,
+            "is_prop": true,
+            "ratio": 320/100,
+            "pos_y": 0.90,
+            "pos_x": 0.5,
+            "text_padding_h": 1,
+            //"text": "Мне не нравится, что в нашем городе так много сплетников.",
+            "text_color": "#e8cd66",
+            "text_align": "center",
+            "strict_font_size":40/855
+        }
+
+        graph_core.all_html_blocks['card_block'].options =  {
+            "ratio_x": 450/480,
+            "ratio_y": 580/800,
+            "ratio": 764/979,
+            "is_prop": true,
+            "background": "url('./images/base_4.png')",
+            "color": '#e683f6',
+            "pos_x": 0.5,
+            "pos_y": 0.5
+        }
+
+        // Добавляем стили для анимации
+var style = document.createElement('style');
+style.innerHTML = `
+    @keyframes flashGreen {
+        0% { background: linear-gradient(#00FF00, #00AA00); }
+        100% { background: linear-gradient(#DEE700, #FF2E51); }
+    }
+
+    @keyframes flashRed {
+        0% { background: linear-gradient(#FF0000, #AA0000); }
+        100% { background: linear-gradient(#DEE700, #FF2E51); }
+    }
+
+    .flash-green {
+        animation: flashGreen 0.5s ease-in-out;
+    }
+
+    .flash-red {
+        animation: flashRed 0.5s ease-in-out;
+    }
+`;
+document.head.appendChild(style);
+        
+
+        // МАГАЗ
+
+        graph_core.all_html_blocks['gs_title_block'].options = {
+    "ratio_x": 650/930,
+    "ratio_y": 200/2625,
+    "ratio": 554/85,
+    "pos_x": 0.02,
+    "pos_y": 0.02,
+    "text_padding_h": 0.9,
+    //"text_pos_y": 0.9,
+    "is_prop": true,
+    "background": "url('./images/title.png')",
+
+
+    "text": "Магазин",
+    "text_color": "#ffcf13",
+    "text_align": "center"
+
+}
+
+graph_core.all_html_blocks['gs_second_block'].options = {
+    "ratio_x": 762/935,
+    "ratio_y": 100/1540,
+    "ratio": 762/100,
+    "pos_x": 0.95,
+    "pos_y": 0.02,
+    "is_prop": true,
+    //"background": "red",
+}
+
+graph_core.all_html_blocks['gs_sb_balance_block'].options = {
+    "ratio_x": (762-442)/762,
+    "ratio_y": 1.0,
+    "ratio": 250/99,
+    "pos_y": 0.0,
+    "is_prop": true,
+
+    "background": "url('./images/for_shop/but_blue.png')",
+    "pos_x_mode": "v2_attach_left",
+    "pos_x_attach_id": "gs_sb_text",
+    "margin_x": 0.4,
+}
+
+graph_core.all_html_blocks['gs_sb_bb_text'].options = {
+    "ratio_x": 100/189,
+    "ratio_y": 90/100,
+    //"ratio": 1/1,
+    "pos_y": 0.95,
+    "pos_x": 0.95,
+    //"is_prop": true,
+    "text": "123",
+    "text_color": "#e8cd66",
+}
+
+graph_core.all_html_blocks['gs_card_block_outer'].options = {
+    "ratio_x": 780/935,
+    "ratio_y": 1000/1540,
+    "ratio": (764*2)/1083,
+    "pos_x": 0.5,
+    "pos_y": 0.45,
+    //"is_prop": true,
+    "background": "url('./images/for_shop/card.png') 100%",
+    "style": {
+        "background-size": "50%",
+        "border-radius": "40px 40px"
+    }
+}
+
+cols = 3
+margin = 0.02
+
+shop_margins = {
+    "2": 0,
+    "3": -0.1, 
+    "4": -0.6
+}
+
+
+
+
+for (var i=0; i < Object.keys(shop_items).length; i++) {
+    block_w = (1 - margin*(cols+1)) / cols 
+    graph_core.all_html_blocks['gs_cb_item_'+(i+1)].options.table_cell_num = i
+    graph_core.all_html_blocks['gs_cb_item_'+(i+1)].options.table_margin_y = 1.15
+
+
+    graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_pic'].options = {
+        "ratio_x": 200/700,
+        "ratio_y": 200/295,
+        "ratio": 1/1,
+        //"color": '#f48aff',
+        "background": "url('"+shop_items[i+1].icon_src+"')",
+        "is_prop": true,
+        "pos_x": 0.03,
+        "pos_y": 0.5
+    }
+
+    /*
+    graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_title'].options = {
+        "ratio_x": 500/700,
+        "ratio_y": 75/295,
+        "ratio": 500/75,
+        //"color": '#f48aff',
+        //"background": "url('./images/for_shop/unicorn_1.png')",
+        "is_prop": true,
+        "pos_x": 0.9,
+        "pos_y": 0.05,
+        "text": shop_items[i+1].title[graph_core.lang],
+        "text_color": "#ffcf13",
+        "text_align": "center",
+        "font_size": 0.3,
+    }
+
+    graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_desk'].options = {
+        "ratio_x": 400/700,
+        "ratio_y": 100/295,
+        "ratio": 400/100,
+        //"color": '#f48aff',
+        //"background": "url('./images/for_shop/unicorn_1.png')",
+        "is_prop": true,
+        "pos_x": 0.85,
+        "pos_y": 0.45,
+        "text_align": "right",
+        "text":  shop_items[i+1].description[graph_core.lang],
+        "text_color": "#fa8f1d",
+    }
+
+    graph_core.all_html_blocks['gs_cb_i'+(i+1)+'_buy_btn'].options = {
+        "ratio_x": 360/700,
+        "ratio_y": 80/295,
+        "ratio": 372/82,
+        //"color": '#f48aff',
+        "background": "url('./images/for_shop/button_off.png')",
+        "is_prop": true,
+        "pos_x": 0.85,
+        "pos_y": 0.95,
+        "text_align": "center",
+        "text": "Купить",
+        "text_color": "#ffcf13",
+        "text_padding_w": 0.75,
+        "text_padding_h": 0.8,
+        "onclick": "graph_core.open_shop_popup("+(i+1)+");",
+        "style": {
+            "transition": "transform 0.3s ease, filter 0.3s ease" // Плавность для обычного состояния
+        },
+        "hover_style": {
+            "transform": "scale(1.1)",
+            "filter": "brightness(1.2)"
+        }
+    }
+    */
+}
+
+
+// НАСТРОЙКИ
+// центральная карточка
+graph_core.all_html_blocks['go_card_block'].options = {
+    "ratio_x": 860/935,
+    "ratio_y": 1000/1540,
+    "ratio": 1083/764,
+    "pos_x": 0.5,
+    "pos_y": 0.45,
+    "is_prop": true,
+    "background": "url('./images/for_shop/shop_2.png')",
+}
+
+// внизу блок
+graph_core.html_blocks["game_options"].add_block('go_bottom_block', {
+    "ratio_x": 450/935,
+    "ratio_y": 1000/1540 * 0.24,
+    "ratio": 3,
+    "pos_x": 0.5,
+    "pos_y": 0.98,
+    "is_prop": true,
+    "background": '#440036',
+    'border-radius': '20px'
+})
+
+
+for (var i=0; i < 3; i++) {
+    graph_core.all_html_blocks['go_cb_item_'+(i+1)].options = {
+        "ratio_x": 0.62,
+        "ratio_y": 0.42,
+        "ratio": 700/295,
+        //"color": '#f48aff',
+        "background": "linear-gradient(to right, #8a4b2c, #121212, #003366)",
+        "is_prop": true,
+        "pos_x": 0.15,
+        "pos_y": 0.12 + i*0.76,
+        "style": {
+            "border-radius": "30px"
+        }
+    }
+    if (i < 2) {
+        graph_core.all_html_blocks['go_cb_i'+(i+1)+'_title'].options = {
+            "ratio_x": 650/700,
+            "ratio_y": 90/295,
+            //"ratio": 500/75,
+            //"color": '#f48aff',
+            //"background": "url('./images/for_shop/unicorn_1.png')",
+            //"is_prop": true,
+            "pos_x": 0.5,
+            "pos_y": 0.02,
+            "text": text.options[i].title[graph_core.lang],
+            "text_color":  STANDARD_TEXT_COLOR,
+            "text_align": "center",
+            "strict_font_size": 0.5,
+        }
+    }
+}
+
+
+graph_core.all_html_blocks['go_cb_item_3'].options = {
+        "ratio_x": 270/1085,
+        "ratio_y": 650/763,
+        "ratio": 250/700,
+        //"color": '#f48aff',
+        "background": "linear-gradient(to right, #8a4b2c, #121212, #003366)",
+        "is_prop": true,
+        "pos_x": 0.92,
+        "pos_y": 0.5 ,
+        "style": {
+            "border-radius": "30px"
+        }
+    }
+/*
+graph_core.html_blocks['game_options'].children['go_card_block'].children['go_cb_item_1'].add_block('go_cb_music_btn', {
+    "ratio_x": 88/400,
+    "ratio_y": 88/170,
+    "ratio": 1/1,
+    "is_prop": true,
+    "background": "url('./images/for_settings/music_on.png')",
+    "pos_x": 95/400,
+    "pos_y": 125/170
+})
+
+graph_core.html_blocks['game_options'].children['go_card_block'].children['go_cb_item_1'].add_block('go_cb_sound_btn', {
+    "ratio_x": 88/400,
+    "ratio_y": 88/170,
+    "ratio": 1/1,
+    "is_prop": true,
+    "background": "url('./images/for_settings/sound_on.png')",
+    "pos_x": 305/400,
+    "pos_y": 125/170
+})
+
+graph_core.html_blocks['game_options'].children['go_card_block'].children['go_cb_item_2'].add_block('go_cb_i2_text_1', {
+    "ratio_x": 135/400,
+    "ratio_y": 100/180,
+    "ratio": 125/30,
+    "is_prop": true,
+   
+    "pos_x": 0.1,
+    "pos_y": 0.45,
+    "text": "Нашли баг?",
+    "text_color": ORANGE_TEXT_COLOR,
+})
+
+graph_core.html_blocks['game_options'].children['go_card_block'].children['go_cb_item_2'].add_block('go_cb_i2_text_2', {
+    "ratio_x": 135/400,
+    "ratio_y": 100/180,
+    "ratio": 125/30,
+    "is_prop": true,
+   
+    "pos_x": 0.1,
+    "pos_y": 0.85,
+    "text": "Авторизация",
+    "text_color": ORANGE_TEXT_COLOR,
+})
+
+// кнопка сообщения об ошибке
+graph_core.html_blocks['game_options'].children['go_card_block'].children['go_cb_item_2'].add_block('go_cb_i2_btn_1', {
+    "ratio_x": 135/400,
+    "ratio_y": 100/180,
+    "ratio": 314/99,
+    "is_prop": true,
+    background: "url('./images/for_settings/long_red.png')",
+    "pos_x": 0.9,
+    "pos_y": 0.45,
+    "text": "Сообщить",
+    "text_align": 'center',
+    "text_padding_h": 0.7,
+    "text_color": STANDARD_TEXT_COLOR,
+    onclick: "graph_core.open_popup('#go_bug_report_popup_back')"
+})*/
+
+var names = ['Достижения', 'Персонажи', "Концовки"]
+var img_name = ['but_achieve.png', 'but_who.png', 'but_ends.png']
+var big_blocks_ids1 = ['#game_achievements', '#game_characters', '#game_endings']
+
+for (var i=0; i < 3; i++) {
+    graph_core.all_html_blocks['go_cb_i3_img_'+(i+1)].options =  {
+        "ratio_y": 100/400,
+        "ratio_x": 100/180,
+        "ratio": 1,
+        "is_prop": true,
+        "background": "url('./images/for_settings/"+img_name[i]+"')",
+        "pos_y": 0.5*i+(1-i)*0.07-0.04,
+        "pos_x": 0.5,
+        onclick: "graph_core.open_big_block('"+big_blocks_ids1[i]+"')"
+    }
+
+    graph_core.all_html_blocks['go_cb_i3_text_'+(i+1)].options = {
+        "ratio_y": 35/180,
+        "ratio_x": 0.9,
+        "ratio": 314/99,
+        //"is_prop": true,
+        //background: "url('./images/for_settings/long_red.png')",
+        "pos_x": 0.5,
+        "pos_y": 0.5*i+0.2,
+        "text": names[i],
+        "text_align": 'center',
+        "text_padding_h": 0.9,
+        "text_color": ORANGE_TEXT_COLOR,
+        "pos_y_mode": "attach_bottom",
+        "pos_y_attach_id": 'go_cb_i3_img_'+(i+1),
+        "margin_y": -1.2,
+    }
+
+    
+}
+
+// МАГАЗИН АЧИВОК
+
+graph_core.all_html_blocks['ga_card_block_outer'].options = {
+    "ratio_x": 860/935,
+    "ratio_y": 1000/1540,
+    "ratio": (764*2)/1083,
+    "pos_x": 0.5,
+    "pos_y": 0.45,
+    //"is_prop": true,
+    "background": "url('./images/for_achievements/card.png') center",
+    "style": {
+        "border-radius": "40px"
+    }
+}
+
+graph_core.all_html_blocks["ga_card_block"].options = {
+    "ratio_x": 0.95,
+    "ratio_y": 0.85,
+    "pos_x": 0.5,
+    "pos_y": 0.5,
+}
+
+
+
+
+for (var i=0; i < 10; i++) {
+    graph_core.all_html_blocks['ga_cb_item_'+(i+1)].options = {
+        "ratio_x": 700/763,
+        "ratio_y": 400/1085,
+        "ratio": 697/290,
+        //"color": '#f48aff',
+        "background": "url('./images/for_achievements/block.png')",
+        "is_prop": true,
+        "pos_x": 0.5,
+        "pos_y": 0.06 + i*0.435,
+        "table_cell_num": i,
+        "table_margin_y": 1.1,
+    }
+
+    graph_core.all_html_blocks['ga_cb_i'+(i+1)+'_desk'].options = {
+        "ratio_x": 400/700,
+        "ratio_y": 200/295,
+        "ratio": 300/100,
+        //"color": '#f48aff',
+        //"background": "url('./images/for_shop/unicorn_1.png')",
+        "is_prop": true,
+        "pos_x": 0.85,
+        "pos_y": 0.45,
+        "text_align": "right",
+        "text": text.achievements['default'].desk[graph_core.lang],
+        "text_color": "#fa8f1d",
+    }
+}
+
+/*
+// внизу блок
+graph_core.html_blocks["game_achievements"].add_block('ga_bottom_block', {
+    "ratio_x": 450/935,
+    "ratio_y": 1000/1540 * 0.24,
+    "ratio": 3,
+    "pos_x": 0.5,
+    "pos_y": 0.98,
+    "is_prop": true,
+    "background": '#440036',
+    'border-radius': '20px'
+})
+
+graph_core.all_html_blocks['ga_bottom_block'].add_block('ga_bb_title', {
+    "ratio_x": 0.4,
+    "ratio_y": 0.25,
+    "ratio": 2,
+    "pos_x": 0.5,
+    "pos_y": 0.05,
+    "text": "Совет",
+    "text_align": 'center',
+    "text_color": "rgb(232, 205, 102)",
+    "is_prop": true,
+})
+
+graph_core.all_html_blocks['ga_bottom_block'].add_block('ga_bb_text', {
+    "ratio_x": 0.9,
+    "ratio_y": 0.7,
+    "ratio": 2,
+    "pos_x": 0.5,
+    "pos_y": 0.95,
+    "text": "За игру вы не раз встретите рекламного мага. Не отказывайтесь от его предложений ;)",
+    "text_align": 'center',
+    "text_color": "rgb(232, 205, 102)",
+    //"is_prop": true,
+})
+
+        */
+
+        // ДОНАТНАЯ СЕКЦИЯ
+        
+        graph_core.all_html_blocks['gso_title_block'].options = {
+    "ratio_x": 650/930,
+    "ratio_y": 200/2625,
+    "ratio": 554/85,
+    "pos_x": 0.02,
+    "pos_y": 0.02,
+    "text_padding_h": 0.9,
+    //"text_pos_y": 0.9,
+    "is_prop": true,
+    "background": "url('./images/title.png')",
+
+
+    "text": "Предложения",
+    "text_color": "#ffcf13",
+    "text_align": "center"
+
+}
+
+graph_core.all_html_blocks['gso_second_block'].options = {
+    "ratio_x": 762/935,
+    "ratio_y": 100/1540,
+    "ratio": 762/100,
+    "pos_x": 0.95,
+    "pos_y": 0.02,
+    "is_prop": true,
+    //"background": "red",
+}
+
+graph_core.all_html_blocks['gso_sb_balance_block'].options = {
+    "ratio_x": (762-442)/762,
+    "ratio_y": 1.0,
+    "ratio": 250/99,
+    "pos_y": 0.0,
+    "is_prop": true,
+
+    "background": "url('./images/for_shop/but_blue.png')",
+    "pos_x_mode": "v2_attach_left",
+    "pos_x_attach_id": "gs_sb_text",
+    "margin_x": 0.4,
+}
+
+graph_core.all_html_blocks['gso_sb_bb_text'].options = {
+    "ratio_x": 100/189,
+    "ratio_y": 90/100,
+    //"ratio": 1/1,
+    "pos_y": 0.95,
+    "pos_x": 0.95,
+    //"is_prop": true,
+    "text": "123",
+    "text_color": "#e8cd66",
+}
+
+graph_core.all_html_blocks['gso_card_block_outer'].options = {
+    "ratio_x": 780/935,
+    "ratio_y": 1000/1540,
+    "ratio": (764*2)/1083,
+    "pos_x": 0.5,
+    "pos_y": 0.45,
+    //"is_prop": true,
+    "background": "url('./images/for_shop/card.png') 100%",
+    "style": {
+        "background-size": "50%",
+        "border-radius": "40px 40px"
+    }
+}
+/*
+graph_core.all_html_blocks['gso_card_block_outer'].options = {
+    "ratio_x": 780/935,
+    "ratio_y": 1000/1540,
+    "ratio": (764*2)/1083,
+    "pos_x": 0.5,
+    "pos_y": 0.45,
+    //"is_prop": true,
+    "background": "url('./images/for_shop/card.png') 100%",
+    "style": {
+        "background-size": "50%",
+        "border-radius": "40px 40px"
+    }
+}
+*/
+
+/*
+graph_core.html_blocks["game_special_offers"].add_block('gso_cb_img', {
+    "ratio_x": 370/535,
+    "ratio_y": 260/890,
+    "ratio": 688/492,
+    "pos_x": 0.5,
+    "pos_y": 0.45,
+    "is_prop": true,
+    "background": "url('./images/for_shop/donat.jpg')",
+
+})
+
+graph_core.html_blocks["game_special_offers"].add_block('gso_card_block', {
+    "ratio_x": 860/935,
+    "ratio_y": 1000/1540,
+    "ratio": 764/980,
+    "pos_x": 0.5,
+    "pos_y": 0.45,
+    "is_prop": true,
+    "background": "url('./images/base_3.png')",
+})
+
+graph_core.html_blocks["game_special_offers"].children['gso_card_block'].add_block('gso_cb_title', {
+    "ratio_x": 250/415,
+    "ratio_y": 80/535,
+    "ratio": 554/140,
+    "pos_x": 0.5,
+    "pos_y": 0.15,
+    "is_prop": true,
+    "background": "url('./images/for_shop/title_big.png')",
+    "text": "Сокровище лунного озера",
+    "text_align": "center",
+    "text_color": STANDARD_TEXT_COLOR,
+    "text_padding_h": 0.85,
+    "text_padding_w": 0.8
+})
+
+graph_core.html_blocks["game_special_offers"].children['gso_card_block'].add_block('gso_cb_desc', {
+    "ratio_x": 400/415,
+    "ratio_y": 140/535,
+    "ratio": 554/140,
+    "pos_x": 0.5,
+    "pos_y": 0.95,
+    "is_prop": false,
+    "text": 'Набор "Сокровище лунного озера" позволит приобрести множество предеметов лунного торговца',
+    "text_align": "center",
+    "text_color": STANDARD_TEXT_COLOR,
+    "text_padding_h": 0.85,
+    "text_padding_w": 0.8
+})
+
+
+graph_core.html_blocks["game_special_offers"].add_block('gso_back_block', {
+    "ratio_x": 110/535,
+    "ratio_y": 210/890,
+    "ratio": 206/370,
+    "color": '#f48aff',
+    "background": "url('./images/clock.png')",
+    "is_prop": true,
+    "pos_x": 0,
+    "pos_y": 1
+})
+
+graph_core.all_html_blocks['gso_back_block'].add_block('gso_bb_back_button', {
+    "ratio_x": 1,
+    "ratio_y": 0.25,
+    "ratio": 63/105,
+    "color": '#f48aff',
+    "background": "url('./images/for_shop/back.png')",
+    "is_prop": true,
+    "pos_x": 0.2,
+    "pos_y": 0.9,
+    "onclick": "graph_core.open_big_block('#game_shop');",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.3) ", // Увеличение и полный оборот
+        "filter": "brightness(1.3)"
+    }
+})
+
+graph_core.html_blocks['game_special_offers'].add_block('gsi_cb_buy_btn', {
+    "ratio_x": 250/494,
+    "ratio_y": 50/828,
+    "ratio": 372/82,
+    //"color": '#f48aff',
+    "background": "url('./images/for_shop/button_off.png')",
+    "is_prop": true,
+    "pos_x": 0.5,
+    "pos_y": 0.86,
+    "text_align": "center",
+    "text": "Купить",
+    "text_color": "#ffcf13",
+    "text_padding_w": 0.75,
+    "text_padding_h": 0.7,
+    "onclick": "graph_core.open_special_shop_popup("+i+");"
+})
+
+graph_core.html_blocks['game_special_offers'].add_block('gso_promocode_btn', {
+    "ratio_x": 220/500,
+    "ratio_y": 60/830,
+    "ratio": 314/99,
+    "is_prop": true,
+    background: "url('./images/for_settings/long_red.png')",
+    "pos_x": 0.95,
+    "pos_y": 0.98,
+    "text": "Ввести промокод",
+    "text_align": 'center',
+    "text_padding_h": 0.9,
+    "text_color": STANDARD_TEXT_COLOR,
+    onclick: "graph_core.open_popup('#gso_promocode_popup_back');",
+    "style": {
+        "transition": "transform 0.3s ease, filter 0.3s ease" // Плавный переход
+    },
+    "hover_style": {
+        "transform": "scale(1.1)", // Увеличение и полный оборот
+        "filter": "brightness(1.2)"
+    }
+})
+
+// кнопки переключения 
+graph_core.all_html_blocks['game_special_offers'].add_block('gso_left_button', {
+    "ratio_x": 0.1,
+    "ratio_y": 0.15,
+    "ratio": 63/105,
+    "color": '#f48aff',
+    "background": "url('./images/for_shop/left.png')",
+    "is_prop": true,
+    "pos_x": 0.08,
+    "pos_y": 0.5,
+    "onclick": "graph_core.open_big_block('#game_shop');"
+})
+
+graph_core.all_html_blocks['game_special_offers'].add_block('gso_right_button', {
+    "ratio_x": 0.1,
+    "ratio_y": 0.15,
+    "ratio": 63/105,
+    "color": '#f48aff',
+    "background": "url('./images/for_shop/right.png')",
+    "is_prop": true,
+    "pos_x": 0.92,
+    "pos_y": 0.5,
+    "onclick": "graph_core.open_big_block('#game_shop');"
+})*/
     }
 
 }
@@ -2586,7 +3799,7 @@ var resize_screen = function() {
     for (var i in graph_core.big_blocks_ids) {
         graph_core.html_blocks[graph_core.big_blocks_ids[i]].recalculate();
     }
-
+    graph_core.html_blocks['game_debug'].html_element['style'].display = 'none'
     graph_core.html_blocks['game_debug'].recalculate();
 
     //console.log('resized in '+(performance.now() - s_time).toFixed(2) + 'ms')

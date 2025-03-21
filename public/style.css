@@ -94,7 +94,7 @@ span {
 	line-height: 1.25;
 }
 
-#gs_popup_back, #gs_popup2_back, #gs_popup3_back {
+#gs_popup_back, #gs_popup2_back, #gs_popup3_back, #gso_popup_back, #go_gso_popup_back {
 	display: none;
 }
 
@@ -120,7 +120,7 @@ span.text {
 	display: none;
 }
 
-#ga_card_block, #gch_card, #ge_card, #gs_card_block {
+#ga_card_block, #gch_card, #ge_card, #gs_card_block, #gso_card_block  {
 	overflow-y: auto;
 	overflow-x: hidden;
 }
